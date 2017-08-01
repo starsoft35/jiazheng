@@ -126,7 +126,7 @@
 	
 	/*右边部分*/
 	.boxRight{
-		width: 5.45rem;
+		width: 5.25rem;
 		position: absolute;
 		right: 0.36rem;
 		top: 0;
@@ -135,5 +135,7 @@
 	.router-link-active {
 		color:#307cd9;
 		font-size:0.24rem;
+		width: 1.52rem;
+		border-left: 0.06rem solid #2173d6;
 	}
 </style>

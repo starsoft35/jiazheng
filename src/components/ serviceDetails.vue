@@ -259,13 +259,13 @@
 	.ping{
 		width: 7rem;
 		height: 0.8rem;
-		padding: 0 0.25rem;
+		padding: 0 0.26rem;
 		border-bottom: 0.02rem solid #ebebeb;
 	}
 	.ping span{
 		width: 2.5rem;
 		height: 100%;
-		font-size: 0.22rem;
+		font-size: 0.26rem;
 		color: #222222;
 		text-align: left;
 		line-height: 0.8rem;

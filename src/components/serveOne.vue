@@ -93,5 +93,7 @@
 		text-align: center;
 		color: #7a7a7a;
 		display: block;
+		/*border-left: 0.06rem solid #FFFFFF;*/
+		
 	}
 </style>
