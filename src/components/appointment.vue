@@ -18,9 +18,9 @@
 			</div>
 			<!--地址-->
 			<div class="clientPosition">
-				<img src="../../static/37@3x.png"/>
-				<span></span>
-				<img src="../../static/34@3x.png"/>
+				<img class="imgLeft fl" src="../../static/37@3x.png"/>
+				<span class="fl" v-text="clientposition"></span>
+				<img class="imgRight fr" src="../../static/34@3x.png"/>
 			</div>
 			<!--底部彩条-->
 			<img src="../../static/45@3x.png"/>
@@ -35,7 +35,7 @@
 				title:'确认订单',
 				clientName:'朱小明',
 				clientMobile:'17191191610',
-				clientposition:''
+				clientposition:'江苏省 苏州市 观前街 庆元坊20号'
 			}
 		}
 	}
@@ -89,7 +89,7 @@
 		font-size: 0.25rem;
 		color: #222222;
 		margin-top: 0.46rem;
-		margin-bottom: 0.32rem;
+		margin-bottom: 0.22rem;
 	}
 	.contName{
 		width: 3rem;
@@ -104,4 +104,27 @@
 		margin-right:0.6rem ;
 	}
 	/*地址   */
+	.clientPosition{
+		width:7rem ;
+		display:inline-block;
+		margin-left:0.24rem ;
+		margin-bottom:0.3rem;
+	}
+	.clientPosition span{
+		width:6rem ;
+		font-size:0.25rem ;
+		line-height:0.3rem ;
+		color:#333333 ;
+	}
+	.imgLeft{
+		width:0.28rem ;
+		height: 0.35rem;
+		margin: 0.2rem 0.25rem  0 0;
+		
+	}
+	.imgRight{
+		width: 0.13rem;
+		height:0.2rem ;
+		margin-top:0.12rem ;
+	}
 </style>

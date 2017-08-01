@@ -321,8 +321,8 @@
 	/*时间*/
 	.client>span{
 		width: 3rem;
-		height: 0.16rem;
-		font-size: 0.16rem;
+		height: 0.2rem;
+		font-size: 0.2rem;
 		color: #999999;
 	}
 	.client p{

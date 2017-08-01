@@ -12,7 +12,8 @@
 			<div class="search">
 				<!--<img src=""/>-->
 				<a href="#search">
-					<i class="fa fa-search" aria-hidden="true">搜索你想要的商品</i>
+					<img src="../../static/38@3x.png"/>
+					<span class="fa fa-search" aria-hidden="true">搜索你想要的商品</span>
 				</a>
 			</div>
 			<!--右边-->
@@ -29,18 +30,26 @@
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
 						<a href="#second">
-							<img src="../../static/11@3x.png"/>
+							<img src="../../static/back.png"/>
 						</a>
 					</div>
-					<div class="swiper-slide">Slide 2</div>
-					<div class="swiper-slide">Slide 3</div>
-					<div class="swiper-slide">Slide 4</div>
+					<div class="swiper-slide">
+						<a href="#second">
+							<img src="../../static/back.png"/>
+						</a>
+					</div>
+					<div class="swiper-slide">
+						<a href="#second">
+							<img src="../../static/back.png"/>
+						</a>
+					</div>
+					<!--<div class="swiper-slide">Slide 4</div>
 					<div class="swiper-slide">Slide 5</div>
 					<div class="swiper-slide">Slide 6</div>
 					<div class="swiper-slide">Slide 7</div>
 					<div class="swiper-slide">Slide 8</div>
 					<div class="swiper-slide">Slide 9</div>
-					<div class="swiper-slide">Slide 10</div>
+					<div class="swiper-slide">Slide 10</div>-->
 				</div>
 				<!-- Add Pagination -->
 				<div class="swiper-pagination"></div>
@@ -87,7 +96,7 @@
 			<div class="serveHead">
 				<div class="serveCont">
 					<img src="../../static/13@3x.png"/>
-					<h3>热门服务</h3>
+					<div>热门服务</div>
 				</div>
 			</div>
 		</div>
@@ -96,7 +105,7 @@
 			<li class="serveList" v-for="(serveList,index) in serve" :style="serveList.back">
 				<div class="meng">
 					<a :href="serveList.backSrc">
-						<h4 v-text="serveList.title"></h4>
+						<div v-text="serveList.title"></div>
 						<span v-text="serveList.cont"></span>
 						<!---->
 					</a>
@@ -108,25 +117,25 @@
 			<li>
 				<a href="#second">
 					<img src="../../static/14@3x.png" alt="首页"/>
-					<h3>首页</h3>
+					<div style="color: #258ef3;">首页</div>
 				</a>
 			</li>
 			<li>
 				<a href="#second">
 					<img src="../../static/15@3x.png" alt="附近"/>
-					<h3>附近</h3>
+					<div>附近</div>
 				</a>
 			</li>
 			<li>
 				<a href="#second">
 					<img src="../../static/16@3x.png" alt="订单"/>
-					<h3>订单</h3>
+					<div>订单</div>
 				</a>
 			</li>
 			<li>
 				<a href="#second">
 					<img src="../../static/17@3x.png" alt="我的"/>
-					<h3>我的</h3>
+					<div>我的</div>
 				</a>
 			</li>
 		</ul>
@@ -269,8 +278,8 @@
 		top: 0rem;
 	}
 	.top-position img{
-		width:0.15rem ;
-		height: 0.1rem;
+		width:0.18rem ;
+		height: 0.15rem;
 		position: absolute;
 		right:0.23rem ;
 		top:0.35rem ;
@@ -285,9 +294,24 @@
 	}
 	.search a{
 		height: 100%;
+		width: 95%;
+		margin:0 auto;
+		display: block;
 		font-size: 0.21rem;
 		color: #c9c9c9;
 		line-height: 0.5rem;
+	}
+	.search img{
+		width: 0.26rem;
+		height: 0.26rem;
+		margin: 0.15rem 0.1rem 0 0.24rem;
+		float: left;
+	}
+	.search span{
+		height:0.5rem;
+		font-size: 0.25rem;
+		line-height: 0.5rem;
+		float: left;
 	}
 	/*右边商家入驻链接*/
 	.join{
@@ -339,24 +363,27 @@
 	}
 	.swiper-slide img{
 		width: 100%;
-		height: 100%;
+		height: 110%;
 	}
 	/*中间样式导航 八个链接*/
 	.cont{
-		width: 7.3rem;
+		width: 7.2rem;
+		background: #FFFFFF;
 		height: 3.6rem;
-		margin: 0 auto;
-		border-radius: 0.3rem;
+		margin:0 auto;
+		display: block;
+		border-radius: 0.35rem;
 	}
 	.nav {
 		width: 100%;
 		height: 100%;
+		margin: auto;
 
 	}
 	
 	.nav_cont {
 		width: 1.5rem;
-		height: 1.60rem;
+		height: 1.50rem;
 		margin-left: 0.25rem;
 		float: left;
 		/*background: cadetblue;*/
@@ -368,14 +395,15 @@
 	.nav_cont img {
 		width: 0.8rem;
 		/*height: 100px;*/
-		margin: 0.4rem 0.3rem 0.2rem 0.3rem;
+		margin: 0.2rem 0.3rem 0.1rem 0.3rem;
 	}
 	
 	.nav_cont span {
 		width: 100%;
-		height: 0.2rem;
+		height: 0.25rem;
+		color: #222222;
 		text-align: center;
-		font-size: 0.2rem;
+		font-size: 0.25rem;
 		display: block;
 	}
 	/*分享有礼与一键下单*/
@@ -413,7 +441,7 @@
 		left:0.18rem;
 		top:1rem ;
 		font-size:0.23rem ;
-		color:999999 ;
+		color:#999999 ;
 		display: block;
 	}
 	.shareCont img{
@@ -444,7 +472,7 @@
 		width: 0.30rem;
 		float: left;
 	}
-	.serveCont h3{
+	.serveCont div{
 		width: 1.2rem;
 		height:0.29rem;
 		font-size:0.25rem ;
@@ -457,7 +485,7 @@
 	}
 	.serveList{
 		width: 100%;
-		height:1.6rem ;
+		height:2.6rem ;
 		margin-bottom: 0.1rem;
 		position: relative;
 	}
@@ -472,7 +500,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	.serveList h4{
+	.meng div{
 		position: absolute;
 		left:0.33rem ;
 		bottom:0.7rem ;
@@ -485,7 +513,7 @@
 		left:0.33rem ;
 		bottom:0.25rem ;
 		font-size: 0.2rem;
-		color: #b8b9b9;
+		color: #ababab;
 	}
 	/*底部导航*/
 	.nav_bottm{
@@ -509,13 +537,14 @@
 	.nav_bottm img{
 		
 		width: 0.4rem;
+		height: 0.4rem;
 		display: block;
 		margin:0.15rem 0.3rem 0.1rem 0.3rem ;
 	}
-	.nav_bottm h3{
+	.nav_bottm div{
 		width: 1rem;
 		font-size: 0.2rem;
-		color: #258ef3;
+		color: #c7c7c7;
 		text-align: center;
 	}
 </style>

@@ -60,9 +60,10 @@
 <style scoped>
 	#box {
 		width: 100%;
+		height: 13.34rem;
 		padding: 0px;
 		margin: 0px;
-		background: #f5f5f9;
+		background: #fff;
 	}
 	/*头部导航条*/
 	.headPart{
@@ -101,16 +102,17 @@
 	/*左边部分*/
 	.boxLeft{
 		width: 1.65rem;
-		border-left: 1px solid #e5e5e5;
+		border-right: 1px solid #e5e5e5;
 		/*background: #C9C9C9;*/
 		position: absolute;
 		left: 0;
-		top: 0;
+		top: -0.25rem;
 	}
 	.boxLeft li{
 		width:1.65rem ;
 		height:0.5rem ;
-		margin-bottom: 0.6rem;
+		margin-top: 0.25rem;
+		margin-bottom: 0.35rem;
 		color:#4e4e4e ;
 	}
 	.routerLink{
@@ -132,6 +134,6 @@
 	/*router-link 样式*/
 	.router-link-active {
 		color:#307cd9;
-		font-size:0.22rem;
+		font-size:0.24rem;
 	}
 </style>

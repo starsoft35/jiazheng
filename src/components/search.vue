@@ -96,7 +96,7 @@
 			position: relative;
 		}
 		#box {
-		width: 100%;
+		width: 7.5rem;
 		padding: 0px;
 		margin: 0px;
 		}
