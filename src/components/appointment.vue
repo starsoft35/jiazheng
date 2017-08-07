@@ -62,11 +62,17 @@
 			<!--优惠券-->
 			<div class="serveBottom">
 				<span class="fl">优惠券</span>
-				<a href="#secon fr">
+				<router-link to="/coupons">
 					<img class="fr" src="../../static/34@3x.png"/>
 					<div class="fr">{{youhui}}元优惠券</div>
+<<<<<<< HEAD
+				</router-link>
+					
+			</div>
+=======
 				</a>
 			</div>
+>>>>>>> aa7617a6f2de066307ca05fb12affcbc3bfcd8a2
 		</div>
 		<!--结账-->
 		<div class="footPart">
@@ -86,7 +92,7 @@
 		<!--提交预约-->
 		<div class="bottomBtn">
 			<router-link to="/paySubmit">提交预约</router-link>
-			<!--<a href="#appointment">提交预约</a>-->
+		
 		</div>
 	</div>
 </template>
