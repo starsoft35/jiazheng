@@ -31,6 +31,9 @@ import peoplePing from '@/components/peoplePing'
 //立即预约 确认订单
 import appointment from '@/components/appointment'
 
+// 个人中心
+import ucenter from '@/components/ucenter'
+
 Vue.use(Router)
 
 export default new Router({
@@ -113,6 +116,10 @@ export default new Router({
 	       component: appointment
 	    }
     
-    
+      
+      , {
+        path: '/ucenter',
+        component: ucenter
+      }
   ]
 })
