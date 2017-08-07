@@ -67,7 +67,6 @@
 					<div class="fr">{{youhui}}元优惠券</div>
 				</router-link>
 			</div>
-
 		</div>
 		<!--结账-->
 		<div class="footPart">

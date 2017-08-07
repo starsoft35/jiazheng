@@ -1,26 +1,26 @@
 <template>
     <ul class="nav_bottm">
-        <li>
+        <li :class="{'active':first.active}">
             <router-link to='first'>
-                <img src="../../../static/14@3x.png" alt="首页"/>
-                <div style="color: #258ef3;">首页</div>
+                <img :src="first.icon" alt="首页"/>
+                <div>首页</div>
             </router-link>
         </li>
-        <li>
-            <router-link to='second'>
-                <img src="../../../static/15@3x.png" alt="附近"/>
+        <li :class="{'active':second.active}">
+            <router-link to='vicinity'>
+                <img :src="second.icon" alt="附近"/>
                 <div>附近</div>
             </router-link>
         </li>
-        <li>
-            <router-link to='second'>
-                <img src="../../../static/16@3x.png" alt="订单"/>
+        <li :class="{'active':third.active}">
+            <router-link to='third'>
+                <img :src="third.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
         </li>
-        <li>
+        <li :class="{'active':four.active}">
             <router-link to='ucenter'>
-                <img src="../../../static/17@3x.png" alt="我的"/>
+                <img :src="four.icon" alt="我的"/>
                 <div>我的</div>
             </router-link>
         </li>
@@ -29,7 +29,50 @@
 
 <script>
     export default {
-        props: ['active']
+        props: ['actived'],
+        data: function () {
+            return  {
+                first: {
+                    active: false,
+                    icon: '@../../../static/21@3x.png'
+                },
+                second: {
+                    active: false,
+                    icon: '@../../../static/15@3x.png'
+                },
+                third: {
+                    active: false,
+                    icon: '@../../../static/16@3x.png'
+                },
+                four: {
+                    active: false,
+                    icon: '@../../../static/17@3x.png'
+                }    
+            }
+        },
+        created: function () {
+            if (this.actived == 'first') {
+                this.first = {
+                    active: true,
+                    icon: '@../../../static/14@3x.png'
+                }
+            } else if (this.actived == 'second') {
+                this.second = {
+                    active: true,
+                    icon: '@../../../static/18@3x.png'
+                }
+            } else if (this.actived == 'third') {
+                this.third = {
+                    active: true,
+                    icon: '@../../../static/19@3x.png'
+                }
+            } else if (this.actived == 'four') {
+                this.four = {
+                    active: true,
+                    icon: '@../../../static/20@3x.png'
+                }
+            }
+        }   
     }
 </script>
 
@@ -54,7 +97,7 @@
         display: block;
     }
     .nav_bottm img{
-        
+
         width: 0.4rem;
         height: 0.4rem;
         display: block;
@@ -65,5 +108,8 @@
         font-size: 0.2rem;
         color: #c7c7c7;
         text-align: center;
+    }
+    .nav_bottm .active div {
+        color: #258ef3;
     }
 </style>

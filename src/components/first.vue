@@ -110,41 +110,10 @@
 						<!---->
 					</a>
 				</div>
-<<<<<<< HEAD
 			</li>
 		</ul>
 		<!--底部导航-->
-		<ul class="nav_bottm">
-			<li>
-				<a href="#">
-					<img src="../../static/14@3x.png" alt="首页"/>
-					<div style="color: #258ef3;">首页</div>
-				</a>
-			</li>
-			<li>
-				<a href="#second">
-					<img src="../../static/15@3x.png" alt="附近"/>
-					<div>附近</div>
-				</a>
-			</li>
-			<li>
-				<router-link to="/third">
-					<img src="../../static/16@3x.png" alt="订单"/>
-					<div>订单</div>
-				</router-link>
-			</li>
-			<li>
-				<a href="#second">
-					<img src="../../static/17@3x.png" alt="我的"/>
-					<div>我的</div>
-				</a>
-			</li>
-=======
-			</li>
->>>>>>> aa7617a6f2de066307ca05fb12affcbc3bfcd8a2
-		</ul>
-		<!--底部导航-->
-		<Menu></Menu>
+		<Menu actived="first"></Menu>
 		<!--空  撑开底部距离-->
 		<div style="width: 100%;height: 1.2rem;"></div>
 	</div>

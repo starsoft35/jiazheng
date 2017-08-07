@@ -3,19 +3,19 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
+				<a href="#appointment">
+					<span class="fl"></span>
 				</a>
 				<p v-text="title"></p>
 			</div>
 		</div>
 		<div class="tabPart">
-			<router-link to="">
-				<span class="partLeft">可用优惠券</span>
-			</router-link>
-			<router-link to="">
-				<span class="partRight">不可用优惠券</span>
-			</router-link>
+				<router-link to="/coupons/couponsLeft">
+					<span class="partLeft">可用优惠券</span>
+				</router-link>
+				<router-link to="/coupons/couponsRight">
+					<span class="partRight">不可用优惠券</span>
+				</router-link>
 		</div>
 		<div class="cont">
 			<router-view></router-view>
@@ -76,19 +76,25 @@
 		background: #FFFFFF;
 		position: relative;
 		font-size: 0.26rem;
-		color: #222222;
+		color: #4e4e4e;
 	}
 	.partLeft{
-		position: absolute;
-		left:1.65rem ;
-		top: 0;
+		margin-left: 1.2rem;
+		float: left;
 		line-height: 0.78rem;
-		border-bottom: 1px solid #2c90f4;
+		/*border-bottom: 1px solid #2c90f4;*/
 	}
 	.partRight{
-		position: absolute;
-		right:1.65rem ;
-		top: 0;
+		margin-right: 0.9rem;
+		float: right;
 		line-height: 0.78rem;
+	}
+	.tabPart a{
+		display:block;
+	}
+	.router-link-active {
+		display: block;
+		color: #2787f4;
+		border-bottom: 1px solid #2787f4;
 	}
 </style>
