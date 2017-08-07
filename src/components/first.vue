@@ -113,7 +113,7 @@
 			</li>
 		</ul>
 		<!--底部导航-->
-		<Menu></Menu>
+		<Menu actived="first"></Menu>
 		<!--空  撑开底部距离-->
 		<div style="width: 100%;height: 1.2rem;"></div>
 	</div>

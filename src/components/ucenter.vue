@@ -1,7 +1,7 @@
 <template>
     <div class="ucenter-container">
         个人中心
-        <Menu ucenter='true'></Menu>
+        <Menu actived="four"></Menu>
     </div>
 </template>
 
