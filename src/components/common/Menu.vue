@@ -18,10 +18,10 @@
                 <div>订单</div>
             </router-link>
         </li>
-        <li v-bind:class="{'active': ucenter}">
+        <li>
             <router-link to='ucenter'>
                 <img src="../../../static/17@3x.png" alt="我的"/>
-                <div>我的{{ucenter}}</div>
+                <div>我的</div>
             </router-link>
         </li>
     </ul>
