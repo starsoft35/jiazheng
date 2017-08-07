@@ -65,14 +65,9 @@
 				<router-link to="/coupons">
 					<img class="fr" src="../../static/34@3x.png"/>
 					<div class="fr">{{youhui}}元优惠券</div>
-<<<<<<< HEAD
 				</router-link>
-					
 			</div>
-=======
-				</a>
-			</div>
->>>>>>> aa7617a6f2de066307ca05fb12affcbc3bfcd8a2
+
 		</div>
 		<!--结账-->
 		<div class="footPart">

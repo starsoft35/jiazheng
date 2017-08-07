@@ -8,7 +8,7 @@
 			<div class="partRight">
 				<span>无门槛全场通用</span>
 				<p>2017.05.03~2017.08.09</p>
-				<img class="Img" src="../../static/324234234@3x.png"/>
+				<img class="rightImg" src="../../static/324234234@3x.png"/>
 			</div>
 		</div>
 		
@@ -98,7 +98,7 @@
 		color: #999999;
 	}
 	/*已过期图片*/
-	.Img{
+	.rightImg{
 		position: absolute;
 		right: 0.5rem;
 		top: 0.42rem;
