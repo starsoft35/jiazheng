@@ -32,7 +32,7 @@
 		</div>
 		
 		<div class="bottomBtn">
-			<a href="#appointment">添加服务地址</a>
+			<router-link to="/addPosition">添加服务地址</router-link>
 		</div>
 		<div class="kong"></div>
 	</div>

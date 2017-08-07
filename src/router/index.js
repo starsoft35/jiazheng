@@ -30,10 +30,26 @@ import  serviceDetails from '@/components/ serviceDetails'
 import peoplePing from '@/components/peoplePing'
 //立即预约 确认订单
 import appointment from '@/components/appointment'
+//优惠券 
+import coupons from '@/components/coupons'
+//优惠券下一
+import couponsLeft from '@/components/couponsLeft'
 //服务地址
 import chosePosition from '@/components/chosePosition'
+//添加服务地址
+import addPosition from '@/components/addPosition'
+//订单详情
+import orderDetail from '@/components/orderDetail'
 //订单支付页面
 import paySubmit from '@/components/paySubmit'
+//订单支付页二  加优惠券
+import paySubmitTwo from '@/components/paySubmitTwo'
+//一键下单
+import oneClick from '@/components/oneClick'
+//服务类型
+import serveType from '@/components/serveType'
+// 订单
+import third from '@/components/third'
 
 
 
@@ -57,18 +73,18 @@ export default new Router({
     //全部服务路由
     {
       path: '/allserve',
-      name:'allserve',
+//    name:'allserve',
       component: allserve,
       //子路由
       children:[
       {
       	path: '/',
-	      name:'allserve/serveOne',
+//	      name:'allserve/serveOne',
 	      component: serveOne
       },
       {
       	path: 'serveOne',
-	      name:'allserve/serveOne',
+//	      name:'allserve/serveOne'
 	      component: serveOne
 	   
       },{
@@ -114,18 +130,51 @@ export default new Router({
 	    	 path: '/peoplePing',
 	       component: peoplePing
 	    },{
-	    	//评价列表
+	    	//确认订单 提交预约
 	    	 path: '/appointment',
 	       component: appointment
+	    },{
+	    	//优惠券
+	    	 path: '/coupons',
+	       component: coupons
+	    },{
+	    	//优惠券下一
+	    	 path: '/couponsLeft',
+	       component: couponsLeft
 	    },{
 	    	//服务地址
 	    	 path: '/chosePosition',
 	       component: chosePosition
 	    },{
-	    	//服务地址
+	    	//添加服务地址
+	    	 path: '/addPosition',
+	       component: addPosition
+	    },{
+	    	//订单详情
+	    	 path: '/orderDetail',
+	       component: orderDetail
+	    },{
+	    	//订单支付
 	    	 path: '/paySubmit',
 	       component: paySubmit
+	    },{
+	    	//订单支付
+	    	 path: '/paySubmitTwo',
+	       component: paySubmitTwo
+	    },{
+	    	//一键下单
+	    	 path: '/oneClick',
+	       component: oneClick
+	    },{
+	    	//服务类型
+	    	 path: '/serveType',
+	       component: serveType
+	    },{
+	    	//订单
+	    	 path: '/third',
+	       component: third
 	    }
+	    
     
     
   ]

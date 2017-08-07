@@ -1,0 +1,282 @@
+<template>
+	<div id="box">
+		<!--顶部-->
+		<div class="headPart">
+			<div class="headCont">
+				<a href="#">
+					<span class="fl" onclick="window.history.go(-1)"></span>
+				</a>
+				<p v-text="title"></p>
+			</div>
+		</div>
+		<!--客户信息-->
+		<div class="clientMessage">
+			<!--姓名 电话-->
+			<div class="clientCont clear">
+				<div class="contName fl">联系人:{{clientName}}</div>
+				<div class="contMobile fr" v-text="clientMobile"></div>
+			</div>
+			<!--地址-->
+			<div class="clientPosition">
+				<a href="#chosePosition" style="display:inline-block;">
+					<img class="imgLeft fl" src="../../static/37@3x.png" />
+					<span class="fl" v-text="clientposition"></span>
+					<img class="imgRight fr" src="../../static/34@3x.png" />
+				</a>
+
+			</div>
+			<!--底部彩条-->
+			<div class="imgBottom"></div>
+		</div>
+		<div class="messageBox">
+			<!--服务类型-->
+			<div class="serveTime borderBottom">
+				<span class="fl">服务类型</span>
+				<router-link to="/serveType" >
+					<img src="../../static/34@3x.png" />
+					<div class="fr">请选择服务类型</div>
+				</router-link>
+			</div>
+			<!--服务时间-->
+			<div class="serveTime">
+				<span class="fl">服务时间</span>
+				<router-link to="/second" >
+					<img src="../../static/34@3x.png" />
+					<div class="fr">请选择服务时间</div>
+				</router-link>
+			</div>
+		</div>
+		<!--备注-->
+		<div class="comment">
+			<div>备注 :</div>
+			<textarea class="textCont" placeholder="描述你的服务内容及要求"></textarea>
+		</div>
+		<!--底部-->
+		<div class="kong"></div>
+		<!--按钮-->
+		<div class="bottomBtn">
+			<router-link to="/paySubmit">提交预约</router-link>
+		</div>
+	</div>
+</template>
+
+<script type="text/javascript">
+	export default {
+		data() {
+			return {
+				title: '确认订单',
+				//客户姓名
+				clientName: '朱小明',
+				//联系电话
+				clientMobile: '17191191610',
+				//地址
+				clientposition: ' 苏州市 观前街 庆元坊20号江苏省 苏州市 观前街 庆元坊20号'
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	#box {
+		width: 100%;
+		height: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+	
+	.headPart {
+		width: 100%;
+		height: 0.92rem;
+		background: #2d91f4;
+		overflow: hidden;
+	}
+	
+	.headCont {
+		width: 7rem;
+		height: 0.32rem;
+		margin: 0.25rem;
+		/*border: 1px solid red;*/
+	}
+	
+	.headCont a {
+		display: block;
+	}
+	
+	.headCont span {
+		color: #FFFFFF;
+		width: 0.32rem;
+		height: 0.32rem;
+		background: url("../../static/return.png");
+		background-size: 100% 100%;
+	}
+	
+	.headCont p {
+		height: 0.32rem;
+		color: #FFFFFF;
+		font-size: 0.32rem;
+	}
+	/*客户信息*/
+	
+	.clientMessage {
+		width: 100%;
+		background: #FFFFFF;
+		display: inline-block;
+		margin-bottom: 0.2rem;
+	}
+	/*客户姓名和电话部分*/
+	
+	.clientCont {
+		width: 7.5rem;
+		height: 0.25rem;
+		font-size: 0.25rem;
+		color: #222222;
+		margin-top: 0.46rem;
+		margin-bottom: 0.22rem;
+	}
+	
+	.contName {
+		width: 3rem;
+		height: 0.25rem;
+		margin-left: 0.75rem;
+		text-align: left;
+	}
+	
+	.contMobile {
+		width: 2rem;
+		height: 0.25rem;
+		text-align: right;
+		margin-right: 0.6rem;
+	}
+	/*地址   */
+	
+	.clientPosition {
+		width: 7rem;
+		display: inline-block;
+		margin-left: 0.24rem;
+		margin-bottom: 0.3rem;
+		position: relative;
+	}
+	
+	.clientPosition span {
+		width: 6rem;
+		font-size: 0.25rem;
+		line-height: 0.3rem;
+		color: #333333;
+		text-align: left;
+		margin-top: 0.1rem;
+	}
+	
+	.imgLeft {
+		width: 0.28rem;
+		height: 0.35rem;
+		margin: 0.2rem 0.25rem 0 0;
+	}
+	
+	.imgRight {
+		width: 0.13rem;
+		height: 0.2rem;
+		margin-top: 0.12rem;
+	}
+	/*底部彩条*/
+	
+	.imgBottom {
+		width: 100%;
+		height: 0.06rem;
+		background: url("../../static/45@3x.png") no-repeat;
+		background-size: 100% 100%;
+	}
+	/* 服务类型  选择时间 */
+	.messageBox{
+		width: 7.5rem;
+		background: #FFFFFF;
+		display: inline-block;
+	}
+	.serveTime {
+		width: 7rem;
+		height: 0.9rem;
+		margin: 0 .25rem;
+		background: #FFFFFF;
+		display: inline-block;
+	}
+	
+	.borderBottom {
+		border-bottom: 2px solid #f2f2f2;
+	}
+	
+	.serveTime a {
+		display: inline-block;
+		float: right;
+	}
+	
+	.serveTime span {
+		width: 1.2rem;
+		height: 0.9rem;
+		padding-left: 0.07rem;
+		font-size: 0.24rem;
+		line-height: 0.9rem;
+		text-align: left;
+		color: #4E4E4E;
+	}
+	
+	.serveTime img {
+		width: 0.12rem;
+		height: 0.22rem;
+		margin-top: 0.34rem;
+		float: right;
+	}
+	
+	.serveTime div {
+		width: 4rem;
+		height: 100%;
+		text-align: right;
+		font-size: 0.26rem;
+		line-height: 0.9rem;
+		color: #d6d6d6;
+		margin-right: 0.28rem;
+	}
+	/*备注*/
+	.comment{
+		width:7rem;
+		height:2rem ;
+		padding: 0 0.25rem;
+		background: #FFFFFF;
+		margin-top:0.2rem;
+		overflow: hidden;
+	}
+	.comment div{
+		width: 0.75rem;
+		height: 0.26rem;
+		margin-top: 0.26rem;
+		font-size: 0.26rem;
+		color: #222222;
+		float: left;
+	}
+	.textCont{
+		width: 6rem;
+		height:1.7rem ;
+		margin-top: 0.24rem;
+		font-size: 0.24rem;
+		border: none;
+		float: left;
+	}
+	/*底部*/
+	/*底部按钮*/
+	.bottomBtn{
+		width: 6.9rem;
+		height: 0.8rem;
+		background: #2f94f4;
+		border-radius: 0.5rem;
+		margin: 0rem 0.3rem 0.3rem;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+	}
+	.bottomBtn a{
+		display: block;
+		width: 100%;
+		height: 100%;
+		font-size: 0.3rem;
+		line-height: 0.8rem;
+		color: #FFFFFF;
+	}
+</style>

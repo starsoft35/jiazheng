@@ -83,7 +83,7 @@
 					</a>
 				</div>
 				<div class="shareCont fr">
-					<a href="#">
+					<a href="#oneClick">
 						<span>一键下单</span>
 						<p>家电不知道怎么了</p>
 						<img src="../../static/12@3x.png" alt="一键下单"/>
@@ -115,7 +115,7 @@
 		<!--底部导航-->
 		<ul class="nav_bottm">
 			<li>
-				<a href="#second">
+				<a href="#">
 					<img src="../../static/14@3x.png" alt="首页"/>
 					<div style="color: #258ef3;">首页</div>
 				</a>
@@ -127,10 +127,10 @@
 				</a>
 			</li>
 			<li>
-				<a href="#second">
+				<router-link to="/third">
 					<img src="../../static/16@3x.png" alt="订单"/>
 					<div>订单</div>
-				</a>
+				</router-link>
 			</li>
 			<li>
 				<a href="#second">
@@ -515,36 +515,5 @@
 		font-size: 0.2rem;
 		color: #ababab;
 	}
-	/*底部导航*/
-	.nav_bottm{
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 1.2rem;
-		background: #FFFFFF;
-	}
-	.nav_bottm li{
-		width: 25%;
-		float: left;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.nav_bottm a{
-		display: block;
-	}
-	.nav_bottm img{
-		
-		width: 0.4rem;
-		height: 0.4rem;
-		display: block;
-		margin:0.15rem 0.3rem 0.1rem 0.3rem ;
-	}
-	.nav_bottm div{
-		width: 1rem;
-		font-size: 0.2rem;
-		color: #c7c7c7;
-		text-align: center;
-	}
+	
 </style>

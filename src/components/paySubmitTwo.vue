@@ -21,12 +21,20 @@
 				<div class="fl">订单号</div>
 				<span class="fr">12346546587987</span>
 			</div>
-			
 			<div class="partBottom">
 				<div class="fl">实付金额</div>
 				<span class="fr">￥140.00</span>
 			</div>
 		</div>
+		<!--优惠券-->
+			<div class="serveBottom">
+				<span class="fl">优惠券</span>
+				<router-link to="/coupons">
+					<img class="fr" src="../../static/34@3x.png"/>
+					<div class="fr">{{youhui}}元优惠券</div>
+				</router-link>
+					
+			</div>
 		<!--选择支付方式-->
 		<div class="payWay">
 			<span>请选择支付方式</span>
@@ -70,22 +78,8 @@
 	export default {
 		data(){
 			return {
-				title:'订单支付'
-//				payWay:[
-//					{	
-//						backSrc:'@../../static/41@2x.png',
-//						wayChose:'余额支付',
-//						paySrc:'@../../static/36@2x.png'
-//					},{	
-//						backSrc:'@../../static/55@2x.png',
-//						wayChose:'微信支付',
-//						paySrc:'../../static/35@2x.png'
-//					},{	
-//						backSrc:'@../../static/56@2x.png',
-//						wayChose:'支付宝支付',
-//						paySrc:'../../static/35@2x.png'
-//					}
-//				]
+				title:'订单支付',
+				youhui:'10'
 			}
 		}
 	}
@@ -128,7 +122,7 @@
 	.reminder{
 		width:7.5rem;
 		height: 2rem;
-		background: url("../../static/payback.png") no-repeat;
+		background: url("../../static/paybackTwo.png") no-repeat;
 		background-size: 100% 100%;
 		color: #FFFFFF;
 		text-align: left;
@@ -159,6 +153,7 @@
 		margin: 0.2rem 0;
 		background: #FFFFFF;
 		position: relative;
+		display: inline-block;
 	}
 	.partTop{
 		width: 7rem;
@@ -260,5 +255,43 @@
 		font-size: 0.3rem;
 		line-height: 0.8rem;
 		color: #FFFFFF;
+	}
+	/*新增*/
+	.serveBottom{
+		width: 7rem;
+		padding: 0 0.25rem;
+		border-top: 2px solid #f2f2f2;
+		height: 0.88rem;
+		display: block;
+		background: #FFFFFF;
+		margin-bottom: 0.3rem;
+	}
+	.serveBottom span{
+		width:1rem;
+		height:0.88rem;
+		color:#222222 ;
+		font-size: 0.26rem;
+		text-align: left;
+		line-height: 0.88rem;
+	}
+	.serveBottom a{
+		width: 3.5rem;
+		height: 0.88rem;
+		display: block;
+		float: right;
+	}
+	.serveBottom img{
+		width: 0.12rem;
+		height:0.22rem ;
+		margin-top:0.33rem ;
+	}
+	.serveBottom div{
+		width:2rem ;
+		height: 0.88rem;
+		text-align: right;
+		color: #222222;
+		font-size: 0.26rem;
+		line-height: 0.88rem;
+		margin-right: 0.2rem;
 	}
 </style>
