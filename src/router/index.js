@@ -30,6 +30,12 @@ import  serviceDetails from '@/components/ serviceDetails'
 import peoplePing from '@/components/peoplePing'
 //立即预约 确认订单
 import appointment from '@/components/appointment'
+//服务地址
+import chosePosition from '@/components/chosePosition'
+//订单支付页面
+import paySubmit from '@/components/paySubmit'
+
+
 
 // 个人中心
 import ucenter from '@/components/ucenter'
@@ -114,6 +120,14 @@ export default new Router({
 	    	//评价列表
 	    	 path: '/appointment',
 	       component: appointment
+	    },{
+	    	//服务地址
+	    	 path: '/chosePosition',
+	       component: chosePosition
+	    },{
+	    	//服务地址
+	    	 path: '/paySubmit',
+	       component: paySubmit
 	    }
     
       

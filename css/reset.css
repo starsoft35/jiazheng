@@ -51,3 +51,10 @@ clear {
 .fr{
 	float: right;
 }
+
+.kong{
+	width: 7.5rem;
+	height: 2rem;
+	display: block;
+	
+}

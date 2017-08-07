@@ -18,10 +18,11 @@
 			</div>
 			<!--地址-->
 			<div class="clientPosition">
-				<img class="imgLeft fl" src="../../static/37@3x.png"/>
-				<span class="fl" v-text="clientposition"></span>
-				<img class="imgRight fr" src="../../static/34@3x.png"/>
-			
+				<a href="#chosePosition" style="display:inline-block;">
+					<img class="imgLeft fl" src="../../static/37@3x.png"/>
+					<span class="fl" v-text="clientposition"></span>
+					<img class="imgRight fr" src="../../static/34@3x.png"/>
+				</a>
 			</div>
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
@@ -84,7 +85,8 @@
 		</div>
 		<!--提交预约-->
 		<div class="bottomBtn">
-			<a href="#appointment">提交预约</a>
+			<router-link to="/paySubmit">提交预约</router-link>
+			<!--<a href="#appointment">提交预约</a>-->
 		</div>
 	</div>
 </template>
