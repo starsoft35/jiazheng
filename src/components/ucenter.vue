@@ -1,6 +1,6 @@
 <template>
     <div class="ucenter-container">
-        个人中心
+        <Header title="" back="hidden"></Header>
         <Menu actived="four"></Menu>
     </div>
 </template>

@@ -22,7 +22,7 @@ npm run build --report
 
 ## 底部菜单
 
-在`.Vue`文件的`template`底部引入：
+在`.vue`文件的`template`底部引入：
 
 ``` html
 <Menu actived="four"></Menu>
@@ -34,3 +34,19 @@ npm run build --report
 * second 第二个菜单
 * third 第三个菜单
 * four 第四个菜单
+
+
+
+## 头部菜单
+
+在`.vue`文件的`template`头部进入：
+
+``` html
+<Header title="全部服务" back="/first"></Header>
+```
+
+1. 参数 `title` 表示页面名称
+2. 参数 `back` 表示点击返回的地址，默认3种情况：
+   * 空，则默认上次浏览页面，等同于`history.go(-1)`
+   * `hidden`，则隐藏返回按钮
+   * 字符串，则跳转到对应地址

@@ -1,13 +1,6 @@
 <template>
 	<div id="box">
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#first">
-					<span class="fl"></span>
-				</a>
-				<p>全部服务</p>
-			</div>
-		</div>
+		<Header title="全部服务" back="/first"></Header>
 		<!--内容部分-->
 		<div class="serveBox">
 			<ul class="boxLeft" id="box_Left">

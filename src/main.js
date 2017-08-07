@@ -4,10 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Menu from '@/components/common/Menu'
+import Header from '@/components/common/Header'
 
 Vue.config.productionTip = false
 
 Vue.component('Menu', Menu)
+Vue.component('Header', Header)
 
 /* eslint-disable no-new */
 new Vue({
