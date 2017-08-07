@@ -110,6 +110,7 @@
 						<!---->
 					</a>
 				</div>
+<<<<<<< HEAD
 			</li>
 		</ul>
 		<!--底部导航-->
@@ -138,7 +139,12 @@
 					<div>我的</div>
 				</a>
 			</li>
+=======
+			</li>
+>>>>>>> aa7617a6f2de066307ca05fb12affcbc3bfcd8a2
 		</ul>
+		<!--底部导航-->
+		<Menu></Menu>
 		<!--空  撑开底部距离-->
 		<div style="width: 100%;height: 1.2rem;"></div>
 	</div>
@@ -157,6 +163,7 @@
 			autoplayDisableOnInteraction: false
 		});
 	}
+	// 
 	export default {
 		data() {
 			return {

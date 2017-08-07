@@ -53,6 +53,9 @@ import third from '@/components/third'
 
 
 
+// 个人中心
+import ucenter from '@/components/ucenter'
+
 Vue.use(Router)
 
 export default new Router({
@@ -176,6 +179,10 @@ export default new Router({
 	    }
 	    
     
-    
+      
+      , {
+        path: '/ucenter',
+        component: ucenter
+      }
   ]
 })
