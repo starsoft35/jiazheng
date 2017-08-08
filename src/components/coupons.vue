@@ -9,14 +9,14 @@
 				<p v-text="title"></p>
 			</div>
 		</div>
-		<div class="tabPart">
-				<router-link to="/coupons/couponsLeft">
-					<span class="partLeft">可用优惠券</span>
-				</router-link>
-				<router-link to="/coupons/couponsRight">
-					<span class="partRight">不可用优惠券</span>
-				</router-link>
-		</div>
+		<ul class="navBox">
+			<li>
+				<router-link class="routerLink" to="/coupons/couponsLeft">可用优惠劵</router-link>
+			</li>
+			<li>
+				<router-link class="routerLink" to="/coupons/couponsRight">不可用优惠券</router-link>
+			</li>
+		</ul>
 		<div class="cont">
 			<router-view></router-view>
 		</div>
@@ -69,32 +69,27 @@
 		font-size: 0.3rem;
 	}
 	/*优惠券选择*/
-	.tabPart{
-		width: 7rem;
-		height:0.78rem;
-		padding: 0 .25rem;
+	.navBox{
+		width: 7.5rem;
+		height: 0.78rem;
+		border-bottom: 0.02rem solid #f2f2f2;
 		background: #FFFFFF;
-		position: relative;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		display: -webkit-box;
+	}
+	.navBox li{
+		-webkit-box-flex: 1;
+	}
+	.routerLink{
 		font-size: 0.26rem;
-		color: #4e4e4e;
-	}
-	.partLeft{
-		margin-left: 1.2rem;
-		float: left;
-		line-height: 0.78rem;
-		/*border-bottom: 1px solid #2c90f4;*/
-	}
-	.partRight{
-		margin-right: 0.9rem;
-		float: right;
-		line-height: 0.78rem;
-	}
-	.tabPart a{
-		display:block;
+		color:#222222;
+		line-height:0.78rem ;
+		display: inline-block;
 	}
 	.router-link-active {
-		display: block;
-		color: #2787f4;
-		border-bottom: 1px solid #2787f4;
+		color: #2173d6;
+		border-bottom: 0.02rem solid #2173d6;
 	}
+	/*子页面*/
 </style>

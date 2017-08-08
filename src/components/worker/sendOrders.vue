@@ -3,13 +3,18 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
 				<p v-text="title"></p>
 			</div>
 		</div>
-		
+		<!---->
+		<ul class="navBox">
+			<li>
+				<router-link class="routerLink" to="">待派单</router-link>
+			</li>
+			<li>
+				<router-link class="routerLink" to="">已派单</router-link>
+			</li>
+		</ul>
 	</div>
 </template>
 
@@ -17,7 +22,7 @@
 	export default {
 		data(){
 			return {
-				title:'我是demo'
+				title:'派单'
 			}
 		}
 	}
@@ -49,7 +54,7 @@
 		color: #FFFFFF;
 		width: 0.32rem;
 		height: 0.32rem;
-		background: url("../../static/return.png");
+		background: url("../../../static/return.png");
 		background-size: 100% 100%;
 	}
 	.headCont p{
@@ -57,5 +62,28 @@
 		color: #FFFFFF;
 		font-size: 0.32rem;
 	}
-	
+	/*顶部导航*/
+	.navBox{
+		width: 7.5rem;
+		height: 0.78rem;
+		border-bottom: 0.02rem solid #f2f2f2;
+		background: #FFFFFF;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		display: -webkit-box;
+	}
+	.navBox li{
+		-webkit-box-flex: 1;
+	}
+	.routerLink{
+		font-size: 0.26rem;
+		color:#222222;
+		line-height:0.78rem ;
+		display: inline-block;
+	}
+	.router-link-active {
+		color: #2173d6;
+		border-bottom: 0.02rem solid #2173d6;
+	}
+	/*内容*/
 </style>

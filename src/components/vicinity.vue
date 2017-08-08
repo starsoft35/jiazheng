@@ -18,14 +18,12 @@
 			</ul>
 		</div>
 		<router-view></router-view>
+		<!--底部导航-->
+		<Menu actived="second"></Menu>
 	</div>
 </template>
 
 <script type="text/javascript">
-	
-	
-	
-	
 	
 	export default {
 		data() {

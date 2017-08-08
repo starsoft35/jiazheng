@@ -1,7 +1,7 @@
 <template>
     <ul class="nav_bottm">
         <li :class="{'active':first.active}">
-            <router-link to='first'>
+            <router-link to='/first'>
                 <img :src="first.icon" alt="首页"/>
                 <div>首页</div>
             </router-link>
@@ -13,13 +13,13 @@
             </router-link>
         </li>
         <li :class="{'active':third.active}">
-            <router-link to='third'>
+            <router-link to='/third'>
                 <img :src="third.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
         </li>
         <li :class="{'active':four.active}">
-            <router-link to='ucenter'>
+            <router-link to='/ucenter'>
                 <img :src="four.icon" alt="我的"/>
                 <div>我的</div>
             </router-link>

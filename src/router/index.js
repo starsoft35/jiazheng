@@ -66,8 +66,13 @@ import vicinityFour from '@/components/vicinityFour'
 import vicinityFive from '@/components/vicinityFive'
 //附近 六
 import vicinitySix from '@/components/vicinitySix'
-//附近 六
+//附近 七
 import vicinitySeven from '@/components/vicinitySeven'
+//派单
+import sendOrders from '@/components/worker/sendOrders'
+//派单下的已派单
+import sendOrderLeft from '@/components/worker/sendOrderLeft'
+
 
 
 
@@ -94,18 +99,15 @@ export default new Router({
     //全部服务路由
     {
       path: '/allserve',
-//    name:'allserve',
       component: allserve,
       //子路由
       children:[
       {
       	path: '/',
-//	      name:'allserve/serveOne',
 	      component: serveOne
       },
       {
       	path: 'serveOne',
-//	      name:'allserve/serveOne'
 	      component: serveOne
 	   
       },{
@@ -171,17 +173,7 @@ export default new Router({
 	       	}
 	       
 	       ]
-	    },
-//	    {
-//	    	//优惠券下一
-//	    	 path: '/couponsLeft',
-//	       component: couponsLeft
-//	    },{
-//	    	//优惠券下二
-//	    	 path: '/couponsRight',
-//	       component: couponsRight
-//	    },
-	    {
+	    },{
 	    	//服务地址
 	    	 path: '/chosePosition',
 	       component: chosePosition
@@ -244,13 +236,18 @@ export default new Router({
 	       		component:vicinitySeven
 	       	}
 	       ]
-	    }
-	    
-    
-  
-      , {
+	    }, {
+	    	//我的
         path: '/ucenter',
         component: ucenter
+      },{
+      	//工人端派单
+        path: '/sendOrders',
+        component: sendOrders
+      },{
+      	//工人端派单~已派单
+        path: '/sendOrderLeft',
+        component: sendOrderLeft
       }
   ]
 })
