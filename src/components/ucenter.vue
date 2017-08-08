@@ -2,7 +2,7 @@
     <div class="ucenter-container">
         <!-- <Header title="" back="hidden"></Header> -->
         <div class="header">
-            <div class="user">
+            <div class="user" @click="toProfile">
                 <div class="set">
                     >
                 </div>
@@ -91,6 +91,9 @@
             },
             toCoupon: function() {
                 this.$router.push('/coupons')
+            },
+            toProfile: function() {
+                this.$router.push('/profile')
             }
         }
     }

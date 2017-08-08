@@ -87,6 +87,8 @@ import Recharge from '@/components/Recharge'
 import Message from '@/components/Message'
 // 关于我们 
 import Aboutus from '@/components/Aboutus'
+// 个人资料
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -282,6 +284,9 @@ export default new Router({
             // 关于我们
             path: '/aboutus',
             component: Aboutus
+        }, {
+            path: '/profile',
+            component: Profile
         }
     ]
 })
