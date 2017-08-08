@@ -59,7 +59,7 @@
                 <div class="label">400-800-1236</div>
                 <div class="title">联系客服</div>
             </router-link>
-            <router-link to="/address" class="item">
+            <router-link to="/aboutus" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/53@3x.png" alt="package">
                 <div class="title">关于我们</div>

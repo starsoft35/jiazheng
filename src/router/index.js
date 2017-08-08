@@ -85,6 +85,8 @@ import Balance from '@/components/Balance'
 import Recharge from '@/components/Recharge'
 // 消息
 import Message from '@/components/Message'
+// 关于我们 
+import Aboutus from '@/components/Aboutus'
 
 Vue.use(Router)
 
@@ -276,6 +278,10 @@ export default new Router({
             // 消息
             path: '/message',
             component: Message
+        }, {
+            // 关于我们
+            path: '/aboutus',
+            component: Aboutus
         }
     ]
 })
