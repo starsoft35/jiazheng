@@ -40,7 +40,7 @@
                 <div class="badge">9</div>
                 <div class="title">我的消息</div>
             </router-link>
-            <router-link to="/address" class="item">
+            <router-link to="/addresses" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/50@3x.png" alt="package">
                 <div class="title">地址管理</div>
