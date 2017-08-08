@@ -85,6 +85,7 @@
         width: 100%;
         height: 1rem;
         background: #FFFFFF;
+        border-top: 1px solid #eee;
     }
     .nav_bottm li{
         width: 25%;
