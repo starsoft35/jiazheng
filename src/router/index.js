@@ -91,6 +91,8 @@ import Aboutus from '@/components/Aboutus'
 import Profile from '@/components/Profile'
 // 服务地址
 import AddressList from '@/components/AddressList'
+// 编辑服务地址
+import Address from '@/components/Address'
 
 Vue.use(Router)
 
@@ -292,6 +294,9 @@ export default new Router({
         }, {
             path: '/addresses',
             component: AddressList
+        }, {
+            path: '/address',
+            component: Address
         }
     ]
 })

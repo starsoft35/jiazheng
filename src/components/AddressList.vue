@@ -4,7 +4,7 @@
         
         <div class="address-container">
             <div class="item">
-                <div class="info">
+                <div class="info" @click="toEdit">
                     <div class="mobile">18501701760</div>
                     <div class="consigee">联系人：张三三</div>
                     <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
@@ -121,7 +121,11 @@
 
 <script>
     export default {
-
+        methods: {
+            toEdit: function() {
+                this.$router.push('/address')
+            }
+        }
     }
 </script>
 
@@ -173,7 +177,7 @@
         left: 0;
         box-sizing: border-box;
         padding-bottom: .3rem;
-        background: #f5f5f9;
+        /*background: #f5f5f9;*/
     }
     .button {
         display: block;
