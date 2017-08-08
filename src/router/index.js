@@ -81,6 +81,10 @@ import sendOrderLeft from '@/components/worker/sendOrderLeft'
 import UCenter from '@/components/UCenter'
 // 余额
 import Balance from '@/components/Balance'
+// 充值
+import Recharge from '@/components/Recharge'
+// 消息
+import Message from '@/components/Message'
 
 Vue.use(Router)
 
@@ -264,6 +268,14 @@ export default new Router({
             // 余额
             path: '/balance',
             component: Balance
+        }, {
+            // 充值
+            path: '/recharge',
+            component: Recharge
+        }, {
+            // 消息
+            path: '/message',
+            component: Message
         }
     ]
 })

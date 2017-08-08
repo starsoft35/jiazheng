@@ -29,7 +29,7 @@
         </div>
 
         <div class="menu-container">
-            <router-link to="/package" class="item">
+            <router-link to="/balance" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/48@3x.png" alt="package">
                 <div class="title">我的钱包</div>
@@ -147,7 +147,7 @@
         border-radius: .35rem;
         line-height: .38rem;
         color: #FFF;
-        background-color: #D80505;
+        background-color: #f71414;
         text-align: center;
     }
 

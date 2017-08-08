@@ -1,4 +1,5 @@
 <template>
+    <div class="header">
     <div class="headPart">
         <div class="headCont">
             <a @click="goBack" v-if="!hiddenBack">
@@ -6,6 +7,8 @@
             </a>
             <p>{{title}}</p>
         </div>
+    </div>
+    <div class="blank"></div>
     </div>
 </template>
 
@@ -38,8 +41,10 @@
     .headPart{
         width: 100%;
         height: 0.92rem;
-        background: #2d91f4;
+        background: url("../../../static/banner.png") repeat-y top center;
+        background-size: 100%;
         overflow: hidden;
+        position: fixed;
     }
     .headCont{
         width: 7rem;
@@ -60,5 +65,8 @@
         height: 0.32rem;
         color: #FFFFFF;
         font-size: 0.32rem;
+    }
+    .blank {
+        height: .92rem;
     }
 </style>
