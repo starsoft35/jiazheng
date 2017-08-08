@@ -54,7 +54,9 @@ import third from '@/components/third'
 
 
 // 个人中心
-import ucenter from '@/components/ucenter'
+import UCenter from '@/components/UCenter'
+// 余额
+import Balance from '@/components/Balance'
 
 Vue.use(Router)
 
@@ -182,7 +184,10 @@ export default new Router({
       
       , {
         path: '/ucenter',
-        component: ucenter
+        component: UCenter
+      }, {
+        path: '/balance',
+        component: Balance
       }
   ]
 })
