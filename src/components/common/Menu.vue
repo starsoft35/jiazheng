@@ -7,7 +7,7 @@
             </router-link>
         </li>
         <li :class="{'active':second.active}">
-            <router-link to='/second'>
+            <router-link to='vicinity'>
                 <img :src="second.icon" alt="附近"/>
                 <div>附近</div>
             </router-link>

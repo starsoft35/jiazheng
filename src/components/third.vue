@@ -3,9 +3,9 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
+				<router-link to="/first">
+					<span class="fl"></span>
+				</router-link>
 				<p v-text="title"></p>
 			</div>
 		</div>

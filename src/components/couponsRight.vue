@@ -1,13 +1,14 @@
 <template>
 	<div id="box">
 		<div class="contBox" v-for="(contBox,index) in cont">
-			<div class="LeftPart "">
+			<div class="LeftPart">
 				<img src="../../static/ren.png"/>
 				<span>{{contBox.moneyCounts}}</span>
 			</div>
 			<div class="partRight">
 				<span>无门槛全场通用</span>
 				<p>{{contBox.timeCont}}</p>
+				<img class="rightImg" src="../../static/324234234@3x.png"/>
 			</div>
 		</div>
 		
@@ -24,10 +25,15 @@
 					{
 						moneyCounts:'300',
 						timeCont:'2017.05.03~2017.08.09',
+						//左边背景
+						LeftTrue:true,
+						leftFalse:false,
+						//右边图片
+						rightImg:false
 						
 					},{
 						moneyCounts:'200',
-						timeCont:'2017.05.03~2017.08.09',
+						timeCont:'2017.05.03~2017.08.09'
 						
 					}
 				]
@@ -54,8 +60,8 @@
 	.LeftPart{
 		width: 2.3rem;
 		height: 2rem;
-		background: url("../../static/2112@3x.png") no-repeat;
-        background-size: 100% 100%;
+		background: url("../../static/12334@3x.png") no-repeat;
+		background-size: 100% 100%;
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -98,5 +104,14 @@
 		bottom: 0.38rem;
 		font-size: 0.2rem;
 		color: #999999;
+	}
+	/*已过期图片*/
+	.rightImg{
+		position: absolute;
+		right: 0.5rem;
+		top: 0.42rem;
+		width: 2rem;
+		height: 1.2rem;
+		z-index: 10000;
 	}
 </style>

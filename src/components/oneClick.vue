@@ -55,7 +55,7 @@
 		<div class="kong"></div>
 		<!--按钮-->
 		<div class="bottomBtn">
-			<router-link to="/paySubmit">提交预约</router-link>
+			<router-link to="/paySubmitTwo">提交预约</router-link>
 		</div>
 	</div>
 </template>

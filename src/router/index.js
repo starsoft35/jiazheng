@@ -34,6 +34,8 @@ import appointment from '@/components/appointment'
 import coupons from '@/components/coupons'
 //优惠券下一
 import couponsLeft from '@/components/couponsLeft'
+//优惠券下二
+import couponsRight from '@/components/couponsRight'
 //服务地址
 import chosePosition from '@/components/chosePosition'
 //添加服务地址
@@ -50,6 +52,28 @@ import oneClick from '@/components/oneClick'
 import serveType from '@/components/serveType'
 // 订单
 import third from '@/components/third'
+//附近
+import vicinity from '@/components/vicinity'
+//附近 一
+import vicinityOne from '@/components/vicinityOne'
+//附近 二
+import vicinityTwo from '@/components/vicinityTwo'
+//附近 三
+import vicinityThree from '@/components/vicinityThree'
+//附近 四
+import vicinityFour from '@/components/vicinityFour'
+//附近 五
+import vicinityFive from '@/components/vicinityFive'
+//附近 六
+import vicinitySix from '@/components/vicinitySix'
+//附近 七
+import vicinitySeven from '@/components/vicinitySeven'
+//派单
+import sendOrders from '@/components/worker/sendOrders'
+//派单下的已派单
+import sendOrderLeft from '@/components/worker/sendOrderLeft'
+
+
 
 
 
@@ -78,18 +102,15 @@ export default new Router({
     //全部服务路由
     {
       path: '/allserve',
-//    name:'allserve',
       component: allserve,
       //子路由
       children:[
       {
       	path: '/',
-//	      name:'allserve/serveOne',
 	      component: serveOne
       },
       {
       	path: 'serveOne',
-//	      name:'allserve/serveOne'
 	      component: serveOne
 	   
       },{
@@ -141,11 +162,20 @@ export default new Router({
 	    },{
 	    	//优惠券
 	    	 path: '/coupons',
-	       component: coupons
-	    },{
-	    	//优惠券下一
-	    	 path: '/couponsLeft',
-	       component: couponsLeft
+	       component: coupons,
+	       children:[
+	       	{
+	       		path:'',
+	       		component:couponsLeft
+	       	},{
+	       		path:'couponsLeft',
+	       		component:couponsLeft
+	       	},{
+	       		path:'couponsRight',
+	       		component:couponsRight
+	       	}
+	       
+	       ]
 	    },{
 	    	//服务地址
 	    	 path: '/chosePosition',
@@ -178,16 +208,62 @@ export default new Router({
 	    	//订单
 	    	 path: '/third',
 	       component: third
-	    }
-	    
-    
-      
-      , {
-        path: '/ucenter',
-        component: UCenter
-      }, {
-        path: '/balance',
-        component: Balance
-      }
-  ]
+	    },{
+	    	//附近
+	    	 path: '/vicinity',
+	       component: vicinity,
+	       children:[
+	       	{
+	       		path:'',
+	       		component:vicinityOne
+	       	},{
+	       		path:'vicinityOne',
+	       		component:vicinityOne
+	       	},{
+	       		path:'vicinityTwo',
+	       		component:vicinityTwo
+	       	},{
+	       		path:'vicinityThree',
+	       		component:vicinityThree
+	       	},{
+	       		path:'vicinityFour',
+	       		component:vicinityFour
+	       	},{
+	       		path:'vicinityFive',
+	       		component:vicinityFive
+	       	},{
+	       		path:'vicinitySix',
+	       		component:vicinitySix
+	       	},{
+	       		path:'vicinitySeven',
+	       		component:vicinitySeven
+	       	}
+	       ]
+	    }, 
+        {
+            //工人端派单
+            path: '/sendOrders',
+            component: sendOrders
+        },{
+            //工人端派单~已派单
+            path: '/sendOrderLeft',
+            component: sendOrderLeft
+        },
+
+        
+
+        
+
+
+
+        {
+	    	//我的
+            path: '/ucenter',
+            component: UCenter
+        }, {
+            // 余额
+            path: '/balance',
+            component: Balance
+        }
+    ]
 })

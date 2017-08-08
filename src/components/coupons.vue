@@ -3,20 +3,20 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
+				<a href="#appointment">
+					<span class="fl"></span>
 				</a>
 				<p v-text="title"></p>
 			</div>
 		</div>
-		<div class="tabPart">
-			<router-link to="">
-				<span class="partLeft">可用优惠券</span>
-			</router-link>
-			<router-link to="">
-				<span class="partRight">不可用优惠券</span>
-			</router-link>
-		</div>
+		<ul class="navBox">
+			<li>
+				<router-link class="routerLink" to="/coupons/couponsLeft">可用优惠劵</router-link>
+			</li>
+			<li>
+				<router-link class="routerLink" to="/coupons/couponsRight">不可用优惠券</router-link>
+			</li>
+		</ul>
 		<div class="cont">
 			<router-view></router-view>
 		</div>
@@ -69,26 +69,27 @@
 		font-size: 0.3rem;
 	}
 	/*优惠券选择*/
-	.tabPart{
-		width: 7rem;
-		height:0.78rem;
-		padding: 0 .25rem;
+	.navBox{
+		width: 7.5rem;
+		height: 0.78rem;
+		border-bottom: 0.02rem solid #f2f2f2;
 		background: #FFFFFF;
-		position: relative;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		display: -webkit-box;
+	}
+	.navBox li{
+		-webkit-box-flex: 1;
+	}
+	.routerLink{
 		font-size: 0.26rem;
-		color: #222222;
+		color:#222222;
+		line-height:0.78rem ;
+		display: inline-block;
 	}
-	.partLeft{
-		position: absolute;
-		left:1.65rem ;
-		top: 0;
-		line-height: 0.78rem;
-		border-bottom: 1px solid #2c90f4;
+	.router-link-active {
+		color: #2173d6;
+		border-bottom: 0.02rem solid #2173d6;
 	}
-	.partRight{
-		position: absolute;
-		right:1.65rem ;
-		top: 0;
-		line-height: 0.78rem;
-	}
+	/*子页面*/
 </style>
