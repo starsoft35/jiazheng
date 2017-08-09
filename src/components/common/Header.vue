@@ -1,10 +1,10 @@
 <template>
     <div class="header">
-    <div class="headPart">
+    <div class="headPart"  :class="{nonebg: !showBg}">
         <div class="headCont">
-            <a @click="goBack" v-if="!hiddenBack">
+            <div @click="goBack" v-if="!hiddenBack">
                 <span class="fl"></span>
-            </a>
+            </div>
             <p>{{title}}</p>
         </div>
     </div>
@@ -14,15 +14,19 @@
 
 <script>
     export default {
-        props: ['title', 'back'],
+        props: ['title', 'back', 'hiddenBg'],
         data: function () {
             return {
-                hiddenBack: false
+                hiddenBack: false,
+                showBg: true
             }
         },
         created: function() {
             if (this.back === 'hidden') {
                 this.hiddenBack = true
+            }
+            if (this.hiddenBg) {
+                this.showBg = false;
             }
         },
         methods: {
@@ -46,12 +50,15 @@
         overflow: hidden;
         position: fixed;
     }
+    .headPart.nonebg {
+        background: none;
+    }
     .headCont{
         width: 7rem;
         height: 0.32rem;
         margin: 0.25rem;
     }
-    .headCont a{
+    .headCont div{
         display: block;
     }
     .headCont span{
@@ -60,6 +67,13 @@
         height: 0.32rem;
         background: url("../../../static/return.png");
         background-size: 100% 100%;
+    }
+    .headPart.nonebg .headCont span {
+        background: url("../../../static/left_arrow.png");
+        background-size: 100% 100%;
+    }
+    .headPart.nonebg .headCont p {
+        color: #444;
     }
     .headCont p{
         height: 0.32rem;

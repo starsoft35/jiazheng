@@ -48,7 +48,7 @@
         </div>
 
         <div class="menu-container">
-            <router-link to="/address" class="item">
+            <router-link to="/login" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>

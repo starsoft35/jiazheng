@@ -93,6 +93,10 @@ import Profile from '@/components/Profile'
 import AddressList from '@/components/AddressList'
 // 编辑服务地址
 import Address from '@/components/Address'
+// 登录页面
+import Login from '@/components/Login'
+// 绑定手机号码
+import BindMobile from '@/components/BindMobile'
 
 Vue.use(Router)
 
@@ -297,6 +301,12 @@ export default new Router({
         }, {
             path: '/address',
             component: Address
+        }, {
+            path: '/login',
+            component: Login
+        }, {
+            path: '/bind/mobile',
+            component: BindMobile
         }
     ]
 })
