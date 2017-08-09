@@ -3,8 +3,8 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
+				<a href="#serviceDetails">
+					<span class="fl"></span>
 				</a>
 				<p v-text="title"></p>
 			</div>

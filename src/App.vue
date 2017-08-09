@@ -48,4 +48,5 @@ export default {
     a:active,div {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
+
 </style >

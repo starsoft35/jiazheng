@@ -9,11 +9,14 @@ import http from './api/http'
 import api from './api/api'
 import storage from './api/storage'
 import accessToken from './api/accessToken'
+import workerPart from '@/components/common/workerPart'
 
 Vue.config.productionTip = false
 
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
+Vue.component('workerPart', workerPart)
+
 
 Vue.prototype.$http = http
 Vue.prototype.$api = api

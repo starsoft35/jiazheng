@@ -6,18 +6,23 @@
 				<p v-text="title"></p>
 			</div>
 		</div>
-		<!---->
 		<ul class="navBox">
 			<li>
-				<router-link class="routerLink" to="/sendOrders/sendOrderLeft">待派单</router-link>
+				<router-link class="routerLink" to="/orderPart/orderPartOne">待服务</router-link>
 			</li>
 			<li>
-				<router-link class="routerLink" to="/sendOrders/sendOrderRight">已派单</router-link>
+				<router-link class="routerLink" to="/orderPart/orderPartTwo">服务中</router-link>
+			</li>
+			<li>
+				<router-link class="routerLink" to="/orderPart/orderPartThree">已完成</router-link>
+			</li>
+			<li>
+				<router-link class="routerLink" to="/orderPart/orderPartFour">已取消</router-link>
 			</li>
 		</ul>
 		<router-view></router-view>
 		<!--底部导航-->
-		<workerPart actived="second"></workerPart>
+		<workerPart actived="first"></workerPart>
 	</div>
 </template>
 
@@ -25,7 +30,7 @@
 	export default {
 		data(){
 			return {
-				title:'派单'
+				title:'订单'
 			}
 		}
 	}
@@ -52,13 +57,6 @@
 	}
 	.headCont a{
 		display: block;
-	}
-	.headCont span{
-		color: #FFFFFF;
-		width: 0.32rem;
-		height: 0.32rem;
-		background: url("../../../static/return.png");
-		background-size: 100% 100%;
 	}
 	.headCont p{
 		height: 0.32rem;
@@ -88,5 +86,4 @@
 		color: #2173d6;
 		border-bottom: 0.02rem solid #2173d6;
 	}
-	/*内容*/
 </style>

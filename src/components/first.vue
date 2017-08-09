@@ -107,7 +107,7 @@
 					<a :href="serveList.backSrc">
 						<div v-text="serveList.title"></div>
 						<span v-text="serveList.cont"></span>
-						<!---->
+						
 					</a>
 				</div>
 			</li>
@@ -182,7 +182,7 @@
 					{
 						src: '@../../static/10@3x.png',
 						vul: '全部服务',
-						goSrc:'#allServe',
+						goSrc:'#allServe/serveOne',
 						alt:''
 					}
 				],

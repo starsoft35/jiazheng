@@ -23,6 +23,7 @@
 				<span class="contLeft">服务地址:</span>
 				<span class="contRight position">{{contBox.servePosition}}</span>
 			</div>
+			
 			<!--服务详情-->
 			<div class="thingList">
 				<ul class="thingCont">
@@ -43,18 +44,15 @@
 			<div class="totalMoney">
 				<span class="totalRight">￥150.00</span>
 				<span class="tolalLeft">合计:</span>
-				<span class="tolalLeft">共1项服务</span>
 			</div>
 			<!--派单-->
 			<div class="send">
-				<span>17191191610</span>
-				<span>朱小明</span>
-				<span>分派人员:</span>
+				<div>{{contBox.serveOne}}</div>
+				<div id="qu" v-show="contBox.serveTwoTrue">{{contBox.serveTwo}}</div>
 			</div>
 		</div>
 		<div class="kong"></div>
 	</div>
-
 </template>
 
 <script type="text/javascript">
@@ -64,6 +62,9 @@
 				title: '我是派单',
 
 				things: [{
+					serveOne:'服务完成',
+					serveTwo:'取消订单',
+					serveTwoTrue:false,
 					Name: '朱小明',
 					Phone: '17191191610',
 					//订单号
@@ -85,6 +86,9 @@
 					timeOne: '2017-08-08',
 					timeTwo: '06:10~09:14'
 				}, {
+					serveOne:'发送价格',
+					serveTwo:'取消订单',
+					serveTwoTrue:true,
 					Name: '朱小明',
 					Phone: '17191191610',
 					//订单号
@@ -175,6 +179,7 @@
 		width: 4.7rem;
 		text-align: left;
 	}
+	
 	
 	.positionBtn img {
 		width: 0.2rem;
@@ -289,7 +294,6 @@
 		color: #222222;
 		line-height: 0.78rem;
 	}
-	/*分派人员信息*/
 	
 	.send {
 		width: 7rem;
@@ -297,11 +301,20 @@
 		padding: 0 .25rem;
 	}
 	
-	.send span {
+	.send div{
 		float: right;
+		width: 1.28rem;
+		height: 0.48rem;
 		font-size: 0.24rem;
 		color: #2173d6;
-		line-height: 0.78rem;
-		margin-left: 0.15rem;
+		line-height: 0.48rem;
+		border-radius: 0.3rem;
+		border: .01rem solid #8ac4f9;
+		margin-top: 0.14rem;
+		margin-right: 0.15rem;
+	}
+	#qu{
+		color: #222222;
+		border: .01rem solid #cccccc;
 	}
 </style>
