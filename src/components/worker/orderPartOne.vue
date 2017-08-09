@@ -45,12 +45,6 @@
 				<span class="tolalLeft">合计:</span>
 				<span class="tolalLeft">共1项服务</span>
 			</div>
-			<!--派单-->
-			<div class="send">
-				<span>17191191610</span>
-				<span>朱小明</span>
-				<span>分派人员:</span>
-			</div>
 		</div>
 		<div class="kong"></div>
 	</div>
@@ -289,19 +283,5 @@
 		color: #222222;
 		line-height: 0.78rem;
 	}
-	/*分派人员信息*/
 	
-	.send {
-		width: 7rem;
-		height: 0.78rem;
-		padding: 0 .25rem;
-	}
-	
-	.send span {
-		float: right;
-		font-size: 0.24rem;
-		color: #2173d6;
-		line-height: 0.78rem;
-		margin-left: 0.15rem;
-	}
 </style>

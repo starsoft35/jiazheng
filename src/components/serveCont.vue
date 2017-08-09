@@ -32,7 +32,7 @@
 				serveTitle:'洗衣机精洗',
 				things:[
 					{
-						thingSrc:'# serviceDetails',
+						thingSrc:'#serviceDetails',
 						thingImg:'@../../static/11@3x.png',
 						thingTitle:'波轮洗衣机',
 						thingIntro:'内芯及外表清洗',

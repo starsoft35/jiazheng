@@ -10,14 +10,16 @@
 			</div>
 		</div>
 		
+		<span></span>
 	</div>
 </template>
 
 <script type="text/javascript">
 	export default {
-		data(){
+		data() {
 			return {
-				title:'我是demo'
+				title: '我是demo',
+				picked:''
 			}
 		}
 	}
@@ -30,32 +32,36 @@
 		padding: 0px;
 		margin: 0px;
 	}
-	.headPart{
+	
+	.headPart {
 		width: 100%;
 		height: 0.92rem;
 		background: #2d91f4;
 		overflow: hidden;
 	}
-	.headCont{
+	
+	.headCont {
 		width: 7rem;
 		height: 0.32rem;
 		margin: 0.25rem;
 		/*border: 1px solid red;*/
 	}
-	.headCont a{
+	
+	.headCont a {
 		display: block;
 	}
-	.headCont span{
+	
+	.headCont span {
 		color: #FFFFFF;
 		width: 0.32rem;
 		height: 0.32rem;
 		background: url("../../static/return.png");
 		background-size: 100% 100%;
 	}
-	.headCont p{
+	
+	.headCont p {
 		height: 0.32rem;
 		color: #FFFFFF;
 		font-size: 0.32rem;
 	}
-	
 </style>

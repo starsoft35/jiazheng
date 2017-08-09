@@ -5,11 +5,15 @@ import App from './App'
 import router from './router'
 import Menu from '@/components/common/Menu'
 import Header from '@/components/common/Header'
+import workerPart from '@/components/common/workerPart'
+
 
 Vue.config.productionTip = false
 
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
+Vue.component('workerPart', workerPart)
+
 
 /* eslint-disable no-new */
 new Vue({

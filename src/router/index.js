@@ -25,7 +25,7 @@ import positionChose from '@/components/positionChose'
 //商品列表 
 import serveCont from '@/components/serveCont'
 //商品或者服务的详细介绍
-import  serviceDetails from '@/components/ serviceDetails'
+import serviceDetails from '@/components/serviceDetails'
 //评价列表
 import peoplePing from '@/components/peoplePing'
 //立即预约 确认订单
@@ -68,12 +68,29 @@ import vicinityFive from '@/components/vicinityFive'
 import vicinitySix from '@/components/vicinitySix'
 //附近 七
 import vicinitySeven from '@/components/vicinitySeven'
+//工人端
+//订单
+import orderPart from '@/components/worker/orderPart'
+//待服务
+import orderPartOne from '@/components/worker/orderPartOne'
+//服务中
+import orderPartTwo from '@/components/worker/orderPartTwo'
+//已完成
+import orderPartThree from '@/components/worker/orderPartThree'
+//已取消
+import orderPartFour from '@/components/worker/orderPartFour'
 //派单
 import sendOrders from '@/components/worker/sendOrders'
-//派单下的已派单
+//派送给个人
+import sendPeople from '@/components/worker/sendPeople'
+//派单下的待派单
 import sendOrderLeft from '@/components/worker/sendOrderLeft'
-
-
+//派单下的已派单
+import sendOrderRight from '@/components/worker/sendOrderRight'
+//消息
+import workerMessage from '@/components/worker/workerMessage'
+//我的
+import mine from '@/components/worker/mine'
 
 
 
@@ -85,185 +102,219 @@ import Balance from '@/components/Balance'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      component: first
-    },{
-      path: '/first',
-      component: first
-    },{
-      path: '/second',
-      component: second
-    },{
-      path: '/search',
-      component: search
-    },
-    //全部服务路由
-    {
-      path: '/allserve',
-      component: allserve,
-      //子路由
-      children:[
-      {
-      	path: '/',
-	      component: serveOne
-      },
-      {
-      	path: 'serveOne',
-	      component: serveOne
-	   
-      },{
-      	path: '/allserve/serveTwo',
-	      name:'allserve/serveOne/serveTwo',
-	      component: serveTwo
-      },{
-      	path: '/allserve/serveThree',
-	      name:'allserve/serveOne/serveThree',
-	      component: serveThree
-      },{
-      	path: '/allserve/serveFour',
-	      name:'allserve/serveOne/serveFour',
-	      component: serveFour
-      },{
-      	path: '/allserve/serveFive',
-	      name:'allserve/serveOne/serveFive',
-	      component: serveFive
-      },{
-      	path: '/allserve/serveSix',
-	      name:'allserve/serveOne/serveSix',
-	      component: serveSix
-      },{
-      	path: '/allserve/serveSeven',
-	      name:'allserve/serveOne/serveSeven',
-	      component: serveSeven
-      }
-      ]
-	    },{
-	    	//城市选择
-	      path: '/positionChose',
-	      component: positionChose
-	    },{
-	    	//服务列表 全部服务 中的a标签导向
-	      path: '/serveCont',
-	      component: serveCont
-	    },{
-	    	//服务的详细介绍
-	      path: '/ serviceDetails',
-	      component:  serviceDetails
-	    },{
-	    	//评价列表
-	    	 path: '/peoplePing',
-	       component: peoplePing
-	    },{
-	    	//确认订单 提交预约
-	    	 path: '/appointment',
-	       component: appointment
-	    },{
-	    	//优惠券
-	    	 path: '/coupons',
-	       component: coupons,
-	       children:[
-	       	{
-	       		path:'',
-	       		component:couponsLeft
-	       	},{
-	       		path:'couponsLeft',
-	       		component:couponsLeft
-	       	},{
-	       		path:'couponsRight',
-	       		component:couponsRight
-	       	}
-	       
-	       ]
-	    },{
-	    	//服务地址
-	    	 path: '/chosePosition',
-	       component: chosePosition
-	    },{
-	    	//添加服务地址
-	    	 path: '/addPosition',
-	       component: addPosition
-	    },{
-	    	//订单详情
-	    	 path: '/orderDetail',
-	       component: orderDetail
-	    },{
-	    	//订单支付
-	    	 path: '/paySubmit',
-	       component: paySubmit
-	    },{
-	    	//订单支付
-	    	 path: '/paySubmitTwo',
-	       component: paySubmitTwo
-	    },{
-	    	//一键下单
-	    	 path: '/oneClick',
-	       component: oneClick
-	    },{
-	    	//服务类型
-	    	 path: '/serveType',
-	       component: serveType
-	    },{
-	    	//订单
-	    	 path: '/third',
-	       component: third
-	    },{
-	    	//附近
-	    	 path: '/vicinity',
-	       component: vicinity,
-	       children:[
-	       	{
-	       		path:'',
-	       		component:vicinityOne
-	       	},{
-	       		path:'vicinityOne',
-	       		component:vicinityOne
-	       	},{
-	       		path:'vicinityTwo',
-	       		component:vicinityTwo
-	       	},{
-	       		path:'vicinityThree',
-	       		component:vicinityThree
-	       	},{
-	       		path:'vicinityFour',
-	       		component:vicinityFour
-	       	},{
-	       		path:'vicinityFive',
-	       		component:vicinityFive
-	       	},{
-	       		path:'vicinitySix',
-	       		component:vicinitySix
-	       	},{
-	       		path:'vicinitySeven',
-	       		component:vicinitySeven
-	       	}
-	       ]
-	    }, 
-        {
-            //工人端派单
-            path: '/sendOrders',
-            component: sendOrders
-        },{
-            //工人端派单~已派单
-            path: '/sendOrderLeft',
-            component: sendOrderLeft
-        },
+	routes: [{
+			path: '/',
+			component: first
+		}, {
+			path: '/first',
+			component: first
+		}, {
+			path: '/second',
+			component: second
+		}, {
+			path: '/search',
+			component: search
+		},
+		//全部服务路由
+		{
+			path: '/allserve',
+			component: allserve,
+			//子路由
+			children: [{
+					path: '/',
+					component: serveOne
+				},
+				{
+					path: 'serveOne',
+					component: serveOne
 
-        
+				}, {
+					path: '/allserve/serveTwo',
+					name: 'allserve/serveOne/serveTwo',
+					component: serveTwo
+				}, {
+					path: '/allserve/serveThree',
+					name: 'allserve/serveOne/serveThree',
+					component: serveThree
+				}, {
+					path: '/allserve/serveFour',
+					name: 'allserve/serveOne/serveFour',
+					component: serveFour
+				}, {
+					path: '/allserve/serveFive',
+					name: 'allserve/serveOne/serveFive',
+					component: serveFive
+				}, {
+					path: '/allserve/serveSix',
+					name: 'allserve/serveOne/serveSix',
+					component: serveSix
+				}, {
+					path: '/allserve/serveSeven',
+					name: 'allserve/serveOne/serveSeven',
+					component: serveSeven
+				}
+			]
+		}, {
+			//城市选择
+			path: '/positionChose',
+			component: positionChose
+		}, {
+			//服务列表 全部服务 中的a标签导向
+			path: '/serveCont',
+			component: serveCont
+		}, {
+			//服务的详细介绍
+			path: '/serviceDetails',
+			component: serviceDetails
+		}, {
+			//评价列表
+			path: '/peoplePing',
+			component: peoplePing
+		}, {
+			//确认订单 提交预约
+			path: '/appointment',
+			component: appointment
+		},{
+			//优惠券
+			path: '/coupons',
+			component: coupons,
+			children: [{
+					path: '',
+					component: couponsLeft
+				}, {
+					path: 'couponsLeft',
+					component: couponsLeft
+				}, {
+					path: 'couponsRight',
+					component: couponsRight
+				}
 
-        
+			]
+		}, {
+			//服务地址
+			path: '/chosePosition',
+			component: chosePosition
+		}, {
+			//添加服务地址
+			path: '/addPosition',
+			component: addPosition
+		}, {
+			//订单详情
+			path: '/orderDetail',
+			component: orderDetail
+		}, {
+			//订单支付
+			path: '/paySubmit',
+			component: paySubmit
+		}, {
+			//订单支付
+			path: '/paySubmitTwo',
+			component: paySubmitTwo
+		}, {
+			//一键下单
+			path: '/oneClick',
+			component: oneClick
+		}, {
+			//服务类型
+			path: '/serveType',
+			component: serveType
+		}, {
+			//订单
+			path: '/third',
+			component: third
+		}, {
+			//附近
+			path: '/vicinity',
+			component: vicinity,
+			children: [{
+				path: '',
+				component: vicinityOne
+			}, {
+				path: 'vicinityOne',
+				component: vicinityOne
+			}, {
+				path: 'vicinityTwo',
+				component: vicinityTwo
+			}, {
+				path: 'vicinityThree',
+				component: vicinityThree
+			}, {
+				path: 'vicinityFour',
+				component: vicinityFour
+			}, {
+				path: 'vicinityFive',
+				component: vicinityFive
+			}, {
+				path: 'vicinitySix',
+				component: vicinitySix
+			}, {
+				path: 'vicinitySeven',
+				component: vicinitySeven
+			}]
+		},{
+			//工人端首页
+			path: '/orderPart',
+			component: orderPart,
+			children:[
+				{
+						path: '',
+						component: orderPartOne
+				},{
+						path: 'orderPartOne',
+						component: orderPartOne
+				},{
+						path: 'orderPartTwo',
+						component: orderPartTwo
+				},{
+						path: 'orderPartThree',
+						component: orderPartThree
+				},{
+						path: 'orderPartFour',
+						component: orderPartFour
+				}
+			]
+		},{
+			//工人端派单
+			path: '/sendOrders',
+			component: sendOrders,
+			children:[{
+				path: '',
+				component: sendOrderLeft,
+			}, {
+				path: 'sendOrderLeft',
+				component: sendOrderLeft,
+			}, {
+				path: 'sendOrderRight',
+				component: sendOrderRight,
+			}]
+		},{
+			//派单
+			path: '/sendPeople',
+			component:sendPeople,
+		},{
+			//工人端消息
+			path: '/workerMessage',
+			component:workerMessage,
+		},{
+			//工人个人中心
+			path: '/mine',
+			component:mine,
+		},
+	
+	
+	
+	
+	
+	
 
-
-
-        {
-	    	//我的
-            path: '/ucenter',
-            component: UCenter
-        }, {
-            // 余额
-            path: '/balance',
-            component: Balance
-        }
-    ]
+		{
+			//我的
+			path: '/ucenter',
+			component: UCenter
+		}, {
+			// 余额
+			path: '/balance',
+			component: Balance
+		}
+	]
 })
