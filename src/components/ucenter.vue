@@ -2,7 +2,7 @@
     <div class="ucenter-container">
         <!-- <Header title="" back="hidden"></Header> -->
         <div class="header">
-            <div class="user">
+            <div class="user" @click="toProfile">
                 <div class="set">
                     >
                 </div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="menu-container">
-            <router-link to="/package" class="item">
+            <router-link to="/balance" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/48@3x.png" alt="package">
                 <div class="title">我的钱包</div>
@@ -40,7 +40,7 @@
                 <div class="badge">9</div>
                 <div class="title">我的消息</div>
             </router-link>
-            <router-link to="/address" class="item">
+            <router-link to="/addresses" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/50@3x.png" alt="package">
                 <div class="title">地址管理</div>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="menu-container">
-            <router-link to="/address" class="item">
+            <router-link to="/login" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>
@@ -59,7 +59,7 @@
                 <div class="label">400-800-1236</div>
                 <div class="title">联系客服</div>
             </router-link>
-            <router-link to="/address" class="item">
+            <router-link to="/aboutus" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/53@3x.png" alt="package">
                 <div class="title">关于我们</div>
@@ -91,6 +91,9 @@
             },
             toCoupon: function() {
                 this.$router.push('/coupons')
+            },
+            toProfile: function() {
+                this.$router.push('/profile')
             }
         }
     }
@@ -147,7 +150,7 @@
         border-radius: .35rem;
         line-height: .38rem;
         color: #FFF;
-        background-color: #D80505;
+        background-color: #f71414;
         text-align: center;
     }
 

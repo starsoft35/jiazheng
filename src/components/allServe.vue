@@ -58,34 +58,6 @@
 		margin: 0px;
 		background: #fff;
 	}
-	/*头部导航条*/
-	.headPart{
-		width: 100%;
-		height: 0.92rem;
-		background: #2d91f4;
-		overflow: hidden;
-	}
-	.headCont{
-		width: 7rem;
-		height: 0.32rem;
-		margin: 0.25rem;
-		/*border: 1px solid red;*/
-	}
-	.headCont a{
-		display: block;
-	}
-	.headCont span{
-		color: #FFFFFF;
-		width: 0.32rem;
-		height: 0.32rem;
-		background: url("../../static/return.png");
-		background-size: 100% 100%;
-	}
-	.headCont p{
-		height: 0.32rem;
-		color: #FFFFFF;
-		font-size: 0.32rem;
-	}
 	/*内容服务部分*/
 	.serveBox{
 		width: 100%;

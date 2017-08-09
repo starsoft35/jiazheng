@@ -98,6 +98,22 @@ import mine from '@/components/worker/mine'
 import UCenter from '@/components/UCenter'
 // 余额
 import Balance from '@/components/Balance'
+// 充值
+import Recharge from '@/components/Recharge'
+// 消息
+import Message from '@/components/Message'
+// 关于我们 
+import Aboutus from '@/components/Aboutus'
+// 个人资料
+import Profile from '@/components/Profile'
+// 服务地址
+import AddressList from '@/components/AddressList'
+// 编辑服务地址
+import Address from '@/components/Address'
+// 登录页面
+import Login from '@/components/Login'
+// 绑定手机号码
+import BindMobile from '@/components/BindMobile'
 
 Vue.use(Router)
 
@@ -307,14 +323,43 @@ export default new Router({
 	
 	
 
-		{
-			//我的
-			path: '/ucenter',
-			component: UCenter
-		}, {
-			// 余额
-			path: '/balance',
-			component: Balance
-		}
-	]
+
+        {
+	    	//我的
+            path: '/ucenter',
+            component: UCenter
+        }, {
+            // 余额
+            path: '/balance',
+            component: Balance
+        }, {
+            // 充值
+            path: '/recharge',
+            component: Recharge
+        }, {
+            // 消息
+            path: '/message',
+            component: Message
+        }, {
+            // 关于我们
+            path: '/aboutus',
+            component: Aboutus
+        }, {
+            path: '/profile',
+            component: Profile
+        }, {
+            path: '/addresses',
+            component: AddressList
+        }, {
+            path: '/address',
+            component: Address
+        }, {
+            path: '/login',
+            component: Login
+        }, {
+            path: '/bind/mobile',
+            component: BindMobile
+        }
+    ]
 })
+
