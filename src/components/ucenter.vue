@@ -53,12 +53,12 @@
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>
             </router-link>
-            <router-link to="/address" class="item">
+            <a href="tel:400-800-1236" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
                 <div class="label">400-800-1236</div>
                 <div class="title">联系客服</div>
-            </router-link>
+            </a>
             <router-link to="/aboutus" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/53@3x.png" alt="package">
@@ -79,11 +79,16 @@
 </template>
 
 <script>
+    import moment from 'moment'
+
     export default {
         data: function() {
             return {
 
             }
+        },
+        created: function() {
+            console.info(moment().unix())
         },
         methods: {
             toBalance: function() {
@@ -179,6 +184,9 @@
     }
     .user .mobile {
         font-size: .26rem;
+        background: url("../../static/mobile@3x.png") no-repeat left center;
+        background-size: .14rem;
+        padding-left: .25rem;
     }
     .avatar {
         width: 1.4rem;

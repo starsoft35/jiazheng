@@ -100,7 +100,7 @@ import BindMobile from '@/components/BindMobile'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -279,34 +279,68 @@ export default new Router({
         }, {
             // 余额
             path: '/balance',
-            component: Balance
+            component: Balance,
+            meta: {
+                requireAuth: true
+            }
         }, {
             // 充值
             path: '/recharge',
-            component: Recharge
+            component: Recharge,
+            meta: {
+                requireAuth: true
+            }
         }, {
             // 消息
             path: '/message',
-            component: Message
+            component: Message,
+            meta: {
+                requireAuth: true
+            }
         }, {
             // 关于我们
             path: '/aboutus',
             component: Aboutus
         }, {
+            // 个人资料
             path: '/profile',
-            component: Profile
+            component: Profile,
+            meta: {
+                requireAuth: true
+            }
         }, {
+            // 地址列表
             path: '/addresses',
-            component: AddressList
+            component: AddressList,
+            meta: {
+                requireAuth: true
+            }
         }, {
+            // 编辑地址
             path: '/address',
-            component: Address
+            component: Address,
+            meta: {
+                requireAuth: true
+            }
         }, {
             path: '/login',
             component: Login
         }, {
             path: '/bind/mobile',
-            component: BindMobile
+            component: BindMobile,
+            meta: {
+                requireAuth: true
+            }
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth) {
+        next('/login')
+    }
+    
+    next()
+})
+
+export default router

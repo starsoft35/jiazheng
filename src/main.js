@@ -5,11 +5,20 @@ import App from './App'
 import router from './router'
 import Menu from '@/components/common/Menu'
 import Header from '@/components/common/Header'
+import http from './api/http'
+import api from './api/api'
+import storage from './api/storage'
+import accessToken from './api/accessToken'
 
 Vue.config.productionTip = false
 
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
+
+Vue.prototype.$http = http
+Vue.prototype.$api = api
+Vue.prototype.$storage = storage
+Vue.prototype.$accessToken = accessToken
 
 /* eslint-disable no-new */
 new Vue({
