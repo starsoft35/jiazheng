@@ -7,21 +7,21 @@
                     >
                 </div>
                 <div class="avatar">
-                    <img src="../../static/tmp/avatar.jpg" alt="avatar">
+                    <img :src="avatar" alt="avatar">
                 </div>
                 <div class="info">
-                    <div class="name">我就是大晴天</div>
-                    <div class="mobile">18501701760</div>
+                    <div class="name">{{nickname}}</div>
+                    <div class="mobile">{{mobile}}</div>
                 </div>
             </div>
             <div class="data">
                 <div class="balance" @click="toBalance">
-                    100<span class="unit">元</span>
+                    {{balance}}<span class="unit">元</span>
                     <p>余额</p>
                 </div>
                 
                 <div class="coupon" @click="toCoupon">
-                    6<span class="unit">张</span>
+                    {{parseInt(coupons)}}<span class="unit">张</span>
                     <p>优惠券</p>
                 </div>
                 <div class="split"></div>
@@ -56,7 +56,7 @@
             <a href="tel:400-800-1236" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
-                <div class="label">400-800-1236</div>
+                <div class="label">{{hotline}}</div>
                 <div class="title">联系客服</div>
             </a>
             <router-link to="/aboutus" class="item">
@@ -79,16 +79,36 @@
 </template>
 
 <script>
-    import moment from 'moment'
 
     export default {
         data: function() {
             return {
-
+                nickname: '',   // 头像
+                mobile: '',     // 昵称
+                avatar: '../../static/moren@3x.png',     // 头像
+                balance: 0.00,  // 余额
+                coupons: 0,     // 优惠券数量
+                hotline: ''     // 热线电话
             }
         },
         created: function() {
-            console.info(moment().unix())
+            var self = this
+            this.$api.findUserInfo(function (response) {
+                self.balance = parseFloat(response.result.balance).toFixed(2)
+                if (response.result.headImage) {
+                    self.avatar = response.result.headImage    
+                }
+                self.coupons = response.result.coupons
+                if (response.result.nickName) {
+                    self.nickname = response.result.nickName    
+                }
+                if (response.result.phone) {
+                    self.mobile = response.result.phone    
+                }
+                self.hotline = response.result.linkPhone
+
+                self.$storage.set('aboutus', response.result.aboutUs)
+            })
         },
         methods: {
             toBalance: function() {

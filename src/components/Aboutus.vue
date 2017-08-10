@@ -2,14 +2,21 @@
     <div class="aboutus-container">
         <Header title="关于我们"></Header>
         <div class="content">
-            关于我们
+            {{aboutus}}
         </div>
     </div>
 </template>
 
 <script>
     export default {
-
+        data() {
+            return {
+                aboutus: ''
+            }
+        },
+        created() {
+            this.aboutus = this.$storage.get('aboutus')
+        }
     }
 </script>
 

@@ -1,28 +1,54 @@
 import storage from './storage'
 import moment from 'moment'
 import api from './api'
+import router from '../router'
+import { Toast } from 'mint-ui'
 
 export default {
-    // 获取accessToken
-    getAccessToken () {
+
+
+    /**
+     * 获取accessToken
+     */
+    getAccessToken() {
         // 从storage中查询token信息
         var token = storage.get('token')
-        
-        // 检查accessToken是否过期
-        if (token.expired <= moment().unix()) {
+
+        if (!token || !token.accessToken || !token.expired) {
+            Toast({
+                message: '凭证已过期',
+                position: 'bottom'
+            })
+            storage.set('history_url', router.history.current.path)
+            router.replace('/login')
+            return false
+        } else if (token.expired <= moment().unix()) {
             // 已过期，置换accessToken
-            
+            Toast({
+                message: '凭证已过期',
+                position: 'bottom'
+            })
+            storage.set('history_url', router.history.current.path)
+            router.replace('/login')
+            return false
         }
 
         return token.accessToken
     },
 
-    // 保存token信息
-    refresh (accessToken, refreshToken, expireTime) {
+    /**
+     * 保存token信息
+     * 
+     * @param {*} accessToken  访问凭证
+     * @param {*} refreshToken 置换凭证
+     * @param {*} expireTime 过期时间（秒）
+     */
+    refreshToken(accessToken, refreshToken, expireTime) {
         storage.set('token', {
-            accessToken: accessToken,  // 访问凭证
+            accessToken: accessToken, // 访问凭证
             refreshToken: refreshToken, // 置换凭证
             expired: moment().unix() + parseInt(expireTime) - 10 // 有效时间 = 当前时间戳 + 过期时间（秒）
         })
     }
+
 }

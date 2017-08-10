@@ -6,7 +6,7 @@
             <div class="row avatar">
                 <label>
                     <div class="arrow"></div>
-                    <img src="../../static/tmp/avatar.jpg" alt="avatar">
+                    <img :src="avatar" alt="avatar">
                     <input type="file" class="avatar-input" name="avatar">
                     头像
                     <div class="clear"></div>
@@ -18,14 +18,14 @@
             <div class="row">
                 <label>
                     <div class="arrow"></div>
-                    <input type="text" name="nickname" value="" placeholder="昵称">
+                    <input type="text" name="nickname" value="" v-model="nickname" placeholder="昵称">
                     昵称
                 </label>
             </div>
             <div class="row">
                 <label>
                     <div class="arrow"></div>
-                    <input type="number" name="mobile" value="" placeholder="手机号码绑定">
+                    <input type="number" name="mobile" value="" v-model="mobile" readonly placeholder="手机号码绑定">
                     手机号码
                 </label>
             </div>
@@ -42,7 +42,16 @@
 
 <script>
     export default {
-
+        data() {
+            return {
+                avatar: '../../static/moren@3x.png',
+                nickname: '',
+                mobile: ''
+            }
+        },
+        created() {
+            
+        }
     }
 </script>
 

@@ -1,32 +1,47 @@
 /*底部导航*/
-	.nav_bottm{
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 1rem;
-		background: #FFFFFF;
-	}
-	.nav_bottm li{
-		width: 25%;
-		float: left;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.nav_bottm a{
-		display: block;
-	}
-	.nav_bottm img{
-		
-		width: 0.4rem;
-		height: 0.4rem;
-		display: block;
-		margin:0.15rem 0.3rem 0.1rem 0.3rem ;
-	}
-	.nav_bottm div{
-		width: 1rem;
-		font-size: 0.2rem;
-		color: #c7c7c7;
-		text-align: center;
-	}
+
+.nav_bottm {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1rem;
+    background: #FFFFFF;
+}
+
+.nav_bottm li {
+    width: 25%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav_bottm a {
+    display: block;
+}
+
+.nav_bottm img {
+    width: 0.4rem;
+    height: 0.4rem;
+    display: block;
+    margin: 0.15rem 0.3rem 0.1rem 0.3rem;
+}
+
+.nav_bottm div {
+    width: 1rem;
+    font-size: 0.2rem;
+    color: #c7c7c7;
+    text-align: center;
+}
+
+.mint-msgbox-title {
+    font-size: .28rem !important;
+}
+
+.mint-msgbox,
+.mint-toast-text,
+.mint-msgbox-message,
+.mint-msgbox-confirm {
+    font-size: .26rem !important;
+}

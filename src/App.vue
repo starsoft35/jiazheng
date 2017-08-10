@@ -12,6 +12,8 @@
 	import '../css/swiper.min.css'
 	import '../js/swiper.min.js'
 	import '../css/style.css'
+    
+    
 export default {
   name: 'app'
 }

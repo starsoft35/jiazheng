@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import token from '../api/accessToken'
+import storage from '../api/storage'
+
 import first from '@/components/first'
 import second from '@/components/second'
 //搜索路由导入
@@ -387,7 +390,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth) {
+    if (to.meta.requireAuth && !token.getAccessToken()) {
+        storage.set('history_url', to.fullPath)
         next('/login')
     }
     

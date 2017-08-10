@@ -10,23 +10,27 @@ import api from './api/api'
 import storage from './api/storage'
 import accessToken from './api/accessToken'
 import workerPart from '@/components/common/workerPart'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
 Vue.component('workerPart', workerPart)
 
+Vue.use(MintUI)
 
+Vue.prototype.$token = accessToken
 Vue.prototype.$http = http
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
-Vue.prototype.$accessToken = accessToken
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
 })
