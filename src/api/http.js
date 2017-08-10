@@ -38,6 +38,11 @@ instance.interceptors.response.use(function(response) {
             })
             storage.set('history_url', router.history.current.path)
             router.replace('/login')
+        } else {
+            Toast({
+                message: response.data.err_msg,
+                position: 'bottom'
+            })
         }
     }
     return response
