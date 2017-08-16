@@ -2,6 +2,7 @@
     <div class="header">
     <div class="headPart"  :class="{nonebg: !showBg}">
         <div class="headCont">
+            <div class="operation" @click="action">{{operation}}</div>
             <div @click="goBack" v-if="!hiddenBack">
                 <span class="fl"></span>
             </div>
@@ -14,7 +15,7 @@
 
 <script>
     export default {
-        props: ['title', 'back', 'hiddenBg'],
+        props: ['title', 'operation', 'back', 'hiddenBg', 'operationMethod'],
         data: function () {
             return {
                 hiddenBack: false,
@@ -30,12 +31,15 @@
             }
         },
         methods: {
-            goBack: function () {
+            goBack() {
                 if (!this.back) {
                     this.$router.go(-1)
                 } else {
                     this.$router.push(this.back)
                 }
+            },
+            action() {
+                this.$emit('action')
             }
         }
     }
@@ -80,7 +84,12 @@
         color: #FFFFFF;
         font-size: 0.32rem;
     }
+    .operation {
+        float: right;
+        color: #FFF;
+    }
     .blank {
         height: .92rem;
     }
+    
 </style>

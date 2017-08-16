@@ -95,7 +95,7 @@ export default {
      * @param {*} params 请求参数
      * @param {*} callback 回调函数
      */
-    post(needToken, url, params, callback) {
+    post(needToken, url, params, callback, showToast) {
         url = buildURL(url, needToken)
 
         if (!url) {
@@ -106,8 +106,51 @@ export default {
             if (typeof callback === 'function' && response.data.err_code === 0) {
                 callback(response.data)
             }
+            if (showToast && response.data.err_code === 0) {
+                Toast({
+                    message: typeof showToast === 'string' ? showToast : '操作成功',
+                    position: 'bottom'
+                })
+            }
         }).catch(function(error) {
             Promise.reject(error)
         })
+    },
+
+    /**
+     * 文件上传
+     * 
+     * @param {*} needToken 是否需要凭证
+     * @param {*} url 地址
+     * @param {*} formData 表单数据
+     * @param {*} callback 回调
+     * @param {*} showToast 显示提示
+     */
+    upload(needToken, url, formData, callback, showToast) {
+        url = buildURL(url, needToken)
+
+        if (!url) {
+            return
+        }
+
+        instance.post(url, formData, {
+            headers: {
+                'Content-Type': 'multiple/form-data'
+            }
+        }).then(function(response) {
+            if (typeof callback === 'function' && response.data.err_code === 0) {
+                callback(response.data)
+            }
+            if (showToast && response.data.err_code === 0) {
+                Toast({
+                    message: typeof showToast === 'string' ? showToast : '上传成功',
+                    position: 'bottom'
+                })
+            }
+        }).catch(function(error) {
+            Promise.reject(error)
+        })
+
+
     }
 }

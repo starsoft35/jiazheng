@@ -4,7 +4,7 @@
         <div class="head">
             <div class="title">账户余额（元）</div>
             <router-link to="/recharge" class="button">充 值</router-link>
-            <div class="balance">192.85</div>
+            <div class="balance">{{getBalance}}</div>
         </div>
         <div class="blank"></div>
 
@@ -55,7 +55,20 @@
 
 <script>
     export default {
-
+        data() {
+            return {
+                balance: 0.0
+            }
+        },
+        computed: {
+            getBalance() {
+                return this.balance.toFixed(2)
+            }
+        },
+        created() {
+            var self = this
+            
+        }
     }
 </script>
 

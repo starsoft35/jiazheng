@@ -1,13 +1,13 @@
 <template>
     <div class="profile">
-        <Header title="个人中心"></Header>
+        <Header title="个人中心" operation="保存" @action="saveUpdate"></Header>
 
         <div class="container">
             <div class="row avatar">
                 <label>
                     <div class="arrow"></div>
                     <img :src="avatar" alt="avatar">
-                    <input type="file" class="avatar-input" name="avatar">
+                    <input type="file" class="avatar-input" name="avatar" @change="changeAvatar">
                     头像
                     <div class="clear"></div>
                 </label>
@@ -17,14 +17,14 @@
         <div class="container">
             <div class="row">
                 <label>
-                    <div class="arrow"></div>
+                    <!-- <div class="arrow"></div> -->
                     <input type="text" name="nickname" value="" v-model="nickname" placeholder="昵称">
                     昵称
                 </label>
             </div>
             <div class="row">
                 <label>
-                    <div class="arrow"></div>
+                    <!-- <div class="arrow"></div> -->
                     <input type="number" name="mobile" value="" v-model="mobile" readonly placeholder="手机号码绑定">
                     手机号码
                 </label>
@@ -32,7 +32,7 @@
         </div>
         
         <div class="container logout">
-            <div class="row">
+            <div class="row" @click="logout">
                 退出登录
             </div>
         </div>
@@ -50,7 +50,45 @@
             }
         },
         created() {
-            
+            // 查询用户信息
+            var self = this
+            this.$api.findUserInfo(function (response) {
+                if (response.result.headImage) {
+                    self.avatar = response.result.headImage
+                }
+                self.nickname = response.result.nickName
+                self.mobile = response.result.phone
+            })
+        },
+
+        methods: {
+            // 保存更新后的用户信息
+            saveUpdate() {
+                var self = this
+                this.$api.updateUserInfo(this.nickname, this.mobile, function() {
+                    self.$router.push('/ucenter')  
+                })
+            },
+
+            // 退出登录
+            logout() {
+                var self = this
+                this.$api.logout(function() {
+                    self.$router.push('/login')
+                    self.$storage.remove('history_url')
+                })
+            },
+
+            // 切换头像
+            changeAvatar(e) {
+                let self = this
+                let formData = new FormData()
+                formData.append('file', e.target);
+                this.$api.updateAvatar(formData, function(response) {
+                    console.info(response)
+                    self.avatar =  response.result.data[0]
+                })
+            }
         }
     }
 </script>
