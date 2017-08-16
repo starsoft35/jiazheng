@@ -42,6 +42,7 @@
 .mint-msgbox,
 .mint-toast-text,
 .mint-msgbox-message,
+.mint-msgbox-btn,
 .mint-msgbox-confirm {
     font-size: .26rem !important;
 }

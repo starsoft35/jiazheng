@@ -122,7 +122,11 @@
                         accessToken.expire_time)
 
                     // 跳转
-                    self.$router.replace(self.$storage.get('history_url'))
+                    let redirectURI = '/ucenter'
+                    if (self.$storage.get('history_url')) {
+                        redirectURI = self.$storage.get('history_url')
+                    }
+                    self.$router.replace(redirectURI)
                 })
             }
         },

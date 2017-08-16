@@ -69,14 +69,9 @@ export default {
         }, callback)
     },
 
-    // 获取余额记录
-    getBalanceRecordList(callback) {
-        http.get(true, '/memberBill/list', callback)
-    },
-
     // 分页查询余额金额
-    pageBalance(callback) {
-
+    pageBalance(pagination, callback) {
+        http.page(true, '/memberBill/list', pagination, callback)
     }
 
 

@@ -8,66 +8,47 @@
         </div>
         <div class="blank"></div>
 
-        <div class="record-container">
-            <div class="record">
-                <div class="amount">+50</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
+        <Pagination :render="render" :param="pagination" :need-token="true" uri="/memberBill/list">
+            <div class="record-container" >
+                <div class="record" v-for="(item, index) in pagination.content">
+                    <div class="amount">{{item.amount}}</div>
+                    <div class="label">{{item.label + index}}</div>
+                    <div class="date">{{item.date}}</div>
+                </div>
             </div>
-            <div class="record">
-                <div class="amount negative">-100</div>
-                <div class="label">订单消耗</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount">+50</div>
-                <div class="label">支付宝充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount negative">-100</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount">+50</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount negative">-100</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount">+50</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-            <div class="record">
-                <div class="amount negative">-100</div>
-                <div class="label">微信充值</div>
-                <div class="date">2017-05-26 20:30:58</div>
-            </div>
-        </div>
+        </Pagination>
     </div>
 </template>
 
 <script>
+    import {Loadmore} from 'mint-ui'
     export default {
         data() {
             return {
-                balance: 0.0
+                balance: 0.0,
+                pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10
+                },
             }
         },
         computed: {
             getBalance() {
-                return this.balance.toFixed(2)
+                return parseFloat(this.balance).toFixed(2)
             }
         },
-        created() {
-            var self = this
-            
+        methods: {
+            render(response) {
+                response.result.balance && (this.balance = response.result.balance)
+                for (var i in response.result.list) {
+                    this.pagination.content.push({
+                        amount: response.result.list[i].bill,
+                        label: response.result.list[i].title,
+                        date: response.result.list[i].time
+                    })
+                }
+            }
         }
     }
 </script>
@@ -88,6 +69,7 @@
         padding: .4rem .25rem .6rem;
         width: 100%;
         position: fixed;
+        z-index: 100;
     }
     .head .title {
         text-align: left;

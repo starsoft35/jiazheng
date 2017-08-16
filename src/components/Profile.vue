@@ -1,13 +1,13 @@
 <template>
     <div class="profile">
-        <Header title="个人中心" operation="保存" @action="saveUpdate"></Header>
+        <Header title="个人中心" operation="保存" :action="saveUpdate"></Header>
 
         <div class="container">
             <div class="row avatar">
                 <label>
                     <div class="arrow"></div>
                     <img :src="avatar" alt="avatar">
-                    <input type="file" class="avatar-input" name="avatar" @change="changeAvatar">
+                    <input type="file" class="avatar-input" name="avatar" @change="changeAvatar" accept="image/*">
                     头像
                     <div class="clear"></div>
                 </label>
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+    import { MessageBox } from 'mint-ui'
+
     export default {
         data() {
             return {
@@ -73,9 +75,11 @@
             // 退出登录
             logout() {
                 var self = this
-                this.$api.logout(function() {
-                    self.$router.push('/login')
-                    self.$storage.remove('history_url')
+                MessageBox.confirm('确认要退出登录吗？').then(action => {
+                    self.$api.logout(function() {
+                        self.$router.push('/login')
+                        self.$storage.remove('history_url')
+                    })
                 })
             },
 
@@ -83,10 +87,10 @@
             changeAvatar(e) {
                 let self = this
                 let formData = new FormData()
-                formData.append('file', e.target);
+                formData.append('file', e.target.files[0])
                 this.$api.updateAvatar(formData, function(response) {
                     console.info(response)
-                    self.avatar =  response.result.data[0]
+                    self.avatar =  response.result.data
                 })
             }
         }
