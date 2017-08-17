@@ -95,6 +95,11 @@ export default {
         http.page(true, '/memberBill/list', pagination, callback)
     },
 
+    // 查询充值模板
+    getRechargeTemplate(callback) {
+        http.get(true, '/charge/templateList', callback)
+    },
+
     // 易
     //首页
     homeData(params, callback) {
