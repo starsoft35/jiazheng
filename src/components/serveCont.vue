@@ -1,24 +1,17 @@
 <template>
 	<div id="box">
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="serveTitle"></p>
-			</div>
-		</div>
+		<Header :title="serveTitle"></Header>
 		<div class="thingList">
 			<ul class="thingCont">
-				<li class="things" v-for="(things,index) in things">
-					<a :href="things.thingSrc">
-						<img :src="things.thingImg"/>
+				<li class="things" v-for="(item,index) in serviceList" :key="index">
+					<router-link :to="'/serviceDetails/' +item.id">
+						<img :src="item.listImage"/>
 						<div class="thingName">
-							<div v-text="things.thingTitle"></div>
-							<p v-text="things.thingIntro"></p>
-							<span v-text="things.thingSprice"></span>
+							<div>{{item.title}}</div>
+							<p>{{item.abstractContent}}</p>
+							<span>{{item.price}}</span>
 						</div>
-					</a>
+					</router-link>
 				</li>
 			</ul>
 		</div>
@@ -29,41 +22,21 @@
 	export default {
 		data(){
 			return {
-				serveTitle:'洗衣机精洗',
-				things:[
-					{
-						thingSrc:'#serviceDetails',
-						thingImg:'@../../static/11@3x.png',
-						thingTitle:'波轮洗衣机',
-						thingIntro:'内芯及外表清洗',
-						thingSprice:'￥30.00/台'
-					},{
-						thingSrc:'#second',
-						thingImg:'@../../static/11@3x.png',
-						thingTitle:'波轮洗衣机',
-						thingIntro:'内芯及外表清洗',
-						thingSprice:'￥30.00/台'
-					},{
-						thingSrc:'#second',
-						thingImg:'@../../static/11@3x.png',
-						thingTitle:'波轮洗衣机',
-						thingIntro:'内芯及外表清洗',
-						thingSprice:'￥30.00/台'
-					},{
-						thingSrc:'#second',
-						thingImg:'@../../static/11@3x.png',
-						thingTitle:'波轮洗衣机',
-						thingIntro:'内芯及外表清洗',
-						thingSprice:'￥30.00/台'
-					},{
-						thingSrc:'#second',
-						thingImg:'@../../static/11@3x.png',
-						thingTitle:'波轮洗衣机',
-						thingIntro:'内芯及外表清洗',
-						thingSprice:'￥30.00/台'
-					}
-				]
+				menuId: undefined,
+				serveTitle:'',
+				serviceList:[]
 			}
+		},
+		created() {
+			this.menuId = this.$route.params.id
+			this.$api.serviceList({
+	        	params:{
+				    menuId: this.menuId,
+				}
+		    },(res) => {
+		    	this.serviceList = res.result.serviceList.list
+		    	this.serveTitle = res.result.menuName
+		    })
 		}
 	}
 </script>
@@ -153,7 +126,7 @@
 		height: 0.45rem;
 		font-size:0.2rem ;
 		line-height: 0.45rem;
-		color: #cfcfcf;
+		color: #aaa;
 	}
 	/*价格*/
 	.thingName span{

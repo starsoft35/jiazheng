@@ -1,34 +1,30 @@
 <template>
 	<div id="box">
-		<Header title="全部服务" back="/first"></Header>
+		<Header title="全部服务"></Header>
 		<!--内容部分-->
 		<div class="serveBox">
 			<ul class="boxLeft" id="box_Left">
-				<li>
-					<router-link to="/allServe/serveOne" class="routerLink">保洁服务</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveTwo" class="routerLink">家电维修</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveThree" class="routerLink">家电维修</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveFour" class="routerLink">家电维修</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveFive" class="routerLink">家电维修</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveSix" class="routerLink">家电维修</router-link>
-				</li>
-				<li>
-					<router-link to="/allServe/serveSeven" class="routerLink">家电维修</router-link>
+				<li 
+					v-for="(item, index) in menuList" 
+					:class="currIndex == index ? 'active' : ''"  
+					@click="selectMenu(index)"
+					:key="index">
+					<span>{{item.name}}</span>
 				</li>
 				
 			</ul>
 			<div class="boxRight">
-				<router-view></router-view>
+				<div id="serve_box">
+					<div class="serveImg">
+						<img :src="currMenu.banner"/>
+					</div>
+					<div class="serveTitle">{{currMenu.name}}</div>
+					<ul class="servePart">
+						<li class="serve_list fl" v-for="(item,index) in currMenu.childList" :key="index">
+							<router-link :to="'/serveCont/'+ item.id">{{item.name}}</router-link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		
@@ -41,66 +37,131 @@
 			return {
 				author:"我是一",
 				liColor:'red',
-				nowIndex:0
+				nowIndex:0,
+				
+				menuId: undefined,
+				menuList: [],
+				currMenu: {},
+				currIndex: 0
 			}
 		},
 		methods:{
 			
+		},
+		created() {
+			this.menuId = this.$route.params.id
+			this.$api.serviceMenuList({
+	        	params:{
+				    menuId: this.menuId,
+				}
+		    },(res) => {
+		    	this.menuList = res.result
+		    	res.result.forEach((item, index) => {
+		    		if(item.isDefault == 1) {
+		    			this.currMenu = item
+		    			this.currIndex = index
+		    		}
+		    	})
+		    })
+		},
+		methods: {
+			selectMenu(index) {
+				this.currIndex = index
+				this.currMenu = this.menuList[index]
+			}
 		}
 	}
 </script>
 
 <style scoped>
 	#box {
-		width: 100%;
-		height: 13.34rem;
-		padding: 0px;
-		margin: 0px;
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		right: 0;
 		background: #fff;
 	}
 	/*内容服务部分*/
 	.serveBox{
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		top: 0.92rem;
 		width: 100%;
-		margin-top: 0.25rem;
-		position: relative;
+		display: flex;
 	}
 	/*左边部分*/
 	.boxLeft{
 		width: 1.65rem;
 		border-right: 1px solid #e5e5e5;
-		/*background: #C9C9C9;*/
-		position: absolute;
-		left: 0;
-		top: -0.25rem;
+		padding-top: 0.1rem;
 	}
 	.boxLeft li{
 		width:1.65rem ;
-		height:0.5rem ;
-		margin-top: 0.25rem;
-		margin-bottom: 0.35rem;
+		height:1rem;
+		line-height: 1rem;
 		color:#4e4e4e ;
+		position: relative;
 	}
-	.routerLink{
-		width:1.65rem ;
-		height:0.5rem ;
-		font-size:0.25rem;
-		color: #7a7a7a;
-		line-height: 0.5rem;
-		display: block;
+	.boxLeft li.active{
+		color:#307cd9;
+	}
+	.boxLeft li.active:before{
+		content: '';
+		width: 0.06rem;
+		height: 0.5rem;
+		background: #307cd9;
+		position: absolute;
+		left: 0;
+		top: 0.25rem;
 	}
 	
 	/*右边部分*/
 	.boxRight{
-		width: 5.25rem;
-		position: absolute;
-		right: 0.36rem;
-		top: 0;
+		flex: 1;
 	}
-	/*router-link 样式*/
-	.router-link-active {
-		color:#307cd9;
-		font-size:0.24rem;
-		width: 1.52rem;
-		border-left: 0.06rem solid #2173d6;
+	#serve_box{
+		width:5.45rem;
+		display: inline-block;
+	}
+	.serveImg{
+		width:5.15rem ;
+		height:1.95rem ;
+		margin:0.13rem 0.17rem 0.08rem 0.14rem;
+	}
+	.serveImg img{
+		width: 5.15rem;
+		height: 1.95rem;
+		margin: 0;
+		padding: 0;
+	}
+	.serveTitle{
+		width: 100%;
+		height: 0.97rem;
+		font-size: 0.24rem;
+		color: #222222;
+		text-align: left;
+		line-height: 0.97rem;
+		
+	}
+	/*服务列表*/
+	.servePart{
+		width: 5.45rem;
+		display: inline-block
+	}
+	.serve_list{
+		width:1.7rem ;
+		height:0.6rem ;
+		margin-right: 0.1rem;
+		background: #fafafa;
+	}
+	.serve_list a{
+		width: 100%;
+		height: 100%;
+		font-size: 0.2rem;
+		line-height: 0.6rem;
+		text-align: center;
+		color: #7a7a7a;
 	}
 </style>

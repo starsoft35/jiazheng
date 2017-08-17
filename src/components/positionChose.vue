@@ -12,8 +12,8 @@
 		<div class="cityChose">
 			<span>已开通城市</span>
 			<ul class="positionCont">
-				<li class="cityList fl" v-for="(cityList,index) in cityList">
-					<a :href="cityList.citySrc" v-text="cityList.city"></a>
+				<li class="cityList fl" v-for="(item,index) in cityList" :key="index">
+					<span @click="chooseCity(item)">{{item.name}}</span>
 				</li>
 			</ul>
 		</div>
@@ -24,30 +24,22 @@
 	export default {
 		data(){
 			return {
-				cityList:[
-					{
-						city:'日常保洁',
-						citySrc:'#second'
-		
-					},{
-						city:'日常保洁',
-						citySrc:'#second'
-					},{
-						city:'日常保洁',
-						citySrc:'#second'
-					},{
-						city:'日常保洁',
-						citySrc:'#second'
-					},{
-						city:'日常保洁',
-						citySrc:'#second'
-					},{
-						city:'日常保洁',
-						citySrc:'#second'
-					}
-				]
+				cityList:[]
+			}
+		},
+		created() {
+			if(this.$storage.get('openCitys')) {
+				this.cityList = this.$storage.get('openCitys')
+				console.log(this.cityList)
+			}
+		},
+		methods: {
+			chooseCity(item) {
+				this.$storage.set('currCity', item)
+				this.$router.go(-1)
 			}
 		}
+		
 	}
 </script>
 
@@ -105,6 +97,7 @@
 	.positionCont{
 		width: 7.2rem;
 		margin-left: 0.25rem;
+		overflow: hidden;
 	}
 	.positionCont li{
 		width: 2.2rem;
@@ -112,7 +105,8 @@
 		margin: 0 0.2rem 0.2rem 0;
 		background: #FFFFFF;
 	}
-	.positionCont a{
+	.positionCont span{
+		text-align: center;
 		width: 100%;
 		height: 100%;
 		display: block;

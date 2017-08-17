@@ -77,14 +77,14 @@ export default {
      * @param {*} url 请求地址
      * @param {*} callback  回调函数
      */
-    get(needToken, url, callback) {
+    get(needToken, url, callback, params) {
         url = buildURL(url, needToken)
 
         if (!url) {
             return
         }
 
-        instance.get(url).then(function(response) {
+        instance.get(url, params).then(function(response) {
             if (typeof callback === 'function' && response.data.err_code === 0) {
                 callback(response.data)
             }

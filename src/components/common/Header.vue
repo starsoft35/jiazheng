@@ -77,6 +77,7 @@
         background-size: 100%;
         overflow: hidden;
         position: fixed;
+        z-index: 40;
     }
     .headPart.nonebg {
         background: none;
