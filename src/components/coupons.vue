@@ -1,20 +1,13 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#appointment">
-					<span class="fl"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="使用优惠卷"></Header>
 		<ul class="navBox">
 			<li>
-				<router-link class="routerLink" to="/coupons/couponsLeft">可用优惠劵</router-link>
+				<router-link class="routerLink" to="/coupons/couponsLeft" replace>可用优惠劵</router-link>
 			</li>
 			<li>
-				<router-link class="routerLink" to="/coupons/couponsRight">不可用优惠券</router-link>
+				<router-link class="routerLink" to="/coupons/couponsRight" replace>不可用优惠券</router-link>
 			</li>
 		</ul>
 		<div class="cont">

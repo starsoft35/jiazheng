@@ -35,9 +35,9 @@ export default {
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2d92f4;
+        min-height: 100%
     }
     .router-link-active {
     	 color:#ccc;
@@ -49,6 +49,11 @@ export default {
     }
     a:active,div {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    .fullEle{
+    	display: block;
+    	width: 100%;
+    	height: 100%;
     }
 
 </style >

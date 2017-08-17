@@ -4,7 +4,7 @@
 			<!--地点按钮-->
 			<div class="top-position">
 				<a href="#positionChose">
-					<span>苏州</span>
+					<span>{{currCity.name}}</span>
 					<img src="../../static/1@3x.png"/>
 				</a>
 			</div>
@@ -25,50 +25,35 @@
 		</div>
 		<!--banner 轮播-->
 		<div class="banner">
-			<!-- Swiper -->
-			<div class="swiper-container">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide">
-						<a href="#second">
-							<img src="../../static/back.png"/>
-						</a>
-					</div>
-					<div class="swiper-slide">
-						<a href="#second">
-							<img src="../../static/back.png"/>
-						</a>
-					</div>
-					<div class="swiper-slide">
-						<a href="#second">
-							<img src="../../static/back.png"/>
-						</a>
-					</div>
-					<!--<div class="swiper-slide">Slide 4</div>
-					<div class="swiper-slide">Slide 5</div>
-					<div class="swiper-slide">Slide 6</div>
-					<div class="swiper-slide">Slide 7</div>
-					<div class="swiper-slide">Slide 8</div>
-					<div class="swiper-slide">Slide 9</div>
-					<div class="swiper-slide">Slide 10</div>-->
-				</div>
-				<!-- Add Pagination -->
-				<div class="swiper-pagination"></div>
-				<!-- 如果需要导航按钮 -->
-				<!--<div class="swiper-button-prev"></div>
-			    <div class="swiper-button-next"></div>-->
-				<!-- 如果需要滚动条 -->
-				<!--<div class="swiper-scrollbar"></div>-->
-			</div>
+			<mt-swipe :auto="0">
+				<mt-swipe-item v-for="(item, index) in homeData.banners" :key="index">
+					<a :href="item.link" class="fullEle">
+						<img class="fullEle" :src="item.pic" />
+					</a>
+				</mt-swipe-item>
+			</mt-swipe>
 		</div>
 		<!--nav-->
 		<!--中部内容导航-->
 		<div class="cont">
 			<ul class="nav">
-				<li class="nav_cont" v-for="(nav_cont,index) in data2">
+				<!--<li class="nav_cont" v-for="(nav_cont,index) in data2">
 					<a :href="nav_cont.goSrc">
 						<img :src="nav_cont.src" alt="nav_cont.alt" />
 						<span>{{nav_cont.vul}}</span>
 					</a>
+				</li>-->
+				<li class="nav_cont" v-for="(item, index) in menuList" :key="index">
+					<router-link :to="'allServe/'+ item.id">
+						<img :src="item.banner" />
+						<span>{{item.name}}</span>
+					</router-link>
+				</li>
+				<li class="nav_cont">
+					<router-link :to="'allServe/'+ firstMenu.id">
+						<img src="@../../static/10@3x.png" />
+						<span>全部服务</span>
+					</router-link>
 				</li>
 			</ul>
 		</div>
@@ -102,11 +87,12 @@
 		</div>
 		<!--热门服务菜单-->
 		<ul class="serveOption">
-			<li class="serveList" v-for="(serveList,index) in serve" :style="serveList.back">
+			<li class="serveList" v-for="(item,index) in hotServices" :key="index">
 				<div class="meng">
-					<a :href="serveList.backSrc">
-						<div v-text="serveList.title"></div>
-						<span v-text="serveList.cont"></span>
+					<a :href="item.link">
+						<img :src="item.pic" class="fullEle"  />
+						<div>{{item.name}}</div>
+						<!--<span v-text="serveList.cont"></span>-->
 						
 					</a>
 				</div>
@@ -120,94 +106,38 @@
 </template>
 
 <script type="text/javascript">
-	window.onload = function() {
-		var swiper = new Swiper('.swiper-container', {
-			pagination: '.swiper-pagination',
-			//      nextButton: '.swiper-button-next',
-			//      prevButton: '.swiper-button-prev',
-			paginationClickable: true,
-			spaceBetween: 0,
-			centeredSlides: true,
-			autoplay: 2500,
-			autoplayDisableOnInteraction: false
-		});
-	}
-	// 
 	export default {
 		data() {
 			return {
-				// 中间导航部分八个链接加数据
-				data2: [{
-						src: '@../../static/3@3x.png',
-						vul: '保洁服务',
-						goSrc:'#second',
-						alt:''
-					},
-					{
-						src: '@../../static/4@3x.png',
-						vul: '家电维修',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/5@3x.png',
-						vul: '家庭维修',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/6@3x.png',
-						vul: '家电清洗',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/7@3x.png',
-						vul: '管道疏通',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/8@3x.png',
-						vul: '搬家速运',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/9@3x.png',
-						vul: '家居保养',
-						goSrc:'',
-						alt:''
-					},
-					{
-						src: '@../../static/10@3x.png',
-						vul: '全部服务',
-						goSrc:'#allServe/serveOne',
-						alt:''
-					}
-				],
-				serve:[{
-					//链接
-					backSrc:'#second',
-					//标题
-					title:'空调清洗',
-					//内容
-					cont:'空调清洗时空调机的维护，保养得主要关键……',
-					//背景
-					back:'background: url("../../static/11@3x.png");background-size: 100% 100%;background-repeat: no-repeat;'
-				},{
-					backSrc:'#second',
-					title:'空调清洗',
-					cont:'空调清洗时空调机的维护，保养得主要关键……',
-					back:'background: url("../../static/11@3x.png");background-size: 100% 100%;background-repeat: no-repeat;'
-				},{
-					backSrc:'#second',
-					title:'空调清洗',
-					cont:'空调清洗时空调机的维护，保养得主要关键……',
-					back:'background: url("../../static/11@3x.png");background-size: 100% 100%;background-repeat: no-repeat;'
+				homeData: {},
+				hotServices: [],
+				menuList: [],
+				firstMenu: {},
+				currCity: {
+					name: '苏州',
+					id: 106
 				}
-				]
 			}
+		},
+		created() {
+			let openCity = this.$storage.get('currCity')
+			if(openCity) {
+				this.currCity = openCity
+			}
+			this.$api.homeData({
+	        	params:{
+				    cityName: this.currCity.name
+				}
+		    },(res) => {
+		    	this.homeData = res.result
+		    	this.menuList = res.result.menus
+		    	this.firstMenu = this.menuList[0]
+		    	this.hotServices = res.result.services.result.list
+		    	if(!openCity) {
+					this.$storage.set('openCitys', openCity)
+				}
+		    	
+		    })
 		}
 	}
 </script>
@@ -309,38 +239,7 @@
 		position: relative;
 	}
 	
-	.swiper-container {
-		width: 100%;
-		height: 100%;
-	}
 	
-	.swiper-slide {
-		text-align: center;
-		font-size: 18px;
-		background: #fff;
-		/* Center slide text vertically */
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
-		display: flex;
-		-webkit-box-pack: center;
-		-ms-flex-pack: center;
-		-webkit-justify-content: center;
-		justify-content: center;
-		-webkit-box-align: center;
-		-ms-flex-align: center;
-		-webkit-align-items: center;
-		align-items: center;
-	}
-	.swiper-slide a{
-		width: 100%;
-		height: 100%;
-		display: block;
-	}
-	.swiper-slide img{
-		width: 100%;
-		height: 110%;
-	}
 	/*中间样式导航 八个链接*/
 	.cont{
 		width: 7.2rem;
@@ -370,7 +269,8 @@
 	
 	.nav_cont img {
 		width: 0.8rem;
-		/*height: 100px;*/
+		height: 0.8rem;
+		border-radius: 50%;
 		margin: 0.2rem 0.3rem 0.1rem 0.3rem;
 	}
 	

@@ -2,16 +2,14 @@
 	<div id="box">
 		<!--搜索栏-->
 		<div class="head_part">
-			<form action="" method="post">
-				<div class="search fl">
-					<img src="../../static/search-icon.png"/>
-				    <input name="" type="text" class="input-box" placeholder=" 搜索你要的商品"/>
-				</div>
-			</form>
-			<a href="#first" class="returnFirst fr">取消</a>
+			<div class="search fl">
+				<img src="../../static/search-icon.png"/>
+			    <input type="text" ref="Input" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
+			</div>
+			<a class="returnFirst fr" @click="back">取消</a>
 		</div>
 		<!--大家都在搜-->
-		<div class="search_all">
+		<!--<div class="search_all">
 			<div class="searchList">
 				<span>大家都在搜索</span>
 				<ul class="searchBox">
@@ -20,7 +18,7 @@
 					</li>
 				</ul>
 			</div>
-		</div>
+		</div>-->
 		<!--历史搜索-->
 		<div class="search_history">
 			<div class="history_title">
@@ -29,57 +27,76 @@
 			</div>
 			<!--调用上部分样式-->
 			<ul class="histroyBox">
-				<li class="histroyCont" v-for="(histroyCont,index) in histroyList" >
-					<a :href="histroyCont.histroySrc" v-text="histroyCont.histroyText"></a>
+				<li class="histroyCont" v-for="value in histroyList" >
+					<a @click="searchHistory(value)">{{value}}</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
-				serchList:[
-					{
-						searchText:'日常保洁',
-						searchSrc:'#second'
-		
-					},{
-						searchText:'家电清洗'
-					},{
-						searchText:'保姆'
-					},{
-						searchText:'搬家货运'
-					},{
-						searchText:'家电清洗'
-					},{
-						searchText:'擦玻璃'
-					},{
-						searchText:'保洁'
-					}
-				],
-				histroyList:[
-					{
-						histroyText:'日常保洁',
-						histroySrc:'#second'
-					},{
-						histroyText:'日常保洁',
-						histroySrc:'#second'
-					},{
-						histroyText:'日常保洁',
-						histroySrc:'#second'
-					},{
-						histroyText:'日常保洁',
-						histroySrc:'#second'
-					}
-				]
+//				serchList:[],
+				histroyList:[],
+				serviceWord: '',
+				currCity: {}
 			}
 		},
+		created() {
+			let openCity = this.$storage.get('currCity')
+			if(openCity) {
+				this.currCity = openCity
+			}
+			var historyWord = this.$storage.get('serveWord')
+			if(historyWord) {
+				this.histroyList = historyWord
+			}
+		},
+		mounted() {
+			this.$refs.Input.focus()
+		},
 		methods:{
+			back() {
+				this.$router.go(-1)
+			},
 			delelt(){
 				this.histroyList =[];
-//				return 
+			},
+			searchService() {
+				if(!this.serviceWord) {
+					Toast({
+					  message: '请输入要搜索的内容',
+					  position: 'bottom',
+					  duration: 1500
+					});
+					return
+				}
+				document.activeElement.blur();
+				this.$api.serviceSearch({
+		        	params:{
+					    cityName: this.currCity.name,
+					    keyword: this.serviceWord
+					}
+			    },(res) => {
+			    	var flag = true
+			    	this.histroyList.forEach((value) => {
+			    		if(value == this.serviceWord.trim()) {
+			    			flag = false
+			    			return
+			    		}
+			    	})
+			    	if(flag) {
+			    		this.histroyList.push(this.serviceWord)
+			    		this.$storage.set('serveWord',this.histroyList)
+			    	}
+			    })
+			},
+			searchHistory(value) {
+				this.serviceWord = value
+				this.searchService()
 			}
 		},
 		computed:{
@@ -148,7 +165,7 @@
 			display: block;
 			width: 7rem;
 			height: 1rem;
-			font-size:0.22rem ;
+			font-size:0.28rem ;
 			line-height:1rem;
 			margin: auto;
 			color: #222222;
@@ -182,11 +199,13 @@
 		.history_title{
 			width: 100%;
 			height: 0.5rem;
+			margin-bottom: 0.2rem;
+			margin-top: 0.2rem;
 		}
 		.history_title span{
 			width:1.2rem ;
 			height: 100%;
-			font-size:0.22rem;
+			font-size:0.28rem;
 			color:#4e4e4e;
 			line-height:0.5rem;
 		}

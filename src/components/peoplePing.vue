@@ -1,38 +1,37 @@
 <template>
 	<div id="box">
 		<!--顶部-->
+		<Header title="评价列表"></Header>
 		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
+			
 				
 			<!--满意度-->
 			<ul class="fontPart">
-				<li class="partLeft">100%</li>
+				<li class="partLeft">{{percent}}%</li>
 				<li class="partRight">满意</li>
 			</ul>
 		</div>
 		<!--用户评价-->
-		<div class="ping" v-for="(ping,index) in ping">
+		<div class="ping" v-for="(item,index) in evaluateList" :key="index">
 			<div class="client">
 				<div class="clientMessage clear">
 					<!--头像-->
 					<div class="clientImg fl">
-						<img :src="ping.headPortrait"/>
-						<span v-text="ping.name"></span>
+						<img :src="item.headImage"/>
+						<span>{{item.nickName}}</span>
 					</div>
 					<!--星星-->
 					<ul class="clientXing fr clear">
-						<li class="clientPing" v-for="(clientPing,index) in ping.pingImg">
-							<img :src="clientPing.imgSrc"/>
+						<li class="clientPing active" v-for="n in item.starLevel">
+							<!--<img src="@../../static/39@3x.png />-->
+						</li>
+						<li class="clientPing" v-for="n in  5-item.starLevel">
+							<!--<img src="@../../static/39@3x.png" />-->
 						</li>
 					</ul>
 				</div>
-				<span v-text="ping.time"></span>
-				<p v-text="ping.comments"></p>
+				<span>{{item.eTime}}</span>
+				<p>{{item.content}}</p>
 			</div>
 		</div>
 		
@@ -44,165 +43,23 @@
 		data(){
 			return {
 				title:'评价列表',
-				ping:[
-					{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					},{
-						//头像
-						headPortrait:'@../../static/41@2x.png',
-						//昵称
-						name:'游来游去的鱼',
-						pingImg:[
-							{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							},{
-								imgSrc:'@../../static/39@3x.png'
-							}
-						],
-						//时间 
-						time:'2017-07-20',
-						//服务评价
-						comments:'服务太棒了，打扫的非常棒，棒！'
-					}
-				]
+				evaluateList: [],
+				serviceId: undefined,
+				percent: undefined
 				
 			}
+		},
+		created() {
+			this.serviceId = this.$route.params.id
+			this.$api.evaluateList({
+	        	params:{
+				    serviceId: this.serviceId
+				}
+		    },(res) => {
+		    	this.evaluateList = res.result.list
+		    	this.percent = parseInt(res.result.percent)
+		    	
+		    })
 		}
 	}
 </script>
@@ -216,9 +73,10 @@
 	}
 	.headPart{
 		width: 100%;
-		height: 3.12rem;
-		background: #2d91f4;
+		background: url("../../static/banner.png") repeat-y top center;
 		overflow: hidden;
+		position: relative;
+		top: -1px;
 	}
 	.headCont{
 		width: 7rem;
@@ -246,7 +104,6 @@
 		width: 7.5rem;
 		height: 2.2rem;
 		display: block;
-		background: #2d91f4;
 		color: #FFFFFF;
 		position: relative;
 	}
@@ -292,6 +149,8 @@
 	}
 	.clientImg img{
 		width: 0.48rem;
+		height: 0.48rem;
+		border-radius: 50%;
 		float: left;
 	}
 	.clientImg span{
@@ -311,8 +170,15 @@
 	.clientXing li{
 		width:0.24rem;
 		height: 0.24rem;
-		float: right;
+		float: left;
 		margin-right: 0.08rem;
+	}
+	.clientPing.active{
+		background-image: url(../../static/39@3x.png);
+	}
+	.clientPing{
+		background: url(../../static/40@3x.png) no-repeat center;
+		background-size: 100%;
 	}
 	.clientXing img{
 		width:0.24rem;
