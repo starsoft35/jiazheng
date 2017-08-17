@@ -12,6 +12,7 @@ import accessToken from './api/accessToken'
 import workerPart from '@/components/common/workerPart'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import Pagination from '@/components/common/Pagination'
 
 
 Vue.config.productionTip = false
@@ -20,6 +21,7 @@ Vue.config.devtools = true
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
 Vue.component('workerPart', workerPart)
+Vue.component('Pagination', Pagination)
 
 Vue.use(MintUI)
 

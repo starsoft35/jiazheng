@@ -7,7 +7,7 @@ import { MessageBox, Toast } from 'mint-ui'
 
 
 // 配置axios
-var instance = axios.create({
+let instance = axios.create({
     baseURL: process.env.API_HOST,
     timeout: 5000
 })
@@ -56,11 +56,17 @@ function buildURL(url, needToken) {
     if (!needToken) {
         return url
     }
-    var accessToken = token.getAccessToken()
+    let accessToken = token.getAccessToken()
     if (!accessToken) {
         return false
     }
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + "access_token=" + accessToken
+}
+
+// 封装分页
+function buildPagination(url, pagination) {
+    let pageURI = 'page=' + pagination.page + '&page_size=' + pagination.pageSize
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + pageURI
 }
 
 export default {
@@ -85,6 +91,18 @@ export default {
         }).catch(function(error) {
             Promise.reject(error)
         })
+    },
+
+    /**
+     * 分页
+     * 
+     * @param {*} needToken 是否需要凭证
+     * @param {*} url 请求地址
+     * @param {*} pagination 分页参数
+     * @param {*} callback 回调地址
+     */
+    page(needToken, url, pagination, callback) {
+        this.get(needToken, buildPagination(url, pagination), callback)
     },
 
     /**

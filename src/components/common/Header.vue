@@ -2,20 +2,41 @@
     <div class="header">
     <div class="headPart"  :class="{nonebg: !showBg}">
         <div class="headCont">
-            <div class="operation" @click="action">{{operation}}</div>
+            <div class="operation" @click="operationAction" v-if="operation">{{operation}}</div>
             <div @click="goBack" v-if="!hiddenBack">
                 <span class="fl"></span>
             </div>
             <p>{{title}}</p>
         </div>
     </div>
-    <div class="blank"></div>
+    <div class="menu-blank"></div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['title', 'operation', 'back', 'hiddenBg', 'operationMethod'],
+        props: {
+            title: {
+                type: String,
+                required: true
+            }, 
+            operation: {
+                type: String,
+                required: false
+            }, 
+            back: {
+                type: String,
+                required: false
+            }, 
+            hiddenBg: {
+                type: String,
+                required: false
+            },
+            action: {
+                type: Function,
+                required: false
+            }
+        },
         data: function () {
             return {
                 hiddenBack: false,
@@ -38,14 +59,17 @@
                     this.$router.push(this.back)
                 }
             },
-            action() {
-                this.$emit('action')
+            operationAction() {
+                typeof this.action === 'function' && this.action()
             }
         }
     }
 </script>
 
 <style scoped>
+    .header, .headPart {
+        z-index: 1000;
+    }
     .headPart{
         width: 100%;
         height: 0.92rem;
@@ -89,7 +113,7 @@
         float: right;
         color: #FFF;
     }
-    .blank {
+    .menu-blank {
         height: .92rem;
     }
     
