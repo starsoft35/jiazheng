@@ -41,6 +41,8 @@ import paySubmit from '@/components/paySubmit'
 import paySubmitTwo from '@/components/paySubmitTwo'
 //一键下单
 import oneClick from '@/components/oneClick'
+//分享
+import sharePage from '@/components/sharePage'
 //服务类型
 import serveType from '@/components/serveType'
 // 订单
@@ -158,9 +160,9 @@ const router = new Router({
 			path: '/coupons',
 			component: coupons,
 			children: [{
-					path: '/coupons', redirect: '/coupons/couponsLeft'
+					path: '/coupons', redirect: '/coupons/couponsLeft/use'
 				}, {
-					path: '/coupons/couponsLeft',
+					path: '/coupons/couponsLeft/:status',
 					component: couponsLeft
 				}, {
 					path: '/coupons/couponsRight',
@@ -192,6 +194,10 @@ const router = new Router({
 			//一键下单
 			path: '/oneClick',
 			component: oneClick
+		}, {
+			//分享
+			path: '/sharePage',
+			component: sharePage
 		}, {
 			//服务类型
 			path: '/serveType',

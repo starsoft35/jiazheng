@@ -61,7 +61,7 @@
 		<div class="shareBox">
 			<div class="share clear">
 				<div class="shareCont fl">
-					<a href="#second">
+					<a href="#sharePage">
 						<span>分享有礼</span>
 						<p>分享获取优惠券</p>
 						<img src="../../static/11@3x.png" alt="分享有礼"/>
@@ -98,10 +98,8 @@
 				</div>
 			</li>
 		</ul>
-		<!--底部导航-->
+		<div style="height: 1rem;"></div>
 		<Menu actived="first"></Menu>
-		<!--空  撑开底部距离-->
-		<div style="width: 100%;height: 1.2rem;"></div>
 	</div>
 </template>
 

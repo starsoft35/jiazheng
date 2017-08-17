@@ -8,12 +8,12 @@ import Header from '@/components/common/Header'
 import http from './api/http'
 import api from './api/api'
 import storage from './api/storage'
+import {isEmptyObject} from './api/tool'
 import accessToken from './api/accessToken'
 import workerPart from '@/components/common/workerPart'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
-
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
@@ -29,6 +29,7 @@ Vue.prototype.$token = accessToken
 Vue.prototype.$http = http
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
+Vue.prototype.$isEmptyObject = isEmptyObject
 
 new Vue({
     el: '#app',

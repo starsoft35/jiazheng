@@ -101,8 +101,8 @@ export default {
      * @param {*} pagination 分页参数
      * @param {*} callback 回调地址
      */
-    page(needToken, url, pagination, callback) {
-        this.get(needToken, buildPagination(url, pagination), callback)
+    page(needToken, url, pagination, callback, params) {
+        this.get(needToken, buildPagination(url, pagination), callback, params)
     },
 
     /**

@@ -9,7 +9,7 @@
 		<div class="serve_title">
 			<div>{{serviceData.title}}</div>
 			<p>{{serviceData.content}}</p>
-			<span>{{serviceData.price}}/小时</span>
+			<span>&yen;{{parseInt(serviceData.price).toFixed(2)}}/小时</span>
 		</div>
 		<!--图文介绍-->
 		<div class="textIntro clear">
@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<!--客户的评价-->
-			<div class="client" v-for="(item, index) in evaluates.list.slice(0,1)" :key="index">
+			<div class="client" v-for="(item, index) in evaluateList.slice(0,1)" :key="index">
 				<div class="clientMessage clear">
 					<!--头像-->
 					<div class="clientImg fl">
@@ -74,7 +74,7 @@
 		</div>
 		<!--立即预约按钮-->
 		<div class="bottomBtn">
-			<a href="#appointment">立即预约</a>
+			<a @click="goAppointment">立即预约</a>
 		</div>
 	</div>
 </template>
@@ -85,25 +85,41 @@
 			return {
 				serviceData: {},
 				evaluates: {},
+				evaluateList: [],
 				//服务主题
 				title: '',
+				appointmentData: {}
 
 			}
 
 		},
-	  created() {
+	    created() {
 	  		this.serviceId = this.$route.params.id
 				this.$api.serviceDetail({
 	        	params:{
 					    serviceId: this.serviceId,
 					}
 			    },(res) => {
+			    	var data = {
+			    		title: res.result.serviceData.title,
+			    		price: res.result.serviceData.price,
+			    		picture: res.result.serviceData.picture,
+			    		content: res.result.serviceData.content
+			    	}
+			    	this.appointmentData = data
 			    	this.serviceData = res.result.serviceData
 			    	this.evaluates = res.result.evaluates
+			    	this.evaluateList = res.result.evaluates.list
 			    	this.title = res.result.serviceData.title
 			    	this.$storage.set('serviceIntro', res.result.serviceData.introduction)
 			  })
-	  }
+	   },
+	   methods: {
+	   		goAppointment() {
+	   			this.$storage.set('appointmentData', this.appointmentData)
+	   			this.$router.push('/appointment')
+	   		}
+	   }
 	}
 </script>
 

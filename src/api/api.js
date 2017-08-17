@@ -111,6 +111,16 @@ export default {
 	//我的优惠卷
 	userCoupon(params,callback) {
 		http.get(true, '/userCoupon/list', callback, params)
+	},
+	
+	//确认订单
+	serveConfirmOrder(params,callback) {
+		http.get(true, '/serviceOrder/preOrder', callback, params)
+	},
+	
+	//分享的新人列表
+	userMyShared(params,callback) {
+		http.get(true, '/user/myShared', callback, params)
 	}
 
 
