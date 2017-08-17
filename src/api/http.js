@@ -103,13 +103,8 @@ export default {
      * @param {*} callback 回调地址
      * @param {*} param 请求参数
      */
-<<<<<<< HEAD
-    page(needToken, url, pagination, callback, params) {
-        this.get(needToken, buildPagination(url, pagination), callback, params)
-=======
     page(needToken, url, pagination, callback, param) {
         this.get(needToken, buildPagination(url, pagination), callback, param)
->>>>>>> 7f2e3df4411ebadb1fdb7f0200e0dc8b50d97950
     },
 
     /**
