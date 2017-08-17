@@ -2,47 +2,45 @@
     <div class="message-container">
         <Header title="消息"></Header>
 
-        <div class="none-message none">
+        <div class="none-message" v-if="pagination.content.length == 0">
             <div class="bg"></div>
             暂无消息
         </div>
 
-        <div class="date">2017年8月2日</div>
-        <div class="message">
-            <div class="title">服务完成</div>
-            <div class="content">你的订单已服务完成，可在我的订单中评价工人的施工质量及我们的服务</div>
-        </div>
-        <div class="date">2017年7月18日</div>
-        <div class="message">
-            <div class="title">订单排单成功</div>
-            <div class="content">你的订单已经派遣了工人，如需联系，可在我的订单中电话联系。你的订单已经派遣了工人，如需联系，可在我的订单中电话联系</div>
-        </div>
-        <div class="date">2017年7月18日</div>
-        <div class="message">
-            <div class="title">订单排单成功</div>
-            <div class="content">你的订单已经派遣了工人，如需联系，可在我的订单中电话联系。你的订单已经派遣了工人，如需联系，可在我的订单中电话联系</div>
-        </div>
-        <div class="date">2017年8月2日</div>
-        <div class="message">
-            <div class="title">服务完成</div>
-            <div class="content">你的订单已服务完成，可在我的订单中评价工人的施工质量及我们的服务</div>
-        </div>
-        <div class="date">2017年7月18日</div>
-        <div class="message">
-            <div class="title">订单排单成功</div>
-            <div class="content">你的订单已经派遣了工人，如需联系，可在我的订单中电话联系。你的订单已经派遣了工人，如需联系，可在我的订单中电话联系</div>
-        </div>
-        <div class="date">2017年7月18日</div>
-        <div class="message">
-            <div class="title">订单排单成功</div>
-            <div class="content">你的订单已经派遣了工人，如需联系，可在我的订单中电话联系。你的订单已经派遣了工人，如需联系，可在我的订单中电话联系</div>
-        </div>
+        <Pagination :render="render" :param="pagination" :need-token="true" uri="/notice/list">
+            <div v-for="item in pagination.content">
+                <div class="date">{{item.date}}</div>
+                <div class="message">
+                    <div class="title">{{item.label}}</div>
+                    <div class="content">{{item.content}}</div>
+                </div>
+            </div>
+        </Pagination>
     </div>
 </template>
 
 <script>
     export default {
-
+        data() {
+            return {
+                pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10
+                }
+            }
+        },
+        methods: {
+            render(response) {
+                for (var i in response.result.list) {
+                    this.pagination.content.push({
+                        date: response.result.list[i].send_time,
+                        label: response.result.list[i].title,
+                        content: response.result.list[i].content
+                    })
+                }
+            }
+        }
     }
 </script>
 

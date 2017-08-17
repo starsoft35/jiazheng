@@ -76,6 +76,7 @@ export default {
      * @param {*} needToken 是否需要凭证
      * @param {*} url 请求地址
      * @param {*} callback  回调函数
+     * @param {*} param 请求参数
      */
     get(needToken, url, callback, params) {
         url = buildURL(url, needToken)
@@ -100,9 +101,10 @@ export default {
      * @param {*} url 请求地址
      * @param {*} pagination 分页参数
      * @param {*} callback 回调地址
+     * @param {*} param 请求参数
      */
-    page(needToken, url, pagination, callback) {
-        this.get(needToken, buildPagination(url, pagination), callback)
+    page(needToken, url, pagination, callback, param) {
+        this.get(needToken, buildPagination(url, pagination), callback, param)
     },
 
     /**

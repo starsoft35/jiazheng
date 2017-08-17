@@ -3,9 +3,7 @@
         <!-- <Header title="" back="hidden"></Header> -->
         <div class="header">
             <div class="user" @click="toProfile">
-                <div class="set">
-                    >
-                </div>
+                <div class="set">></div>
                 <div class="avatar">
                     <img :src="avatar" alt="avatar">
                 </div>
@@ -37,7 +35,7 @@
             <router-link to="/message" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/49@3x.png" alt="package">
-                <div class="badge">9</div>
+                <div class="badge" v-if="messageCount > 0">{{messageCount}}</div>
                 <div class="title">我的消息</div>
             </router-link>
             <router-link to="/addresses" class="item">
@@ -83,6 +81,7 @@
     export default {
         data: function() {
             return {
+                messageCount: 0, // 消息数量
                 nickname: '',   // 头像
                 mobile: '',     // 昵称
                 avatar: '../../static/moren@3x.png',     // 头像
@@ -103,10 +102,10 @@
                     self.nickname = response.result.nickName    
                 }
                 if (response.result.phone) {
-                    self.mobile = response.result.phone    
+                    self.mobile = response.result.hidePhone    
                 }
                 self.hotline = response.result.linkPhone
-
+                self.messageCount = response.result.noticeNum
                 self.$storage.set('aboutus', response.result.aboutUs)
             })
         },

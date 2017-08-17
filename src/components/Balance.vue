@@ -12,7 +12,7 @@
             <div class="record-container" >
                 <div class="record" v-for="(item, index) in pagination.content">
                     <div class="amount">{{item.amount}}</div>
-                    <div class="label">{{item.label + index}}</div>
+                    <div class="label">{{item.label}}</div>
                     <div class="date">{{item.date}}</div>
                 </div>
             </div>
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-    import {Loadmore} from 'mint-ui'
     export default {
         data() {
             return {
