@@ -70,15 +70,9 @@ export default {
     },
 
     // 分页查询余额金额
-<<<<<<< HEAD
-    pageBalance(callback) {
-
-    },
-=======
     pageBalance(pagination, callback) {
         http.page(true, '/memberBill/list', pagination, callback)
-    }
->>>>>>> 70bf3e7315c70423b17c1a403aba18d64378043b
+    },
 
 
 
