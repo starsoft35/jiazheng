@@ -116,6 +116,53 @@ export default {
         http.get(true, '/service/menuList', callback, params)
     },
 
+<<<<<<< HEAD
+    // 易
+	//首页
+	homeData(params,callback) {
+		http.get(true, '/main', callback, params)
+	},
+	
+	//搜索服务
+	serviceSearch(params,callback) {
+		http.get(true, '/service/search', callback, params)
+	},
+	
+	//全部服务列表
+	serviceMenuList(params,callback) {
+		http.get(true, '/service/menuList', callback, params)
+	},
+	
+	//二级服务列表
+	serviceList(params,callback) {
+		http.get(true, '/service/list', callback, params)
+	},
+	
+	//二级服务详情
+	serviceDetail(params,callback) {
+		http.get(true, '/service/detail', callback, params)
+	},
+	
+	//二级服务评价列表
+	evaluateList(params,callback) {
+		http.get(true, '/evaluate/list', callback, params)
+	},
+	
+	//我的优惠卷
+	userCoupon(params,callback) {
+		http.get(true, '/userCoupon/list', callback, params)
+	},
+	
+	//确认订单
+	serveConfirmOrder(params,callback) {
+		http.get(true, '/serviceOrder/preOrder', callback, params)
+	},
+	
+	//分享的新人列表
+	userMyShared(params,callback) {
+		http.get(true, '/user/myShared', callback, params)
+	}
+=======
     //二级服务列表
     serviceList(params, callback) {
         http.get(true, '/service/list', callback, params)
@@ -135,6 +182,7 @@ export default {
     userCoupon(params, callback) {
         http.get(true, '/userCoupon/list', callback, params)
     }
+>>>>>>> 7f2e3df4411ebadb1fdb7f0200e0dc8b50d97950
 
 
 

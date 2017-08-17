@@ -2,18 +2,21 @@
 	<div id="box">
 		<Header :title="serveTitle"></Header>
 		<div class="thingList">
-			<ul class="thingCont">
-				<li class="things" v-for="(item,index) in serviceList" :key="index">
-					<router-link :to="'/serviceDetails/' +item.id">
-						<img :src="item.listImage"/>
-						<div class="thingName">
-							<div>{{item.title}}</div>
-							<p>{{item.abstractContent}}</p>
-							<span>{{item.price}}</span>
-						</div>
-					</router-link>
-				</li>
-			</ul>
+			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/list">
+	            <ul class="thingCont">
+					<li class="things" v-for="(item,index) in pagination.content" :key="index">
+						<router-link :to="'/serviceDetails/' +item.id">
+							<img :src="item.listImage"/>
+							<div class="thingName">
+								<div>{{item.title}}</div>
+								<p>{{item.abstractContent}}</p>
+								<span>{{item.price}}</span>
+							</div>
+						</router-link>
+					</li>
+				</ul>
+	        </Pagination>
+				
 		</div>
 	</div>
 </template>
@@ -24,20 +27,46 @@
 			return {
 				menuId: undefined,
 				serveTitle:'',
-				serviceList:[]
+				serviceList:[],
+				
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {}
+                },
 			}
 		},
 		created() {
 			this.menuId = this.$route.params.id
-			this.$api.serviceList({
-	        	params:{
+			this.pagination.param = {
+				params:{
 				    menuId: this.menuId,
 				}
-		    },(res) => {
-		    	this.serviceList = res.result.serviceList.list
-		    	this.serveTitle = res.result.menuName
-		    })
-		}
+			}
+//			this.$api.serviceList({
+//	        	params:{
+//				    menuId: this.menuId,
+//				}
+//		    },(res) => {
+//		    	this.serviceList = res.result.serviceList.list
+//		    	this.serveTitle = res.result.menuName
+//		    })
+		},
+		methods: {
+            render(res) {
+                this.serveTitle = res.result.menuName
+                res.result.serviceList.list.forEach((item) => {
+                	this.pagination.content.push({
+                        abstractContent: item.abstractContent,
+                        id: item.id,
+                        listImage: item.listImage,
+                        price: item.price,
+                        title: item.title
+                    })
+                })
+            }
+        }
 	}
 </script>
 

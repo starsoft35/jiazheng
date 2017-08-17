@@ -4,7 +4,7 @@
 		<Header title="使用优惠卷"></Header>
 		<ul class="navBox">
 			<li>
-				<router-link class="routerLink" to="/coupons/couponsLeft" replace>可用优惠劵</router-link>
+				<router-link class="routerLink" :to="'/coupons/couponsLeft/' + status" replace>可用优惠劵</router-link>
 			</li>
 			<li>
 				<router-link class="routerLink" to="/coupons/couponsRight" replace>不可用优惠券</router-link>
@@ -19,10 +19,13 @@
 
 <script type="text/javascript">
 	export default {
-		data(){
+		data() {
 			return {
-				title:'使用优惠券'
+				status: ''
 			}
+		},
+		created() {
+			this.status = this.$route.params.status
 		}
 	}
 </script>

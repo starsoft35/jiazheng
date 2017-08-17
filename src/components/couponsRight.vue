@@ -1,16 +1,18 @@
 <template>
 	<div id="box">
-		<div class="contBox" v-for="(contBox,index) in cont">
-			<div class="LeftPart">
-				<img src="../../static/ren.png"/>
-				<span>{{contBox.moneyCounts}}</span>
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
+			<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
+				<div class="LeftPart">
+					<img src="../../static/ren.png"/>
+					<span>{{item.price}}</span>
+				</div>
+				<div class="partRight">
+					<span>{{item.content}}</span>
+					<p>{{item.timeLimit}}</p>
+					<img class="rightImg" src="../../static/324234234@3x.png"/>
+				</div>
 			</div>
-			<div class="partRight">
-				<span>无门槛全场通用</span>
-				<p>{{contBox.timeCont}}</p>
-				<img class="rightImg" src="../../static/324234234@3x.png"/>
-			</div>
-		</div>
+       </Pagination>
 		
 		
 	</div>
@@ -20,25 +22,33 @@
 	export default {
 		data(){
 			return {
-				title:'使用优惠券',
-				cont:[
-					{
-						moneyCounts:'300',
-						timeCont:'2017.05.03~2017.08.09',
-						//左边背景
-						LeftTrue:true,
-						leftFalse:false,
-						//右边图片
-						rightImg:false
-						
-					},{
-						moneyCounts:'200',
-						timeCont:'2017.05.03~2017.08.09'
-						
-					}
-				]
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {
+                    	params:{
+						    flag: 2
+						}
+                    }
+                },
 			}
-		}
+		},
+		created() {
+
+		},
+		methods: {
+            render(res) {
+                res.result.list.forEach((item) => {
+                	this.pagination.content.push({
+                        price: parseInt(item.price),
+                        id: item.id,
+                        content: item.content,
+                        timeLimit: item.timeLimit
+                    })
+                })
+            }
+        }
 	}
 </script>
 
@@ -97,6 +107,7 @@
 		top:0.37rem ;
 		font-size:0.26rem ;
 		color: #222222;
+		z-index: 10;
 	}
 	.partRight p{
 		position: absolute;
@@ -104,6 +115,7 @@
 		bottom: 0.38rem;
 		font-size: 0.2rem;
 		color: #999999;
+		z-index: 10;
 	}
 	/*已过期图片*/
 	.rightImg{
@@ -112,6 +124,6 @@
 		top: 0.42rem;
 		width: 2rem;
 		height: 1.2rem;
-		z-index: 10000;
+		z-index: 1;
 	}
 </style>

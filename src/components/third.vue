@@ -44,34 +44,7 @@
 			</div>
 		</div>
 		
-		<div class="kong"></div>
-		<!--底部导航-->
-		<ul class="nav_bottm">
-			<li>
-				<a href="#">
-					<img src="../../static/21@3x.png" />
-					<div>首页</div>
-				</a>
-			</li>
-			<li>
-				<a href="#second">
-					<img src="../../static/15@3x.png" alt="附近" />
-					<div>附近</div>
-				</a>
-			</li>
-			<li>
-				<router-link to="/third">
-					<img src="../../static/19@3x.png" />
-					<div style="color: #258ef3;">订单</div>
-				</router-link>
-			</li>
-			<li>
-				<a href="#second">
-					<img src="../../static/17@3x.png" alt="我的" />
-					<div>我的</div>
-				</a>
-			</li>
-		</ul>
+		<Menu actived="third"></Menu>
 	</div>
 </template>
 

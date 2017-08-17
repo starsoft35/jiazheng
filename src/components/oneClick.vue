@@ -1,49 +1,45 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="确认订单"></Header>
 		<!--客户信息-->
 		<div class="clientMessage">
 			<!--姓名 电话-->
-			<div class="clientCont clear">
+			<div class="clientCont clear" v-if="hasDefaultAddr">
 				<div class="contName fl">联系人:{{clientName}}</div>
 				<div class="contMobile fr" v-text="clientMobile"></div>
 			</div>
 			<!--地址-->
-			<div class="clientPosition">
+			<div class="clientPosition" v-if="hasDefaultAddr">
 				<a href="#chosePosition" style="display:inline-block;">
-					<img class="imgLeft fl" src="../../static/37@3x.png" />
+					<img class="imgLeft fl" src="../../static/37@3x.png"/>
 					<span class="fl" v-text="clientposition"></span>
-					<img class="imgRight fr" src="../../static/34@3x.png" />
+					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
-
 			</div>
+			<router-link v-if="!hasDefaultAddr" to="" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
+			
 		</div>
 		<div class="messageBox">
 			<!--服务类型-->
 			<div class="serveTime borderBottom">
 				<span class="fl">服务类型</span>
-				<router-link to="/serveType" >
+				<a @click="showService = true" >
 					<img src="../../static/34@3x.png" />
-					<div class="fr">请选择服务类型</div>
-				</router-link>
+					<div class="fr" v-show="!serviceSelect.name">请选择服务类型</div>
+					<div class="fr" style="color: #000;" v-show="serviceSelect.name">{{serviceSelect.name}}</div>
+				</a>
 			</div>
 			<!--服务时间-->
 			<div class="serveTime">
 				<span class="fl">服务时间</span>
-				<router-link to="/second" >
-					<img src="../../static/34@3x.png" />
-					<div class="fr">请选择服务时间</div>
-				</router-link>
+				<a @click="showTime = true">
+					<img src="../../static/34@3x.png"/>
+					<div class="fr" v-show="serveDataSelect.length<1">请选择服务时间</div>
+					<div class="fr" style="color: #000;" v-show="serveDataSelect.length == 2">{{serveData}}</div>
+				</a>
 			</div>
 		</div>
 		<!--备注-->
@@ -57,6 +53,38 @@
 		<div class="bottomBtn">
 			<router-link to="/paySubmitTwo">提交预约</router-link>
 		</div>
+		<mt-popup v-model="showTime" class="service-time" position="bottom">
+			<div class="showTime-content">
+				<div class="showTime-header">
+					<span @click="showTime = false">取消</span>
+					<span @click="serveDataConfirm">确定</span>
+				</div>
+				<div class="showTime-body">
+					<mt-picker 
+						:slots="dateSlots" 
+						:itemHeight="32" 
+						:value-key="'name'"
+						@change="onDataChange">
+					</mt-picker>
+				</div>
+			</div>
+		</mt-popup>
+		<mt-popup v-model="showService" class="service-time" position="bottom">
+			<div class="showTime-content">
+				<div class="showTime-header">
+					<span @click="showService = false">取消</span>
+					<span @click="serviceConfirm">确定</span>
+				</div>
+				<div class="showTime-body">
+					<mt-picker 
+						:slots="serviceSlots" 
+						:itemHeight="32" 
+						:value-key="'name'"
+						@change="onServiceChange">
+					</mt-picker>
+				</div>
+			</div>
+		</mt-popup>
 	</div>
 </template>
 
@@ -64,13 +92,85 @@
 	export default {
 		data() {
 			return {
-				title: '确认订单',
 				//客户姓名
 				clientName: '朱小明',
 				//联系电话
 				clientMobile: '17191191610',
 				//地址
-				clientposition: ' 苏州市 观前街 庆元坊20号江苏省 苏州市 观前街 庆元坊20号'
+				clientposition: ' 苏州市 观前街 庆元坊20号江苏省 苏州市 观前街 庆元坊20号',
+				
+				
+				
+				defaultAddr: {},
+				hasDefaultAddr: true,
+				showTime: false,
+				dateSlots: [
+		          {
+		            flex: 1,
+		            values: [],
+		            className: 'slot1',
+		            textAlign: 'center'
+		          }, {
+		            divider: true,
+		            content: '-',
+		            className: 'slot2'
+		          }, {
+		            flex: 1,
+		            values: [],
+		            className: 'slot3',
+		            textAlign: 'center'
+		          }
+		        ],
+		        serveDataChange: [],
+		        serveDataSelect: [],
+		        serveData: '',
+		        
+		        showService: false,
+		        serviceSlots: [
+		          {
+		            flex: 1,
+		            values: [],
+		            className: 'slot1',
+		            textAlign: 'center'
+		          }],
+		        serviceChange: {},
+		        serviceSelect: {},
+			}
+		},
+		created() {
+			this.$api.serveConfirmOrder(null, (res) => {
+		    	this.defaultAddr = res.result.defaultAddr
+		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+		    	res.result.intervals.forEach((item) => {
+		    		item.name = item.interval
+		    		this.dateSlots[2].values.push(item)
+		    	})
+		    	this.dateSlots[0].values = res.result.nextTenDays
+		    	
+		    })
+			this.$api.serviceMenuList({
+	        	params:{
+				    menuId: 1,
+				}
+		    },(res) => {
+		    	this.serviceSlots[0].values = res.result
+		    })
+		},
+		methods:{
+			onDataChange(picker, values) {
+				this.serveDataChange = values
+			},
+			serveDataConfirm() {
+				this.serveDataSelect = this.serveDataChange
+				this.serveData = this.serveDataSelect[0].name.slice(0,6) + ' ' + this.serveDataSelect[1].name
+				this.showTime = false
+			},
+			onServiceChange(picker, values) {
+				this.serviceChange = values[0]
+			},
+			serviceConfirm() {
+				this.serviceSelect = this.serviceChange
+				this.showService = false
 			}
 		}
 	}
@@ -122,6 +222,8 @@
 		background: #FFFFFF;
 		display: inline-block;
 		margin-bottom: 0.2rem;
+		height: 2rem;
+		position: relative;
 	}
 	/*客户姓名和电话部分*/
 	
@@ -184,6 +286,9 @@
 		height: 0.06rem;
 		background: url("../../static/45@3x.png") no-repeat;
 		background-size: 100% 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
 	}
 	/* 服务类型  选择时间 */
 	.messageBox{

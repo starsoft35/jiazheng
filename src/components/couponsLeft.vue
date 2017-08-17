@@ -1,16 +1,17 @@
 <template>
 	<div id="box">
-		<div class="contBox" v-for="(contBox,index) in cont">
-			<div class="LeftPart "">
-				<img src="../../static/ren.png"/>
-				<span>{{contBox.moneyCounts}}</span>
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
+			<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
+				<div class="LeftPart">
+					<img src="../../static/ren.png"/>
+					<span>{{item.price}}</span>
+				</div>
+				<div class="partRight">
+					<span>{{item.content}}</span>
+					<p>{{item.timeLimit}}</p>
+				</div>
 			</div>
-			<div class="partRight">
-				<span>无门槛全场通用</span>
-				<p>{{contBox.timeCont}}</p>
-			</div>
-		</div>
-		
+        </Pagination>
 		
 	</div>
 </template>
@@ -19,20 +20,43 @@
 	export default {
 		data(){
 			return {
-				title:'使用优惠券',
-				cont:[
-					{
-						moneyCounts:'300',
-						timeCont:'2017.05.03~2017.08.09',
-						
-					},{
-						moneyCounts:'200',
-						timeCont:'2017.05.03~2017.08.09',
-						
-					}
-				]
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {
+                    	params:{
+						    flag: 1
+						}
+                    }
+                },
+                currCoupon: {}
 			}
-		}
+		},
+		created() {
+
+		},
+		methods: {
+            render(res) {
+                res.result.list.forEach((item) => {
+                	this.pagination.content.push({
+                        price: parseInt(item.price),
+                        id: item.id,
+                        content: item.content,
+                        timeLimit: item.timeLimit
+                    })
+                })
+            },
+            useCoupon(item) {
+            	if(this.$route.params.status !== 'use') {
+            		return
+            	}
+            	this.currCoupon.id = item.id
+            	this.currCoupon.price = item.price
+            	this.$storage.set('currCoupon', this.currCoupon)
+            	this.$router.go(-1)
+            }
+        }
 	}
 </script>
 

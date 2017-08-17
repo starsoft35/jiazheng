@@ -1,14 +1,7 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="订单支付"></Header>
 		<!--banner-->
 		<div class="reminder">
 			<span>订单提交成功，只差最后一步</span>
@@ -70,7 +63,6 @@
 	export default {
 		data(){
 			return {
-				title:'订单支付'
 //				payWay:[
 //					{	
 //						backSrc:'@../../static/41@2x.png',

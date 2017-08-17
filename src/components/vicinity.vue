@@ -1,14 +1,7 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<router-link to="/first">
-					<span class="fl"></span>
-				</router-link>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="附近"></Header>
 		<!--顶部导航-->
 		<div class="navBox">
 			<ul class="nav">
@@ -19,6 +12,7 @@
 		</div>
 		<router-view></router-view>
 		<!--底部导航-->
+		<div style="height: 1rem;"></div>
 		<Menu actived="second"></Menu>
 	</div>
 </template>

@@ -23,14 +23,14 @@ export default {
 </script>
 
 <style>
-	 html, body {
+	html, body {
         position: relative;
         height: 100%;
     }
     body {
         background: #f5f5f9;
         font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 14px;
+        font-size: 0.28rem;
         color:#222222;
         margin: 0;
         padding:0;
@@ -58,5 +58,36 @@ export default {
     	width: 100%;
     	height: 100%;
     }
+    .picker-slot{
+    	font-size: 0.3rem;
+    }
+    .picker-item{
+    	color: #999;
+    }
+    
+    /*服务时间弹框*/
+    .service-time{
+		width: 100%;
+		background: #F5F5F9;
+	}
+	.showTime-header{
+		display: flex;
+		height: 0.9rem;
+		background: #fff;
+		line-height: 0.9rem;
+		text-align: left;
+		
+	}
+	.showTime-header span{
+		flex: 1;
+		font-size: 0.32rem;
+		padding: 0 0.4rem;
+	}
+	.showTime-header span:last-child{
+		text-align: right;
+	}
+	.showTime-body{
+		padding: 0.5rem 0.3rem;
+	}
 
 </style >
