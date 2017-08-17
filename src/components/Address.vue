@@ -70,12 +70,13 @@
             if (this.$route.params.id && !self.mobile) {
                 this.$api.getAddress(this.$route.params.id, function(response) {
                     self.id = response.result.id
-                    self.consigee = response.result.consignee
+                    self.consigee = response.result.name
                     self.address = response.result.address
                     self.mobile = response.result.mobile
                     self.street = response.result.detailAddr
                     self.longitude = response.result.Longitude
                     self.latitude = response.result.Latitude
+                    self.isDefault = response.result.isDefault
                 })
             }
             let searchResult = this.$storage.get('search_result')

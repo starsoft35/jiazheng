@@ -115,185 +115,6 @@ import AddressSearch from '@/components/AddressSearch'
 Vue.use(Router)
 
 const router = new Router({
-<<<<<<< HEAD
-	routes: [{
-			path: '/',
-			component: first
-		}, {
-			path: '/first',
-			component: first
-		}, {
-			path: '/second',
-			component: second
-		}, {
-			path: '/search',
-			component: search
-		},
-		//全部服务路由
-		{
-			path: '/allserve/:id',
-			component: allserve,
-			
-		}, {
-			//城市选择
-			path: '/positionChose',
-			component: positionChose
-		}, {
-			//服务列表 全部服务 中的a标签导向
-			path: '/serveCont/:id',
-			component: serveCont
-		}, {
-			//服务的详细介绍
-			path: '/serviceDetails/:id',
-			component: serviceDetails
-		}, {
-			//服务的详细介绍
-			path: '/serveIntro',
-			component: serveIntro
-		}, {
-			//评价列表
-			path: '/peoplePing/:id',
-			component: peoplePing
-		}, {
-			//确认订单 提交预约
-			path: '/appointment',
-			component: appointment
-		},{
-			//优惠券
-			path: '/coupons',
-			component: coupons,
-			children: [{
-					path: '/coupons', redirect: '/coupons/couponsLeft/use'
-				}, {
-					path: '/coupons/couponsLeft/:status',
-					component: couponsLeft
-				}, {
-					path: '/coupons/couponsRight',
-					component: couponsRight
-				}
-
-			]
-		}, {
-			//服务地址
-			path: '/chosePosition',
-			component: chosePosition
-		}, {
-			//添加服务地址
-			path: '/addPosition',
-			component: addPosition
-		}, {
-			//订单详情
-			path: '/orderDetail',
-			component: orderDetail
-		}, {
-			//订单支付
-			path: '/paySubmit',
-			component: paySubmit
-		}, {
-			//订单支付
-			path: '/paySubmitTwo',
-			component: paySubmitTwo
-		}, {
-			//一键下单
-			path: '/oneClick',
-			component: oneClick
-		}, {
-			//分享
-			path: '/sharePage',
-			component: sharePage
-		}, {
-			//服务类型
-			path: '/serveType',
-			component: serveType
-		}, {
-			//订单
-			path: '/third',
-			component: third
-		}, {
-			//附近
-			path: '/vicinity',
-			component: vicinity,
-			children: [{
-				path: '',
-				component: vicinityOne
-			}, {
-				path: 'vicinityOne',
-				component: vicinityOne
-			}, {
-				path: 'vicinityTwo',
-				component: vicinityTwo
-			}, {
-				path: 'vicinityThree',
-				component: vicinityThree
-			}, {
-				path: 'vicinityFour',
-				component: vicinityFour
-			}, {
-				path: 'vicinityFive',
-				component: vicinityFive
-			}, {
-				path: 'vicinitySix',
-				component: vicinitySix
-			}, {
-				path: 'vicinitySeven',
-				component: vicinitySeven
-			}]
-		},{
-			//工人端首页
-			path: '/orderPart',
-			component: orderPart,
-			children:[
-				{
-						path: '',
-						component: orderPartOne
-				},{
-						path: 'orderPartOne',
-						component: orderPartOne
-				},{
-						path: 'orderPartTwo',
-						component: orderPartTwo
-				},{
-						path: 'orderPartThree',
-						component: orderPartThree
-				},{
-						path: 'orderPartFour',
-						component: orderPartFour
-				}
-			]
-		},{
-			//工人端派单
-			path: '/sendOrders',
-			component: sendOrders,
-			children:[{
-				path: '',
-				component: sendOrderLeft,
-			}, {
-				path: 'sendOrderLeft',
-				component: sendOrderLeft,
-			}, {
-				path: 'sendOrderRight',
-				component: sendOrderRight,
-			}]
-		},{
-			//派单
-			path: '/sendPeople',
-			component:sendPeople,
-		},{
-			//工人端消息
-			path: '/workerMessage',
-			component:workerMessage,
-		},{
-			//工人个人中心
-			path: '/mine',
-			component:mine,
-		},
-	
-	
-	
-	
-	
-	
-=======
     routes: [{
             path: '/',
             component: first
@@ -342,9 +163,9 @@ const router = new Router({
             component: coupons,
             children: [{
                     path: '/coupons',
-                    redirect: '/coupons/couponsLeft'
+                    redirect: '/coupons/couponsLeft/use'
                 }, {
-                    path: '/coupons/couponsLeft',
+                    path: '/coupons/couponsLeft/:status',
                     component: couponsLeft
                 }, {
                     path: '/coupons/couponsRight',
@@ -376,6 +197,10 @@ const router = new Router({
             //一键下单
             path: '/oneClick',
             component: oneClick
+        }, {
+            //分享
+            path: '/sharePage',
+            component: sharePage
         }, {
             //服务类型
             path: '/serveType',
@@ -466,7 +291,6 @@ const router = new Router({
 
 
 
->>>>>>> 7f2e3df4411ebadb1fdb7f0200e0dc8b50d97950
 
 
         {

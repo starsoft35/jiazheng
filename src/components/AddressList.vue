@@ -1,6 +1,6 @@
 <template>
     <div class="address-list">
-        <Header title="地址管理"></Header>
+        <Header title="地址管理" back="/ucenter"></Header>
 
         <div class="none-content" v-if="pagination.content.length == 0">暂无地址信息</div>
 
