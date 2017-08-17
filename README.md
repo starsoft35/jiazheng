@@ -37,9 +37,10 @@ npm run build --report
 
 
 
+
 ## 头部菜单
 
-在`.vue`文件的`template`头部进入：
+在`.vue`文件的`template`头部引入：
 
 ``` html
 <Header title="全部服务" back="/first"></Header>
@@ -50,3 +51,45 @@ npm run build --report
    * 空，则默认上次浏览页面，等同于`history.go(-1)`
    * `hidden`，则隐藏返回按钮
    * 字符串，则跳转到对应地址，例如：`/ucenter`，返回到个人中心页面
+
+
+
+## 分页菜单
+
+在`.vue`文件的`template`头部引入：
+
+```html
+<Pagination :render="render" :param="pagination" :need-token="true" uri="/memberBill/list">
+  	...
+</Pagination>
+```
+
+* render: 表示渲染数据对象函数 ，实例如下：
+
+  ```javascript
+  render(response) {
+    	# response表示分页请求返回的数据对象
+    	for (var i in response.result.list) {
+        	# pagination.content为列表数据存在的数组
+      	this.pagination.content.push({
+            	amount: response.result.list[i].bill,
+            	label: response.result.list[i].title,
+            	date: response.result.list[i].time
+      	})
+    	}
+  }
+  ```
+
+* param: 表示分页数据集合，固定如下格式：
+
+  ```javascript
+  pagination: {
+  	content: [],
+  	page: 1, 
+  	pageSize: 10
+  }
+  ```
+
+* need-token: 表示该分页请求是否需要访问凭证（`access_token`），`true`表示需要凭证,`false`表示不需要凭证
+
+* uri: 表示分页请求的地址
