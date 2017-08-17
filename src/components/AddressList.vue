@@ -1,117 +1,31 @@
 <template>
     <div class="address-list">
-        <Header title="服务地址"></Header>
-        
-        <div class="address-container">
-            <div class="item">
-                <div class="info" @click="toEdit">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
+        <Header title="地址管理"></Header>
+
+        <div class="none-content" v-if="pagination.content.length == 0">暂无地址信息</div>
+
+        <Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceAddress/list">        
+            <div class="address-container">
+                <div class="item" v-for="(item, index) in pagination.content">
+                    <div class="info">
+                        <div class="mobile">{{item.mobile}}</div>
+                        <div class="consigee">联系人：{{item.consigee}}</div>
+                        <div class="street">{{item.address}}</div>
                     </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default">
-                        默认地址
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="info">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
-                    </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default active">
-                        默认地址
+                    <div class="operation">
+                        <div class="edit" @click="remove(index)">
+                            删除
+                        </div>
+                        <div class="edit" @click="edit(index)">
+                            编辑
+                        </div>
+                        <div class="default" :class="{active : item.isDefault}" @click="defaultAddr(index)">
+                            默认地址
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="info">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
-                    </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default">
-                        默认地址
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="info">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
-                    </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default active">
-                        默认地址
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="info">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
-                    </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default active">
-                        默认地址
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="info">
-                    <div class="mobile">18501701760</div>
-                    <div class="consigee">联系人：张三三</div>
-                    <div class="street">江苏省苏州市工业园区新平街388号腾飞苏州创新园塔楼A1-511</div>
-                </div>
-                <div class="operation">
-                    <div class="edit">
-                        删除
-                    </div>
-                    <div class="edit">
-                        编辑
-                    </div>
-                    <div class="default active">
-                        默认地址
-                    </div>
-                </div>
-            </div>
-        </div>
+        </Pagination>
         
         <div class="bottom">
             <router-link to="/address" class="button">添加服务地址</router-link>
@@ -120,10 +34,57 @@
 </template>
 
 <script>
+    import {MessageBox} from 'mint-ui'
     export default {
+        data() {
+            return {
+                pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10
+                }
+            }
+        },
         methods: {
-            toEdit: function() {
-                this.$router.push('/address')
+            // 编辑菜单
+            edit(index) {
+                this.$router.push('/address/' + this.pagination.content[index].id)
+            },
+            // 删除菜单
+            remove(index) {
+                let self = this
+                MessageBox.confirm('确认要删除此地址吗？').then(action => {
+                    self.$api.deleteAddress(self.pagination.content[index].id, function(response) {
+                        self.pagination.content.splice(index, 1)
+                    })
+                })
+            },
+            // 设置默认地址
+            defaultAddr(index) {
+                let self = this
+                this.$api.updateDefaultAddress(this.pagination.content[index].id, function(response) {
+                    self.pagination.content[index].isDefault = 1
+
+                    for (var i in self.pagination.content) {
+                        if (self.pagination.content[i].isDefault == 1) {
+                            self.pagination.content[i].isDefault = 0
+                        }
+                        if (i == index) {
+                            self.pagination.content[i].isDefault = 1
+                        }
+                    }
+                })
+            },
+            render(response) {
+                for (var i in response.result.list) {
+                    this.pagination.content.push({
+                        id: response.result.list[i].id,
+                        mobile: response.result.list[i].mobile,
+                        address: response.result.list[i].address,
+                        consigee: response.result.list[i].consignee,
+                        isDefault: parseInt(response.result.list[i].isDefault) === 1
+                    })
+                }
             }
         }
     }
@@ -166,6 +127,7 @@
     .operation .default.active {
         background: url("../../static/35@3x.png") no-repeat left center;
         background-size: .3rem;
+        color: #258ef3;
     }
     
   
@@ -177,7 +139,6 @@
         left: 0;
         box-sizing: border-box;
         padding-bottom: .3rem;
-        /*background: #f5f5f9;*/
     }
     .button {
         display: block;

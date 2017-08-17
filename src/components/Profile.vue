@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import { MessageBox } from 'mint-ui'
+    import { MessageBox, Toast } from 'mint-ui'
 
     export default {
         data() {
@@ -66,6 +66,14 @@
         methods: {
             // 保存更新后的用户信息
             saveUpdate() {
+                if (!this.nickname) {
+                    Toast({
+                        message: '请输入昵称',
+                        position: 'bottom'
+                    })
+                    return
+                }
+
                 var self = this
                 this.$api.updateUserInfo(this.nickname, this.mobile, function() {
                     self.$router.push('/ucenter')  
@@ -89,7 +97,6 @@
                 let formData = new FormData()
                 formData.append('file', e.target.files[0])
                 this.$api.updateAvatar(formData, function(response) {
-                    console.info(response)
                     self.avatar =  response.result.data
                 })
             }
