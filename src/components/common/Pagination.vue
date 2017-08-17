@@ -66,7 +66,7 @@ export default {
                     } else {
                         self.$refs.loadmore.onBottomLoaded()
                     }
-                })
+                }, self.param.param)
             }, 300)
             
         }
