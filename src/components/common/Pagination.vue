@@ -1,5 +1,5 @@
 <template>
-    <mt-loadmore :bottom-method="loadBottom" :top-method="loadTop" :bottom-all-loaded="allLoaded" :bottomDistance="40" ref="loadmore">
+    <mt-loadmore :bottom-method="loadBottom" :top-method="loadTop" :auto-fill="false" :bottom-all-loaded="allLoaded" :bottomDistance="40" ref="loadmore">
         <slot></slot>
     </mt-loadmore>
 </template>
@@ -30,6 +30,9 @@ export default {
             allLoaded: false
         }
     },
+    mounted() {
+        this.loadPage()
+    },
     methods: {
         // 下拉分页加载
         loadBottom() {
@@ -51,7 +54,7 @@ export default {
 
                     self.render(response)
 
-                    if (response.result.page >= response.result.total_page) {
+                    if (response.result.page >= response.result.total_pages || response.result.total_pages === 0) {
                         // 设置加1
                         self.allLoaded = true
                     } else {
@@ -64,7 +67,7 @@ export default {
                         self.$refs.loadmore.onBottomLoaded()
                     }
                 })
-            }, 600)
+            }, 300)
             
         }
     }
