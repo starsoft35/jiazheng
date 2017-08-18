@@ -100,6 +100,19 @@ export default {
         http.get(true, '/charge/templateList', callback)
     },
 
+    // 支付宝充值
+    alipayRecharge(params, callback) {
+        params.pay_type = 2
+        http.post(true, '/charge', params, callback)
+    },
+
+    // 微信支付充值
+    wechatRecharge(params, callback) {
+        params.pay_type = 3
+        http.post(true, '/charge', params, callback)
+    },
+
+
     // 易
     //首页
     homeData(params, callback) {
