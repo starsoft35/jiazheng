@@ -112,6 +112,11 @@ export default {
         http.post(true, '/charge', params, callback)
     },
 
+    // 获取附近菜单
+    getNearbyMenu(callback) {
+        http.get(true, '/serviceMenu/getNearlyServices', callback)
+    },
+
 
     // 易
     //首页

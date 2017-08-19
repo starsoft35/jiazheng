@@ -23,7 +23,7 @@
             <div class="title">第三方快捷登录</div>
             <div class="channel-container">
                 <div class="channel">
-                    <img src="../../static/41@3x.png" alt="微信登录">
+                    <img src="../../static/41@3x.png" alt="微信登录" @click="wechatLogin">
                 </div>
             </div>
         </div>
@@ -52,6 +52,20 @@
             
         },
         methods: {
+            // 微信登录
+            wechatLogin() {
+                if (typeof QcjzBridge === 'undefined') {
+                    Toast({
+                        message: '不支持微信登录',
+                        position: 'bottom'
+                    })
+                    return
+                }
+                QcjzBridge.oauth(1,function(data){
+                    
+                }); 
+            },
+
             // 切换注册协议状态
             toggleAgreementStatus(e) {
                 this.isAgree = !this.isAgree

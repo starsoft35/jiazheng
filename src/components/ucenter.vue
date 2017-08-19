@@ -124,9 +124,6 @@
 </script>
 
 <style scoped>
-    .ucenter-container {
-        padding-bottom: 1.3rem;
-    }
     .menu-container {
         background: #FFF;
         margin-top: .35rem;
@@ -157,7 +154,7 @@
     }
     .menu-container .item .arrow:before {
         content: '\003e';
-        color: #999;
+        color: #ccc;
         font-size: .3rem;
     }
     .menu-container .item .label {

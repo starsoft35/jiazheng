@@ -36,7 +36,7 @@ export default {
         padding:0;
     }
     #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         text-align: center;
         color: #2d92f4;

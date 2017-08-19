@@ -1,4 +1,6 @@
 <template>
+<div>
+    <div class="menu-blank"></div>
     <ul class="nav_bottm">
         <li :class="{'active':first.active}">
             <router-link to='/first'>
@@ -7,13 +9,13 @@
             </router-link>
         </li>
         <li :class="{'active':second.active}">
-            <router-link to='vicinity'>
+            <router-link to='/nearby'>
                 <img :src="second.icon" alt="附近"/>
                 <div>附近</div>
             </router-link>
         </li>
         <li :class="{'active':third.active}">
-            <router-link to='/third'>
+            <router-link to='/orders'>
                 <img :src="third.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
@@ -25,6 +27,7 @@
             </router-link>
         </li>
     </ul>
+</div>
 </template>
 
 <script>
@@ -85,7 +88,9 @@
 </script>
 
 <style scoped>
-    /*底部导航*/
+    .menu-blank {
+        height: 1.2rem;
+    }
     .nav_bottm{
         position: fixed;
         bottom: 0;

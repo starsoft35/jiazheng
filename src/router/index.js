@@ -46,23 +46,12 @@ import sharePage from '@/components/sharePage'
 //服务类型
 import serveType from '@/components/serveType'
 // 订单
-import third from '@/components/third'
+import Order from '@/components/Order'
 //附近
-import vicinity from '@/components/vicinity'
+import Nearby from '@/components/Nearby'
 //附近 一
-import vicinityOne from '@/components/vicinityOne'
-//附近 二
-import vicinityTwo from '@/components/vicinityTwo'
-//附近 三
-import vicinityThree from '@/components/vicinityThree'
-//附近 四
-import vicinityFour from '@/components/vicinityFour'
-//附近 五
-import vicinityFive from '@/components/vicinityFive'
-//附近 六
-import vicinitySix from '@/components/vicinitySix'
-//附近 七
-import vicinitySeven from '@/components/vicinitySeven'
+import NearbyService from '@/components/NearbyService'
+
 //工人端
 //订单
 import orderPart from '@/components/worker/orderPart'
@@ -207,36 +196,18 @@ const router = new Router({
             component: serveType
         }, {
             //订单
-            path: '/third',
-            component: third
+            path: '/orders',
+            component: Order
         }, {
             //附近
-            path: '/vicinity',
-            component: vicinity,
+            path: '/nearby',
+            component: Nearby,
             children: [{
                 path: '',
-                component: vicinityOne
+                component: NearbyService
             }, {
-                path: 'vicinityOne',
-                component: vicinityOne
-            }, {
-                path: 'vicinityTwo',
-                component: vicinityTwo
-            }, {
-                path: 'vicinityThree',
-                component: vicinityThree
-            }, {
-                path: 'vicinityFour',
-                component: vicinityFour
-            }, {
-                path: 'vicinityFive',
-                component: vicinityFive
-            }, {
-                path: 'vicinitySix',
-                component: vicinitySix
-            }, {
-                path: 'vicinitySeven',
-                component: vicinitySeven
+                path: '/service/:id',
+                component: NearbyService
             }]
         }, {
             //工人端首页
