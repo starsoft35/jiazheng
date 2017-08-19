@@ -38,7 +38,7 @@
                 <div class="badge" v-if="messageCount > 0">{{messageCount}}</div>
                 <div class="title">我的消息</div>
             </router-link>
-            <router-link to="/addresses" class="item">
+            <router-link to="/addresses/unSelect" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/50@3x.png" alt="package">
                 <div class="title">地址管理</div>

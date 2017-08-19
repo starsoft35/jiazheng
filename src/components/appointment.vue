@@ -3,17 +3,17 @@
 		<!--顶部-->
 		<Header title="确认订单"></Header>
 		<!--客户信息-->
-		<div class="clientMessage">
+		<a class="clientMessage" href="#/addresses/select">
 			<!--姓名 电话-->
 			<div class="clientCont clear" v-if="hasDefaultAddr">
-				<div class="contName fl">联系人:{{clientName}}</div>
-				<div class="contMobile fr" v-text="clientMobile"></div>
+				<div class="contName fl">联系人:{{defaultAddr.name}}</div>
+				<div class="contMobile fr">{{defaultAddr.phone}}</div>
 			</div>
 			<!--地址-->
 			<div class="clientPosition" v-if="hasDefaultAddr">
-				<a href="#chosePosition" style="display:inline-block;">
+				<a  style="display:inline-block; position: relative; padding-left: 0.5rem;">
 					<img class="imgLeft fl" src="../../static/37@3x.png"/>
-					<span class="fl" v-text="clientposition"></span>
+					<span class="fl">{{defaultAddr.address}} {{defaultAddr.detail}}</span>
 					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
 			</div>
@@ -21,7 +21,7 @@
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
 			
-		</div>
+		</a>
 		<!--服务时间-->
 		<div class="serveTime">
 			<span class="fl">服务时间</span>
@@ -81,7 +81,7 @@
 		</div>
 		<!--提交预约-->
 		<div class="bottomBtn">
-			<router-link to="/paySubmit">提交预约</router-link>
+			<a @click="serviceAddOrder">提交预约</a>
 		
 		</div>
 		<mt-popup v-model="showTime" class="service-time" position="bottom">
@@ -108,20 +108,6 @@
 		data(){
 			return {
 				score:1,
-				title:'确认订单',
-				//客户姓名
-				clientName:'朱小明',
-				//联系电话
-				clientMobile:'17191191610',
-				//地址
-				clientposition:' 苏州市 观前街 庆元坊20号江苏省 苏州市 观前街 庆元坊20号',
-				//优惠券
-				youhui:10,
-				payOne:150.00,
-				//实付金额
-				payLast:'',
-				
-				
 				defaultAddr: {},
 				hasDefaultAddr: true,
 				showTime: false,
@@ -154,6 +140,7 @@
 			}
 		},
 		created() {
+			this.serviceId = this.$route.params.id
 			if(this.$storage.get('currCoupon')) {
 				this.currCoupon = this.$storage.get('currCoupon')
 				this.useCouponStatus = true
@@ -176,6 +163,7 @@
 			},
 			serveDataConfirm() {
 				this.serveDataSelect = this.serveDataChange
+				console.log(this.serveDataSelect)
 				this.serveData = this.serveDataSelect[0].name.slice(0,6) + ' ' + this.serveDataSelect[1].name
 				this.showTime = false
 			},
@@ -187,6 +175,22 @@
 					return false;
 				}
 				this.score--;
+			},
+			serviceAddOrder() {
+				this.$api.serveAddOrder({
+					addressId: this.defaultAddr.id,
+					contactName: this.defaultAddr.name,
+					contactPhone: this.defaultAddr.phone,
+					couponId: this.currCoupon.id,
+					detailAddr: this.defaultAddr.address,
+					serviceDate: null,
+					serviceId: this.serviceId,
+					serviceMount: this.score,
+					timeInterval: null,
+					timeIntervalId: this.serveDataSelect[1].id
+				}, (res) => {
+					
+				})
 			}
 		}
 	}
@@ -276,6 +280,10 @@
 		width:0.28rem ;
 		height: 0.35rem;
 		margin: 0.2rem 0.25rem  0 0;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		margin-top: -0.17rem;
 		
 	}
 	.imgRight{

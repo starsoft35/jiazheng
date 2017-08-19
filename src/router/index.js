@@ -144,7 +144,7 @@ const router = new Router({
             component: peoplePing
         }, {
             //确认订单 提交预约
-            path: '/appointment',
+            path: '/appointment/:id',
             component: appointment
         }, {
             //优惠券
@@ -302,7 +302,7 @@ const router = new Router({
             }
         }, {
             // 地址列表
-            path: '/addresses',
+            path: '/addresses/:id',
             component: AddressList,
             meta: {
                 requireAuth: true

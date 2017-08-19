@@ -174,6 +174,16 @@ export default {
     serveConfirmOrder(params, callback) {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
+    
+    // 下订单
+    serveAddOrder(params, callback) {
+        http.post(true, '/serviceOrder/add', params, callback)
+    },
+    
+    //一键下单
+    addOneButtonOrder(params, callback) {
+        http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)
+    },
 
     //分享的新人列表
     userMyShared(params, callback) {

@@ -1,9 +1,10 @@
 <template>
 	<div id="box">
 		<Header :title="serveTitle"></Header>
+		
 		<div class="thingList">
 			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/list">
-	            <ul class="thingCont">
+	            <ul class="thingCont" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
 							<img :src="item.listImage"/>
@@ -18,6 +19,7 @@
 	        </Pagination>
 				
 		</div>
+		<div v-if="pagination.content.length == 0" style="padding: 0.5rem;">暂无该服务</div>
 	</div>
 </template>
 
@@ -108,7 +110,7 @@
 	.thingList{
 		width:100%;
 		display: inline-block;
-		background: #FFFFFF;
+		
 	}
 	.thingList li{
 		width: 7.3rem;
@@ -117,6 +119,7 @@
 		margin-left: 0.2rem;
 		border-bottom: 1px solid #f2f2f2;
 		position: relative;
+		background: #FFFFFF;
 	}
 	.thingList a{
 		width: 100%;

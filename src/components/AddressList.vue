@@ -1,13 +1,13 @@
 <template>
     <div class="address-list">
-        <Header title="地址管理" back="/ucenter"></Header>
+        <Header title="地址管理"></Header>
 
         <div class="none-content" v-if="pagination.content.length == 0">暂无地址信息</div>
 
         <Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceAddress/list">        
             <div class="address-container">
                 <div class="item" v-for="(item, index) in pagination.content">
-                    <div class="info">
+                    <div class="info" @click="selectAddr(index)">
                         <div class="mobile">{{item.mobile}}</div>
                         <div class="consigee">联系人：{{item.consigee}}</div>
                         <div class="street">{{item.address}}</div>
@@ -42,8 +42,13 @@
                     content: [],
                     page: 1, 
                     pageSize: 10
-                }
+                },
+                status: ''
             }
+        },
+        created() {
+        	this.status = this.$route.params.id
+        	console.log(this.status)
         },
         methods: {
             // 编辑菜单
@@ -73,7 +78,27 @@
                             self.pagination.content[i].isDefault = 1
                         }
                     }
+                    if(self.status == 'select') {
+                    	self.$router.go(-1)
+                    }
                 })
+            },
+            selectAddr(index) {
+            	let self = this
+            	if(self.status == 'select') {
+                	this.$api.updateDefaultAddress(this.pagination.content[index].id, function(response) {
+	                    self.pagination.content[index].isDefault = 1	
+	                    for (var i in self.pagination.content) {
+	                        if (self.pagination.content[i].isDefault == 1) {
+	                            self.pagination.content[i].isDefault = 0
+	                        }
+	                        if (i == index) {
+	                            self.pagination.content[i].isDefault = 1
+	                        }
+	                    }
+	                    self.$router.go(-1)
+	                })
+                }
             },
             render(response) {
                 for (var i in response.result.list) {

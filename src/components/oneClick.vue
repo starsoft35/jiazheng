@@ -3,17 +3,17 @@
 		<!--顶部-->
 		<Header title="确认订单"></Header>
 		<!--客户信息-->
-		<div class="clientMessage">
+		<a class="clientMessage" href="#/addresses/select">
 			<!--姓名 电话-->
 			<div class="clientCont clear" v-if="hasDefaultAddr">
-				<div class="contName fl">联系人:{{clientName}}</div>
-				<div class="contMobile fr" v-text="clientMobile"></div>
+				<div class="contName fl">联系人:{{defaultAddr.name}}</div>
+				<div class="contMobile fr">{{defaultAddr.phone}}</div>
 			</div>
 			<!--地址-->
 			<div class="clientPosition" v-if="hasDefaultAddr">
-				<a href="#chosePosition" style="display:inline-block;">
+				<a  style="display:inline-block; position: relative; padding-left: 0.5rem;">
 					<img class="imgLeft fl" src="../../static/37@3x.png"/>
-					<span class="fl" v-text="clientposition"></span>
+					<span class="fl">{{defaultAddr.address}} {{defaultAddr.detail}}</span>
 					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
 			</div>
@@ -21,7 +21,7 @@
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
 			
-		</div>
+		</a>
 		<div class="messageBox">
 			<!--服务类型-->
 			<div class="serveTime borderBottom">
@@ -45,7 +45,7 @@
 		<!--备注-->
 		<div class="comment">
 			<div>备注 :</div>
-			<textarea class="textCont" placeholder="描述你的服务内容及要求"></textarea>
+			<textarea class="textCont" v-model="remark" placeholder="描述你的服务内容及要求"></textarea>
 		</div>
 		<!--底部-->
 		<div class="kong"></div>
@@ -92,15 +92,6 @@
 	export default {
 		data() {
 			return {
-				//客户姓名
-				clientName: '朱小明',
-				//联系电话
-				clientMobile: '17191191610',
-				//地址
-				clientposition: ' 苏州市 观前街 庆元坊20号江苏省 苏州市 观前街 庆元坊20号',
-				
-				
-				
 				defaultAddr: {},
 				hasDefaultAddr: true,
 				showTime: false,
@@ -135,6 +126,8 @@
 		          }],
 		        serviceChange: {},
 		        serviceSelect: {},
+		        
+		        remark: ''
 			}
 		},
 		created() {
@@ -171,6 +164,22 @@
 			serviceConfirm() {
 				this.serviceSelect = this.serviceChange
 				this.showService = false
+			},
+			addOneButtonOrder() {
+				this.$api.addOneButtonOrder({
+					addressId: this.defaultAddr.id,
+					contactName: this.defaultAddr.name,
+					contactPhone: this.defaultAddr.phone,
+					remark: this.remark,
+					detailAddr: this.defaultAddr.address,
+					serviceDate: null,
+//					serviceId: this.serviceId,
+					serviceFirstCategoryId: this.serviceSelect.id,
+					timeInterval: null,
+					timeIntervalId: this.serveDataSelect[1].id
+				}, (res) => {
+					
+				})
 			}
 		}
 	}
@@ -272,6 +281,10 @@
 		width: 0.28rem;
 		height: 0.35rem;
 		margin: 0.2rem 0.25rem 0 0;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		margin-top: -0.17rem;
 	}
 	
 	.imgRight {
