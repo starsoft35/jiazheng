@@ -195,7 +195,10 @@ const router = new Router({
         }, {
             //附近
             path: '/nearby',
-            component: Nearby
+            component: Nearby,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //工人端首页
             path: '/orderPart',

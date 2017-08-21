@@ -58,7 +58,7 @@ export default {
         // 加载分页
         loadPage(isRefresh) {
             let self = this
-            // setTimeout(function() {
+            setTimeout(function() {
                 self.$http.page(self.needToken, self.uri, self.param, function(response) {
                     if (isRefresh) {
                         self.param.page = 1
@@ -80,7 +80,7 @@ export default {
                         self.$refs.loadmore.onBottomLoaded()
                     }
                 }, self.param.param)
-            // }, 300)
+            }, 200)
         }
     }
 }

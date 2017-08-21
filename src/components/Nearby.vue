@@ -5,7 +5,7 @@
 		<!--顶部导航-->
 		<div class="navBox">
 			<ul class="nav" :style="menuWidth">
-				<li class="navCont" v-for="(item, index) in menus" @click="changeMenu(index)">
+				<li class="navCont" v-for="(item, index) in menus" @click="changeMenu(index)" :class="{active: item.actived}">
 					{{item.name}}
 				</li>
 			</ul>
@@ -14,7 +14,7 @@
 		
 		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceMenu/getServiceByFirstCategory" ref="pagination">
 			<div class="service-container">
-				<div class="service" v-for="(item, index) in pagination.content">
+				<div class="service" v-for="(item, index) in pagination.content" @click="toDetail(index)">
 					<img :src="item.icon"/>
 					<div class="content">
 						<div class="name">{{item.title}}</div>
@@ -50,7 +50,7 @@
 		},
 		computed: {
 			menuWidth() {
-				let menuWidth = this.menus.length * 1.5
+				let menuWidth = this.menus.length * 1.4
 				if (menuWidth < 7.5) {
 					menuWidth = 7.5
 				}
@@ -63,14 +63,15 @@
 				for (var i in response.result.menus) {
 					self.menus.push({
 						name: response.result.menus[i].name,
-						id: response.result.menus[i].id
+						id: response.result.menus[i].id,
+						actived: false
 					})
 				}
-				self.pagination.param.params.firstCategoryId = self.menus[0].id
-				self.$refs.pagination.refresh()
+				self.changeMenu(0)
 			})
 		},
 		methods: {
+			// 切换菜单
 			changeMenu(index) {
 				this.pagination = {
                     content: [],
@@ -82,7 +83,12 @@
 						}
 					}
 				}
-				console.info(this.pagination.param.params.firstCategoryId)
+				for (let i in this.menus) {
+					this.menus[i].actived = false;
+					if (i == index) {
+						this.menus[i].actived = true;
+					}
+				}
 				this.$refs.pagination.refresh()
 			},
 			render(response) {
@@ -95,6 +101,10 @@
 						price: response.result.list[i].price
 					})
 				}
+			},
+			// 跳转服务详情
+			toDetail(index) {
+				this.$router.push('/serviceDetails/' + this.pagination.content[index].id)
 			}
 		}
 	}
@@ -164,8 +174,12 @@
 		line-height: 0.8rem;
 		float: left;
 		color: #666;
-		margin-left: 0.3rem;
-		
+		height: .8rem;
+		width: 1.4rem;
+		box-sizing: border-box;
+	}
+	.nav li.active {
+		border-bottom: 2px solid #258ef3;
 	}
 	.routerLink{
 		display: block;

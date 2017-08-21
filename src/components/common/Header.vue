@@ -53,7 +53,6 @@
         },
         methods: {
             goBack() {
-                console.info(this.back)
                 if (!this.back) {
                     this.$router.back()
                 } else {
