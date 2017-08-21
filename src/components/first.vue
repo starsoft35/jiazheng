@@ -43,7 +43,7 @@
 						<span>{{nav_cont.vul}}</span>
 					</a>
 				</li>-->
-				<li class="nav_cont" v-for="(item, index) in menuList" :key="index">
+				<li class="nav_cont" v-for="(item, index) in menuList.slice(0,7)" :key="index">
 					<router-link :to="'allServe/'+ item.id">
 						<img :src="item.banner" />
 						<span>{{item.name}}</span>
@@ -198,24 +198,28 @@
 	}
 	.search a{
 		height: 100%;
-		width: 95%;
-		margin:0 auto;
+		width: 100%;
 		display: block;
-		font-size: 0.21rem;
+		font-size: 0.24rem;
 		color: #c9c9c9;
 		line-height: 0.5rem;
+		position: relative;
+		text-align: left;
+		padding-left: 0.65rem;
 	}
 	.search img{
 		width: 0.26rem;
 		height: 0.26rem;
-		margin: 0.15rem 0.1rem 0 0.24rem;
-		float: left;
+		position: absolute;
+		left: 0.2rem;
+		top: 50%;
+		margin-top: -0.13rem;
 	}
 	.search span{
 		height:0.5rem;
 		font-size: 0.25rem;
 		line-height: 0.5rem;
-		float: left;
+		display: block;
 	}
 	/*右边商家入驻链接*/
 	.join{
@@ -243,7 +247,7 @@
 		width: 7.2rem;
 		background: #FFFFFF;
 		height: 3.6rem;
-		margin:0 auto;
+		margin:0.15rem auto 0;
 		display: block;
 		border-radius: 0.35rem;
 	}
@@ -251,6 +255,9 @@
 		width: 100%;
 		height: 100%;
 		margin: auto;
+		overflow: hidden;
+		padding: 0.15rem 0;
+		box-sizing: border-box;
 
 	}
 	
@@ -259,6 +266,7 @@
 		height: 1.50rem;
 		margin-left: 0.25rem;
 		float: left;
+		margin-bottom: 0.15rem;
 		/*background: cadetblue;*/
 	}
 	.nav_cont a{
@@ -287,12 +295,12 @@
 		margin: 0.2rem 0;
 	}
 	.share{
-		width:7.3rem;
+		width:7.2rem;
 		height: 2rem;
 		margin: 0 auto;
 	}
 	.shareCont{
-		width: 3.6rem;
+		width: 3.55rem;
 		height:2rem;
 		position: relative;
 		background: #FFFFFF;

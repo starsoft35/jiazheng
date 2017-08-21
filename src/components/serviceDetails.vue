@@ -117,7 +117,7 @@
 	   methods: {
 	   		goAppointment() {
 	   			this.$storage.set('appointmentData', this.appointmentData)
-	   			this.$router.push('/appointment')
+	   			this.$router.push('/appointment/'+ this.serviceId)
 	   		}
 	   }
 	}

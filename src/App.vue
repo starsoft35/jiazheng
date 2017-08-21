@@ -40,7 +40,8 @@ export default {
         -webkit-font-smoothing: antialiased;
         text-align: center;
         color: #2d92f4;
-        min-height: 100%
+        min-height: 100%;
+        overflow: hidden;
     }
     .router-link-active {
     	 color:#ccc;

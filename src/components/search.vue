@@ -4,7 +4,7 @@
 		<div class="head_part">
 			<div class="search fl">
 				<img src="../../static/search-icon.png"/>
-			    <input type="text" ref="Input" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
+			    <input type="text" ref="Input" @input="searchStatus = false" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
 			</div>
 			<a class="returnFirst fr" @click="back">取消</a>
 		</div>
@@ -20,7 +20,7 @@
 			</div>
 		</div>-->
 		<!--历史搜索-->
-		<div class="search_history">
+		<div class="search_history" v-show="!searchStatus">
 			<div class="history_title">
 				<span class="fl">历史搜索</span>
 				<div class="destroy fr" @click="delelt"></div>
@@ -32,6 +32,21 @@
 				</li>
 			</ul>
 		</div>
+		<div class="thingList" v-show="searchStatus">
+            <ul class="thingCont" v-show="serviceList>0">
+				<li class="things" v-for="(item,index) in serviceList" :key="index">
+					<router-link :to="'/serviceDetails/' +item.id">
+						<img :src="item.listImage"/>
+						<div class="thingName">
+							<div>{{item.title}}</div>
+							<p>{{item.abstractContent}}</p>
+							<span>{{item.price}}</span>
+						</div>
+					</router-link>
+				</li>
+			</ul>
+			<div style="background:#F5F5F9;" v-show="serviceList<1">没有数据</div>	
+		</div>
 	</div>
 </template>
 <script type="text/javascript">
@@ -42,7 +57,10 @@ import { Toast } from 'mint-ui'
 //				serchList:[],
 				histroyList:[],
 				serviceWord: '',
-				currCity: {}
+				currCity: {},
+				
+				searchStatus: false,
+				serviceList: []
 			}
 		},
 		created() {
@@ -82,6 +100,7 @@ import { Toast } from 'mint-ui'
 					}
 			    },(res) => {
 			    	var flag = true
+			    	this.searchStatus = true
 			    	this.histroyList.forEach((value) => {
 			    		if(value == this.serviceWord.trim()) {
 			    			flag = false
@@ -92,6 +111,7 @@ import { Toast } from 'mint-ui'
 			    		this.histroyList.push(this.serviceWord)
 			    		this.$storage.set('serveWord',this.histroyList)
 			    	}
+			    	this.serviceList = res.result.list
 			    })
 			},
 			searchHistory(value) {
@@ -121,7 +141,8 @@ import { Toast } from 'mint-ui'
 		.head_part{
 			width: 7rem;
 			height: 0.5rem;
-			margin:0.25rem auto;
+			padding:0.25rem 0;
+			margin: 0 auto;
 			
 		}
 		.search{
@@ -235,4 +256,65 @@ import { Toast } from 'mint-ui'
 			background-size: 100% 100%;
 			margin-top: 0.12rem;
 		}
+		/*物品列表*/
+	.thingList{
+		width:100%;
+		display: inline-block;
+		background: #FFFFFF;
+	}
+	.thingList li{
+		width: 7.3rem;
+		height: 1.4rem;
+		padding: 0.2rem 0;
+		margin-left: 0.2rem;
+		border-bottom: 1px solid #f2f2f2;
+		position: relative;
+	}
+	.thingList a{
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	/*左边图片*/
+	.thingList img{
+		width:1.40rem ;
+		height:1.40rem ;
+		position: absolute;
+		left:0rem ;
+		top: 0.2rem;
+	}
+	/*右边内容*/
+	.thingName{
+		width: 5.5rem;
+		height: 1.4rem;
+		position: absolute;
+		left: 1.7rem;
+		top: 0.2rem;
+		text-align: left;
+	}
+	/*商品名称*/
+	.thingName div{
+		width: 100%;
+		height: 0.45rem;
+		font-size:0.25rem ;
+		line-height: 0.45rem;
+		color: #222222;
+		margin-bottom: 0.15rem;
+	}
+	/*介绍*/
+	.thingName p{
+		width: 100%;
+		height: 0.45rem;
+		font-size:0.2rem ;
+		line-height: 0.45rem;
+		color: #aaa;
+	}
+	/*价格*/
+	.thingName span{
+		width: 100%;
+		height: 0.36rem;
+		font-size:0.28rem ;
+		line-height: 0.36rem;
+		color: #ff5400;
+	}
 </style>
