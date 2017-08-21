@@ -64,13 +64,13 @@
             </router-link>
         </div>
 
-        <div class="menu-container">
-            <router-link to="/address" class="item">
+        <div class="menu-container" v-if="roles.length > 1">
+            <div class="item" @click="toggleRole">
                 <div class="arrow"></div>
                 <img src="../../static/54@3x.png" alt="package">
-                <div class="label">工人版</div>
+                <div class="label">用户版</div>
                 <div class="title">角色切换</div>
-            </router-link>
+            </div>
         </div>
         <Menu actived="four"></Menu>
     </div>
@@ -81,6 +81,7 @@
     export default {
         data: function() {
             return {
+                roles: [],
                 messageCount: 0, // 消息数量
                 nickname: '',   // 头像
                 mobile: '',     // 昵称
@@ -107,17 +108,37 @@
                 self.hotline = response.result.linkPhone
                 self.messageCount = response.result.noticeNum
                 self.$storage.set('aboutus', response.result.aboutUs)
+                self.roles = response.result.roles
+                if (self.roles.length > 1) {
+                    for (let i in self.roles) {
+                        if (self.roles[i].isCurrent == 1 && self.roles[i].roleName == '工人版') {
+                            self.$router.push('/worker/ucenter')
+                        }
+                    }
+                }
             })
         },
         methods: {
-            toBalance: function() {
+            // 跳转余额
+            toBalance() {
                 this.$router.push('/balance')
             },
-            toCoupon: function() {
+            // 跳转优惠券
+            toCoupon() {
                 this.$router.push('/coupons')
             },
-            toProfile: function() {
+            // 跳转个人中心
+            toProfile() {
                 this.$router.push('/profile')
+            },
+            // 切换角色
+            toggleRole() {
+                let self = this
+                this.$api.toggleRole(function(response) {
+                    if (response.result.role == 2) {
+                        self.$router.push('/worker/ucenter')
+                    }
+                });
             }
         }
     }

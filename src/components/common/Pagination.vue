@@ -23,6 +23,11 @@ export default {
         uri: {
             type: String,
             required: true
+        },
+        autoload: {
+            type: Boolean,
+            default: true,
+            required: false
         }
     },
     data() {
@@ -31,7 +36,9 @@ export default {
         }
     },
     mounted() {
-        this.loadPage()
+        if (this.autoload) {
+            this.loadPage()
+        }
     },
     methods: {
         // 下拉分页加载
@@ -40,12 +47,18 @@ export default {
         },
         // 上拉刷新加载
         loadTop() {
+            this.param.page = 1
+            this.param.content = []
+            this.loadPage(true)
+        },
+        // 刷新
+        refresh() {
             this.loadPage(true)
         },
         // 加载分页
         loadPage(isRefresh) {
             let self = this
-            // setTimeout(function() {
+            setTimeout(function() {
                 self.$http.page(self.needToken, self.uri, self.param, function(response) {
                     if (isRefresh) {
                         self.param.page = 1
@@ -67,8 +80,7 @@ export default {
                         self.$refs.loadmore.onBottomLoaded()
                     }
                 }, self.param.param)
-            // }, 300)
-            
+            }, 200)
         }
     }
 }

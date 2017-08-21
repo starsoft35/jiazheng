@@ -117,6 +117,11 @@ export default {
         http.get(true, '/serviceMenu/getNearlyServices', callback)
     },
 
+    // 切换角色
+    toggleRole(callback) {
+        http.get(true, '/user/changeRole', callback)
+    },
+
 
     // 易
     //首页

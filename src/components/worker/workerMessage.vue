@@ -1,119 +1,93 @@
 <template>
-	<div id="box">
-		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<p v-text="title"></p>
-			</div>
-		</div>
-		<!--消息列表-->
-		<div class="messageList" v-for="(msgList,index) in msg">
-			<div class="messageTime">{{msgList.msgTime}}</div>
-			<div class="cont">
-				<span class="contTop">{{msgList.msgTop}}</span>
-				<span class="contBottom">{{msgList.msgBottom}}</span>
-			</div>
-		</div>
-		
-		<div class="kong"></div>
-		<!--底部导航-->
-		<workerPart actived="third"></workerPart>
-	</div>
+    <div class="message-container">
+        <Header title="消息" back="hidden"></Header>
+
+        <div class="none-message" v-if="pagination.content.length == 0">
+            <div class="bg"></div>
+            暂无消息
+        </div>
+
+        <Pagination :render="render" :param="pagination" :need-token="true" uri="/notice/list">
+            <div v-for="item in pagination.content">
+                <div class="date">{{item.date}}</div>
+                <div class="message">
+                    <div class="title">{{item.label}}</div>
+                    <div class="content">{{item.content}}</div>
+                </div>
+            </div>
+        </Pagination>
+
+		<WorkerMenu actived="third"></WorkerMenu>
+    </div>
 </template>
 
-<script type="text/javascript">
-	export default {
-		data(){
-			return {
-				title:'消息',
-				msg:[
-					{
-						msgTime:'2017年10月10日',
-						msgTop:'您有一笔新的订单',
-						msgBottom:'您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单'
-					},{
-						msgTime:'2017年10月10日',
-						msgTop:'您有一笔新的订单',
-						msgBottom:'您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单'
-					},{
-						msgTime:'2017年10月10日',
-						msgTop:'您有一笔新的订单',
-						msgBottom:'您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单'
-					},{
-						msgTime:'2017年10月10日',
-						msgTop:'您有一笔新的订单',
-						msgBottom:'您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单您有一笔新的订单'
-					},
-				]
-			}
-		}
-	}
+<script>
+    export default {
+        data() {
+            return {
+                pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10
+                }
+            }
+        },
+        methods: {
+            render(response) {
+                for (var i in response.result.list) {
+                    this.pagination.content.push({
+                        date: response.result.list[i].send_time,
+                        label: response.result.list[i].title,
+                        content: response.result.list[i].content
+                    })
+                }
+            }
+        }
+    }
 </script>
 
 <style scoped>
-	#box {
-		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
-	}
-	.headPart{
-		width: 100%;
-		height: 0.92rem;
-		background: #2d91f4;
-		overflow: hidden;
-	}
-	.headCont{
-		width: 7rem;
-		height: 0.32rem;
-		margin: 0.25rem;
-		/*border: 1px solid red;*/
-	}
-	.headCont a{
-		display: block;
-	}
-	.headCont p{
-		height: 0.32rem;
-		color: #FFFFFF;
-		font-size: 0.32rem;
-	}
-	/*消息列表*/
-	.messageList{
-		width: 7rem;
-		display: inline-block;
-		margin:0.25rem 0.25rem 0;
-	}
-	/*时间*/
-	.messageTime{
-		width:2.5rem ;
-		height: 0.4rem;
-		background:#939395;
-		color:#FFFFFF;
-		font-size:0.2rem;
-		line-height:0.4rem;
-		border-radius: 0.3rem;
-		margin: 0 auto;
-	}
-	.cont{
-		width: 7rem;
-		margin:0.2rem 0 0.4rem;
-		display: inline-block;
-		text-align: left;
-		background: #FFFFFF;
-		border-radius: 0.3rem;
-	}
-	.contTop{
-		width: 6.3rem;
-		display: inline-block;
-		font-size: 0.26rem;
-		color: #222222;
-		margin:0.35rem 0 0 0.25rem ;
-	}
-	.contBottom{
-		display: inline-block;
-		width: 6.3rem;
-		font-size: 0.22rem;
-		color: #CCCCCC;
-		margin:0.3rem 0 0.25rem 0.32rem ;
-	}
+    .message-container {
+        font-size: .26rem;
+        color: #666;
+    }
+    .none {
+        display: none;
+    }
+    .none-message {
+        margin: 2rem auto;
+        font-size: .26rem;
+        color: #ccc;
+        width: 2rem;
+        
+        height: 2.5rem;
+    }
+    .none-message .bg {
+        width: 100%;
+        background: url("../../../static/44@3x.png") no-repeat top center;
+        background-size: 100%;
+        height: 2rem;
+    }
+    .date {
+        font-size: .22rem;
+        color: #FFF;
+        background: #999;
+        padding: .05rem .25rem;
+        display: inline-block;
+        border-radius: .42rem;
+        margin: .24rem auto;
+    }
+    .message {
+        background: #FFF;
+        border-radius: .15rem;
+        padding: .2rem;
+        margin: 0 .22rem .3rem;
+        font-size: .26rem;
+        text-align: left;
+    }
+    .message .title {
+        font-size: .28rem;
+        font-weight: 600;
+        margin-bottom: .2rem;
+    }
 </style>
