@@ -49,8 +49,6 @@ import serveType from '@/components/serveType'
 import Order from '@/components/Order'
 //附近
 import Nearby from '@/components/Nearby'
-//附近 一
-import NearbyService from '@/components/NearbyService'
 
 //工人端
 //订单
@@ -64,17 +62,13 @@ import orderPartThree from '@/components/worker/orderPartThree'
 //已取消
 import orderPartFour from '@/components/worker/orderPartFour'
 //派单
-import sendOrders from '@/components/worker/sendOrders'
+import Distribute from '@/components/worker/Distribute'
 //派送给个人
 import sendPeople from '@/components/worker/sendPeople'
-//派单下的待派单
-import sendOrderLeft from '@/components/worker/sendOrderLeft'
-//派单下的已派单
-import sendOrderRight from '@/components/worker/sendOrderRight'
 //消息
 import workerMessage from '@/components/worker/workerMessage'
 //我的
-import mine from '@/components/worker/mine'
+import WorkerUCenter from '@/components/worker/UCenter'
 
 
 
@@ -201,14 +195,7 @@ const router = new Router({
         }, {
             //附近
             path: '/nearby',
-            component: Nearby,
-            children: [{
-                path: '',
-                component: NearbyService
-            }, {
-                path: '/service/:id',
-                component: NearbyService
-            }]
+            component: Nearby
         }, {
             //工人端首页
             path: '/orderPart',
@@ -231,18 +218,8 @@ const router = new Router({
             }]
         }, {
             //工人端派单
-            path: '/sendOrders',
-            component: sendOrders,
-            children: [{
-                path: '',
-                component: sendOrderLeft,
-            }, {
-                path: 'sendOrderLeft',
-                component: sendOrderLeft,
-            }, {
-                path: 'sendOrderRight',
-                component: sendOrderRight,
-            }]
+            path: '/distribute',
+            component: Distribute
         }, {
             //派单
             path: '/sendPeople',
@@ -253,8 +230,8 @@ const router = new Router({
             component: workerMessage,
         }, {
             //工人个人中心
-            path: '/mine',
-            component: mine,
+            path: '/worker/ucenter',
+            component: WorkerUCenter,
         },
 
 

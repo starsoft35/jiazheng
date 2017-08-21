@@ -8,9 +8,9 @@ import Header from '@/components/common/Header'
 import http from './api/http'
 import api from './api/api'
 import storage from './api/storage'
-import {isEmptyObject} from './api/tool'
+import { isEmptyObject } from './api/tool'
 import accessToken from './api/accessToken'
-import workerPart from '@/components/common/workerPart'
+import WorkerMenu from '@/components/common/WorkerMenu'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
@@ -20,7 +20,8 @@ Vue.config.devtools = true
 
 Vue.component('Menu', Menu)
 Vue.component('Header', Header)
-Vue.component('workerPart', workerPart)
+Vue.component('workerPart', WorkerMenu)
+Vue.component('WorkerMenu', WorkerMenu)
 Vue.component('Pagination', Pagination)
 
 Vue.use(MintUI)
