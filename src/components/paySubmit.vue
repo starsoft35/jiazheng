@@ -12,44 +12,31 @@
 		<div class="order">
 			<div class="partTop clear">
 				<div class="fl">订单号</div>
-				<span class="fr">12346546587987</span>
+				<span class="fr">{{orderDetail.orderNo}}</span>
 			</div>
 			
 			<div class="partBottom">
 				<div class="fl">实付金额</div>
-				<span class="fr">￥140.00</span>
+				<span class="fr">&yen;{{orderDetail.actualPrice}}</span>
 			</div>
+		</div>
+		<div class="serveBottom" v-if="orderKind.value == 2">
+			<span class="fl">优惠券</span>
+			<router-link to="/coupons/couponsLeft/use">
+				<img class="fr" src="../../static/34@3x.png"/>
+				<div class="fr" v-show="useCouponStatus">{{parseInt(currCoupon.price)}}元优惠券</div>
+				<div class="fr" v-show="!useCouponStatus">使用优惠券</div>
+			</router-link>
+				
 		</div>
 		<!--选择支付方式-->
 		<div class="payWay">
 			<span>请选择支付方式</span>
-			<div class="payChose clear">
-				<div class="payLeft fl clear">
-					<img src="../../static/55@2x.png"/>
-					<div class="payText fl">余额支付  :100</div>
-				</div>
-				<div class="payRight fr clear">
-					<img src="../../static/35@2x.png"/>
-				</div>
-			</div>
-			<div class="payChose clear">
-				<div class="payLeft fl clear">
-					<img src="../../static/41@2x.png"/>
-					<div class="payText fl">微信支付</div>
-				</div>
-				<div class="payRight fr clear">
-					<img src="../../static/35@2x.png"/>
-				</div>
-			</div>
-			<div class="payChose clear">
-				<div class="payLeft fl clear">
-					<img src="../../static/57@2x.png"/>
-					<div class="payText fl">支付宝支付</div>
-				</div>
-				<div class="payRight fr clear">
-					<img src="../../static/35@2x.png"/>
-				</div>
-			</div>
+			<mt-radio
+			  align="right"
+			  v-model="payWayId"
+			  :options="options">
+			</mt-radio>
 		</div>
 		<div class="kong"></div>
 		<!---->
@@ -63,22 +50,47 @@
 	export default {
 		data(){
 			return {
-//				payWay:[
-//					{	
-//						backSrc:'@../../static/41@2x.png',
-//						wayChose:'余额支付',
-//						paySrc:'@../../static/36@2x.png'
-//					},{	
-//						backSrc:'@../../static/55@2x.png',
-//						wayChose:'微信支付',
-//						paySrc:'../../static/35@2x.png'
-//					},{	
-//						backSrc:'@../../static/56@2x.png',
-//						wayChose:'支付宝支付',
-//						paySrc:'../../static/35@2x.png'
-//					}
-//				]
+				orderSn: undefined,
+				orderDetail: {},
+				orderKind: {},
+				currCoupon: {
+		        	price: 0
+		        },
+		        useCouponStatus: false,
+		        
+		        options: [
+				  {
+				    label: '余额支付',
+				    value: '1'
+				  },
+				  {
+				    label: '微信支付',
+				    value: '2'
+				  },
+				  {
+				    label: '支付宝支付',
+				    value: '3'
+				  }
+				],
+				
+				payWayId: '1'
 			}
+		},
+		created() {
+			this.orderSn = this.$route.params.id
+			if(this.$storage.get('currCoupon')) {
+				this.currCoupon = this.$storage.get('currCoupon')
+				this.useCouponStatus = true
+				this.$storage.remove('currCoupon')
+			}
+			this.$api.serveOrderDetail({
+	        	params:{
+				    orderNo: this.orderSn
+				}
+		    },(res) => {
+		    	this.orderDetail = res.result
+		    	this.orderKind = res.result.orderType
+		    })
 		}
 	}
 </script>
@@ -120,7 +132,7 @@
 	.reminder{
 		width:7.5rem;
 		height: 2rem;
-		background: url("../../static/payback.png") no-repeat;
+		background: url("../../static/paybackTwo.png") no-repeat;
 		background-size: 100% 100%;
 		color: #FFFFFF;
 		text-align: left;
@@ -133,7 +145,7 @@
 		font-size: 0.26rem;
 		position: absolute;
 		left: 0.25rem;
-		top: 0.7rem;
+		top: 0.6rem;
 	}
 	.reminder p{
 		width: 7rem;
@@ -154,11 +166,10 @@
 	}
 	.partTop{
 		width: 7rem;
-		height: 0.24rem;
 		position: absolute;
 		left: 0.25rem;
 		top: 0.3rem;
-		color: #c9c9c9;
+		color: #888;
 	}
 	.partBottom{
 		width: 7rem;
@@ -252,5 +263,43 @@
 		font-size: 0.3rem;
 		line-height: 0.8rem;
 		color: #FFFFFF;
+	}
+	/*新增*/
+	.serveBottom{
+		width: 7rem;
+		padding: 0 0.25rem;
+		border-top: 2px solid #f2f2f2;
+		height: 0.88rem;
+		display: block;
+		background: #FFFFFF;
+		margin-bottom: 0.3rem;
+	}
+	.serveBottom span{
+		width:1rem;
+		height:0.88rem;
+		color:#222222 ;
+		font-size: 0.26rem;
+		text-align: left;
+		line-height: 0.88rem;
+	}
+	.serveBottom a{
+		width: 3.5rem;
+		height: 0.88rem;
+		display: block;
+		float: right;
+	}
+	.serveBottom img{
+		width: 0.12rem;
+		height:0.22rem ;
+		margin-top:0.33rem ;
+	}
+	.serveBottom div{
+		width:2rem ;
+		height: 0.88rem;
+		text-align: right;
+		color: #222222;
+		font-size: 0.26rem;
+		line-height: 0.88rem;
+		margin-right: 0.2rem;
 	}
 </style>

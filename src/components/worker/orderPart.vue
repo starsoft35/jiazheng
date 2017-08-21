@@ -1,25 +1,24 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<p v-text="title"></p>
-			</div>
+		<Header title="订单"></Header>
+		<div style="height: 0.8rem;">
+			<ul class="navBox">
+				<li>
+					<router-link class="routerLink" to="/orderPart/orderPartOne" replace>待服务</router-link>
+				</li>
+				<li>
+					<router-link class="routerLink" to="/orderPart/orderPartTwo" replace>服务中</router-link>
+				</li>
+				<li>
+					<router-link class="routerLink" to="/orderPart/orderPartThree" replace>已完成</router-link>
+				</li>
+				<li>
+					<router-link class="routerLink" to="/orderPart/orderPartFour" replace>已取消</router-link>
+				</li>
+			</ul>
 		</div>
-		<ul class="navBox">
-			<li>
-				<router-link class="routerLink" to="/orderPart/orderPartOne">待服务</router-link>
-			</li>
-			<li>
-				<router-link class="routerLink" to="/orderPart/orderPartTwo">服务中</router-link>
-			</li>
-			<li>
-				<router-link class="routerLink" to="/orderPart/orderPartThree">已完成</router-link>
-			</li>
-			<li>
-				<router-link class="routerLink" to="/orderPart/orderPartFour">已取消</router-link>
-			</li>
-		</ul>
+		
 		<router-view></router-view>
 		<!--底部导航-->
 		<workerPart actived="first"></workerPart>
@@ -65,6 +64,9 @@
 	}
 	/*顶部导航*/
 	.navBox{
+		position: fixed;
+		left: 0;
+		top: 0.92rem;
 		width: 7.5rem;
 		height: 0.78rem;
 		border-bottom: 0.02rem solid #f2f2f2;
@@ -72,15 +74,17 @@
 		display: flex;
 		-webkit-box-orient: horizontal;
 		display: -webkit-box;
+		z-index: 50;
 	}
 	.navBox li{
 		-webkit-box-flex: 1;
 	}
 	.routerLink{
-		font-size: 0.26rem;
+		font-size: 0.28rem;
 		color:#222222;
 		line-height:0.78rem ;
 		display: inline-block;
+		padding: 0 0.2rem;
 	}
 	.router-link-active {
 		color: #2173d6;

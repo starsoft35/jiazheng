@@ -115,7 +115,10 @@ const router = new Router({
             component: second
         }, {
             path: '/search',
-            component: search
+            component: search,
+            meta: {
+                keepAlive: true
+            }
         },
         //全部服务路由
         {
@@ -176,7 +179,7 @@ const router = new Router({
             component: orderDetail
         }, {
             //订单支付
-            path: '/paySubmit',
+            path: '/paySubmit/:id',
             component: paySubmit
         }, {
             //订单支付
@@ -214,8 +217,8 @@ const router = new Router({
             path: '/orderPart',
             component: orderPart,
             children: [{
-                path: '',
-                component: orderPartOne
+                path: '/orderPart',
+                redirect: 'orderPartOne'
             }, {
                 path: 'orderPartOne',
                 component: orderPartOne
@@ -336,7 +339,7 @@ const router = new Router({
             }
         }, {
             // 地址搜索
-            path: '/addresses/search',
+            path: '/addr/search',
             component: AddressSearch,
             meta: {
                 requireAuth: true,

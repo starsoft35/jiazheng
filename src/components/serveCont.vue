@@ -19,7 +19,7 @@
 	        </Pagination>
 				
 		</div>
-		<div v-if="pagination.content.length == 0" style="padding: 0.5rem;">暂无该服务</div>
+		<div v-if="pagination.content.length == 0" class="none-data-tip">暂无该服务</div>
 	</div>
 </template>
 

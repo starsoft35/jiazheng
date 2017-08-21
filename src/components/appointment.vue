@@ -17,7 +17,7 @@
 					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
 			</div>
-			<router-link v-if="!hasDefaultAddr" to="" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
+			<router-link v-if="!hasDefaultAddr" to="/addresses/select" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
 			
@@ -104,6 +104,7 @@
 </template>
 
 <script type="text/javascript">
+	import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
@@ -132,7 +133,9 @@
 		        serveDataSelect: [],
 		        serveData: '',
 		        
-		        currCoupon: {},
+		        currCoupon: {
+		        	price: 0
+		        },
 		        useCouponStatus: false,
 		        
 		        appointmentData: {}
@@ -144,6 +147,7 @@
 			if(this.$storage.get('currCoupon')) {
 				this.currCoupon = this.$storage.get('currCoupon')
 				this.useCouponStatus = true
+				this.$storage.remove('currCoupon')
 			}
 			this.appointmentData = this.$storage.get('appointmentData')
 			this.$api.serveConfirmOrder(null, (res) => {
@@ -177,19 +181,27 @@
 				this.score--;
 			},
 			serviceAddOrder() {
+				if(this.serveDataSelect.length !== 2) {
+					Toast({
+	                    message: '请选择服务时间',
+	                    position: 'bottom',
+	                    duration: 1000
+	                })
+					return
+				}
 				this.$api.serveAddOrder({
 					addressId: this.defaultAddr.id,
 					contactName: this.defaultAddr.name,
 					contactPhone: this.defaultAddr.phone,
 					couponId: this.currCoupon.id,
 					detailAddr: this.defaultAddr.address,
-					serviceDate: null,
+					serviceDate: this.serveDataSelect[0].timestamp,
 					serviceId: this.serviceId,
 					serviceMount: this.score,
-					timeInterval: null,
+					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
-					
+					this.$router.push('/paySubmit/' + res.result.orderSn)
 				})
 			}
 		}

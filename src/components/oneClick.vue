@@ -17,7 +17,7 @@
 					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
 			</div>
-			<router-link v-if="!hasDefaultAddr" to="" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
+			<router-link v-if="!hasDefaultAddr" to="/addresses/select" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
 			
@@ -51,7 +51,7 @@
 		<div class="kong"></div>
 		<!--按钮-->
 		<div class="bottomBtn">
-			<router-link to="/paySubmitTwo">提交预约</router-link>
+			<span @click="addOneButtonOrder">提交预约</span>
 		</div>
 		<mt-popup v-model="showTime" class="service-time" position="bottom">
 			<div class="showTime-content">
@@ -89,6 +89,7 @@
 </template>
 
 <script type="text/javascript">
+	import { Toast } from 'mint-ui'
 	export default {
 		data() {
 			return {
@@ -166,19 +167,35 @@
 				this.showService = false
 			},
 			addOneButtonOrder() {
+				if(!this.serviceSelect.name) {
+					Toast({
+	                    message: '请选择服务类型',
+	                    position: 'bottom',
+	                    duration: 1000
+	                })
+					return
+				}
+				if(this.serveDataSelect.length !== 2) {
+					Toast({
+	                    message: '请选择服务时间',
+	                    position: 'bottom',
+	                    duration: 1000
+	                })
+					return
+				}
 				this.$api.addOneButtonOrder({
 					addressId: this.defaultAddr.id,
 					contactName: this.defaultAddr.name,
 					contactPhone: this.defaultAddr.phone,
 					remark: this.remark,
 					detailAddr: this.defaultAddr.address,
-					serviceDate: null,
+					serviceDate: this.serveDataSelect[0].timestamp,
 //					serviceId: this.serviceId,
 					serviceFirstCategoryId: this.serviceSelect.id,
-					timeInterval: null,
+					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
-					
+					this.$router.push('/paySubmit/' + res.result.orderSn)
 				})
 			}
 		}
@@ -389,7 +406,7 @@
 		left: 0;
 		bottom: 0;
 	}
-	.bottomBtn a{
+	.bottomBtn span{
 		display: block;
 		width: 100%;
 		height: 100%;

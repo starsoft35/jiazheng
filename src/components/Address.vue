@@ -88,7 +88,7 @@
         },
         methods: {
             toAddressSearch() {
-                this.$router.push('/addresses/search')
+                this.$router.push('/addr/search')
             },
             // 保存地址
             saveAddress() {
@@ -123,13 +123,13 @@
 
                 let self = this
                 this.$api.editAddress(this, function(response) {
-                    self.$router.replace('/addresses')
+                    self.$router.go(-1)
                 })
             }
         },
         // 路由钩子(离开)
         beforeRouteLeave(to, from, next) {
-            if (to.path != '/addresses/search') {
+            if (to.path != '/addr/search') {
                 this.id = undefined
                 this.consigee = ''
                 this.mobile = ''

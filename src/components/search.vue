@@ -33,7 +33,7 @@
 			</ul>
 		</div>
 		<div class="thingList" v-show="searchStatus">
-            <ul class="thingCont" v-show="serviceList>0">
+            <ul class="thingCont" v-show="serviceList.length>0">
 				<li class="things" v-for="(item,index) in serviceList" :key="index">
 					<router-link :to="'/serviceDetails/' +item.id">
 						<img :src="item.listImage"/>
@@ -45,8 +45,14 @@
 					</router-link>
 				</li>
 			</ul>
-			<div style="background:#F5F5F9;" v-show="serviceList<1">没有数据</div>	
+			<div style="background:#F5F5F9;" v-show="serviceList.length<1">没有数据</div>	
 		</div>
+		<confirm-modal :show="show" 
+			@cancel_modal="cancel_modal" 
+			@confirm_modal="confirm_modal" 
+			@closeModal="show = false" 
+			message="确定删除历史记录?">
+		</confirm-modal>
 	</div>
 </template>
 <script type="text/javascript">
@@ -54,34 +60,52 @@ import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
-//				serchList:[],
+				show: false,
 				histroyList:[],
 				serviceWord: '',
 				currCity: {},
 				
 				searchStatus: false,
-				serviceList: []
+				serviceList: [],
+				
+				page: 1,
+				page_size: 10
 			}
 		},
 		created() {
-			let openCity = this.$storage.get('currCity')
-			if(openCity) {
-				this.currCity = openCity
-			}
-			var historyWord = this.$storage.get('serveWord')
-			if(historyWord) {
-				this.histroyList = historyWord
-			}
+			this.initData()
 		},
 		mounted() {
 			this.$refs.Input.focus()
 		},
 		methods:{
+			initData() {
+				let openCity = this.$storage.get('currCity')
+				if(openCity) {
+					this.currCity = openCity
+				}
+				var historyWord = this.$storage.get('serveWord')
+				if(historyWord) {
+					this.histroyList = historyWord
+				}
+			},
 			back() {
 				this.$router.go(-1)
 			},
 			delelt(){
+				this.show = true
+			},
+			cancel_modal() {
+				this.show = false
+			},
+			confirm_modal() {
 				this.histroyList =[];
+				this.$storage.remove('serveWord')
+				Toast({
+				  message: '删除成功',
+				  position: 'bottom',
+				  duration: 1000
+				});
 			},
 			searchService() {
 				if(!this.serviceWord) {
@@ -96,7 +120,9 @@ import { Toast } from 'mint-ui'
 				this.$api.serviceSearch({
 		        	params:{
 					    cityName: this.currCity.name,
-					    keyword: this.serviceWord
+					    keyword: this.serviceWord,
+					    page: this.page,
+					    page_size: this.page_size
 					}
 			    },(res) => {
 			    	var flag = true
@@ -119,9 +145,20 @@ import { Toast } from 'mint-ui'
 				this.searchService()
 			}
 		},
-		computed:{
-			
-		}
+		beforeRouteEnter (to, from, next) {
+	    	if(/serviceDetails/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			vm.initData()
+	    			vm.serviceWord = ''
+	    			vm.$refs.Input.focus()
+	            	vm.searchStatus = false
+	        	})
+	    	}
+	    	
+	    	
+		},
 	}
 </script>
 
@@ -244,7 +281,7 @@ import { Toast } from 'mint-ui'
 		}
 		.histroyCont{
 			float: left;
-			margin: 0 0.15rem 0.2rem 0;
+			margin: 0 0.15rem 0.3rem 0;
 			border-radius: 0.25rem;
 			background:#eff0f1;
 			height: 0.5rem;

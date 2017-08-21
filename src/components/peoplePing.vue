@@ -12,28 +12,34 @@
 			</ul>
 		</div>
 		<!--用户评价-->
-		<div class="ping" v-for="(item,index) in evaluateList" :key="index">
-			<div class="client">
-				<div class="clientMessage clear">
-					<!--头像-->
-					<div class="clientImg fl">
-						<img :src="item.headImage"/>
-						<span>{{item.nickName}}</span>
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/evaluate/list">
+			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+				<div class="ping" v-for="(item,index) in pagination.content" :key="index">
+					<div class="client">
+						<div class="clientMessage clear">
+							<!--头像-->
+							<div class="clientImg fl">
+								<img :src="item.headImage"/>
+								<span>{{item.nickName}}</span>
+							</div>
+							<!--星星-->
+							<ul class="clientXing fr clear">
+								<li class="clientPing active" v-for="n in item.starLevel">
+									<!--<img src="@../../static/39@3x.png />-->
+								</li>
+								<li class="clientPing" v-for="n in  5-item.starLevel">
+									<!--<img src="@../../static/39@3x.png" />-->
+								</li>
+							</ul>
+						</div>
+						<span>{{item.eTime}}</span>
+						<p>{{item.content}}</p>
 					</div>
-					<!--星星-->
-					<ul class="clientXing fr clear">
-						<li class="clientPing active" v-for="n in item.starLevel">
-							<!--<img src="@../../static/39@3x.png />-->
-						</li>
-						<li class="clientPing" v-for="n in  5-item.starLevel">
-							<!--<img src="@../../static/39@3x.png" />-->
-						</li>
-					</ul>
 				</div>
-				<span>{{item.eTime}}</span>
-				<p>{{item.content}}</p>
 			</div>
-		</div>
+				
+        </Pagination>
+		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无评论</div>
 		
 	</div>
 </template>
@@ -45,21 +51,47 @@
 				title:'评价列表',
 				evaluateList: [],
 				serviceId: undefined,
-				percent: undefined
+				percent: undefined,
+				
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {}
+                },
 				
 			}
 		},
 		created() {
 			this.serviceId = this.$route.params.id
-			this.$api.evaluateList({
-	        	params:{
+			this.pagination.param = {
+				params:{
 				    serviceId: this.serviceId
 				}
-		    },(res) => {
-		    	this.evaluateList = res.result.list
-		    	this.percent = parseInt(res.result.percent)
-		    	
-		    })
+			}
+//			this.$api.evaluateList({
+//	        	params:{
+//				    serviceId: this.serviceId
+//				}
+//		    },(res) => {
+//		    	this.evaluateList = res.result.list
+//		    	this.percent = parseInt(res.result.percent)
+//		    	
+//		    })
+		},
+		methods: {
+			render(res) {
+                this.percent = parseInt(res.result.percent)
+                res.result.list.forEach((item) => {
+                	this.pagination.content.push({
+                        content: item.content,
+                        eTime: item.eTime,
+                        headImage: item.headImage,
+                        nickName: item.nickName,
+                        starLevel: item.starLevel
+                    })
+                })
+            }
 		}
 	}
 </script>
@@ -193,7 +225,6 @@
 	}
 	.client p{
 		width: 7rem;
-		height: 0.25rem;
 		margin: 0.25rem 0;
 		font-size: 0.25rem;
 		color: #222222;
