@@ -94,6 +94,9 @@ import Login from '@/components/Login'
 import BindMobile from '@/components/BindMobile'
 // 地址搜索
 import AddressSearch from '@/components/AddressSearch'
+// 微信OAuth
+import OAuth from '@/components/OAuth'
+
 
 Vue.use(Router)
 
@@ -315,7 +318,7 @@ const router = new Router({
             path: '/bind/mobile',
             component: BindMobile,
             meta: {
-                requireAuth: true
+                requireAuth: false
             }
         }, {
             // 地址搜索
@@ -325,6 +328,10 @@ const router = new Router({
                 requireAuth: true,
                 keepAlive: true
             }
+        }, {
+            // 微信OAuth
+            path: '/oauth',
+            component: OAuth
         }
     ]
 })

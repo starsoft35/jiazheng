@@ -67,8 +67,8 @@
                     let redirectURI = '/ucenter'
                     if (self.$storage.get('history_url')) {
                         redirectURI = self.$storage.get('history_url')
+                        self.$storage.remove('history_url')
                     }
-                    alert(redirectURI)
                     self.$router.replace(redirectURI)
                 })
             },

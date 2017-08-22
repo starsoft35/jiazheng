@@ -2,7 +2,7 @@
 
     // 获取访问凭证
     window.getAccessToken = function() {
-        let token = JSON.parse(window.localStorage.getItem('token'))
+        var token = JSON.parse(window.localStorage.getItem('token'))
         if (token) {
             return token.accessToken
         }

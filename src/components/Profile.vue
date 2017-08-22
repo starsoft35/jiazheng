@@ -87,6 +87,8 @@
                     self.$api.logout(function() {
                         self.$router.push('/login')
                         self.$storage.remove('history_url')
+                        self.$storage.remove('oauthInfo')
+                        self.$storage.remove('token')
                     })
                 })
             },
