@@ -122,6 +122,24 @@ export default {
         http.get(true, '/user/changeRole', callback)
     },
 
+    // 微信登录
+    wechatLogin(openid, callback, error) {
+        http.post(false, '/user/wechatThirdLoginCheck', {
+            open_id: openid
+        }, callback, false, error)
+    },
+
+    // 微信注册
+    wechatRegister(params, callback) {
+        http.post(false, '/user/wechatThirdLogin', {
+            captcha: params.captcha,
+            head_image: params.avatar,
+            nick_name: params.nickname,
+            open_id: params.openid,
+            register_token: params.registerToken
+        }, callback, '登录成功')
+    },
+
 
     // 易
     //首页
@@ -179,12 +197,12 @@ export default {
     serveConfirmOrder(params, callback) {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
-    
+
     // 下订单
     serveAddOrder(params, callback) {
         http.post(true, '/serviceOrder/add', params, callback)
     },
-    
+
     //一键下单
     addOneButtonOrder(params, callback) {
         http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)

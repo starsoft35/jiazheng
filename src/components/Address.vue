@@ -138,9 +138,7 @@
                 this.longitude = ''
                 this.latitude = ''
                 this.isDefault = 0
-                console.info('删除')
             }
-            console.info(to.path)
             next()
         },
         deactivated() {

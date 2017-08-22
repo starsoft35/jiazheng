@@ -282,7 +282,7 @@ const router = new Router({
             }
         }, {
             // 地址列表
-            path: '/addresses/:id',
+            path: '/addresses',
             component: AddressList,
             meta: {
                 requireAuth: true

@@ -61,8 +61,18 @@
                     })
                     return
                 }
-                QcjzBridge.oauth(1,function(data){
-                    
+                let self = this
+                
+                QcjzBridge.oauth(1, function(data){
+                    let info = JSON.parse(data)
+                    self.$api.wechatLogin(info.unionid, function(response) {
+                        self.loginSuccess()
+                    }, function(response) {
+                        if (response.err_code == 2) {
+                            self.$storage.set('oauthInfo', info)
+                            self.$router.push('/bind/mobile')
+                        }
+                    })
                 }); 
             },
 
@@ -80,8 +90,8 @@
                     return
                 }
 
-                var self = this
-                var seconds = 60
+                let self = this
+                let seconds = 60
                 function countdown() {
                     setTimeout(function() {
                         seconds--
@@ -129,19 +139,23 @@
 
                 this.$api.login(this.login, function (response) {
                     // 保存访问凭证
-                    var accessToken = response.result.accessToken
+                    let accessToken = response.result.accessToken
                     self.$token.refreshToken(
                         accessToken.access_token, 
                         accessToken.refresh_token, 
                         accessToken.expire_time)
 
                     // 跳转
-                    let redirectURI = '/ucenter'
-                    if (self.$storage.get('history_url')) {
-                        redirectURI = self.$storage.get('history_url')
-                    }
-                    self.$router.replace(redirectURI)
+                    self.loginSuccess()
                 })
+            },
+
+            loginSuccess() {
+                let redirectURI = '/ucenter'
+                if (this.$storage.get('history_url')) {
+                    redirectURI = this.$storage.get('history_url')
+                }
+                this.$router.replace(redirectURI)
             }
         },
         watch: {
