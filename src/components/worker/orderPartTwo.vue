@@ -1,116 +1,135 @@
 <template>
 	<div class="box">
-		<div class="contBox" v-for="(contBox,index) in things">
-			<!--姓名 电话-->
-			<div class="peopleName">
-				<span>{{contBox.Name}}</span>
-				<span>{{contBox.Phone}}</span>
-				<div></div>
+		
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/listForWorker">
+			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
+					<!--姓名 电话-->
+					<a :href="'tel:'+ item.userPhone " class="peopleName">
+						<span>{{item.userName}}</span>
+						<span>{{item.userPhone}}</span>
+						<div></div>
+					</a>
+					<!--订单号-->
+					<div style="padding: 0.15rem 0;">
+						<div class="cont">
+							<span class="contLeft">订单号：</span>
+							<span class="contRight">{{item.orderNo}}</span>
+						</div>
+						<!--服务时间-->
+						<div class="cont">
+							<span class="contLeft">服务时间：</span>
+							<span class="contRight">{{item.serviceTime}}</span>
+						</div>
+						<!--服务地址-->
+						<div class="cont">
+							<span class="contLeft">服务地址：</span>
+							<span class="contRight position">{{item.serviceAddress.address}}</span>
+							<a class="map-lnik" href="#">
+								<span>去这里</span>
+							</a>
+						</div>
+					</div>
+					
+					<!--服务详情-->
+					<div class="thingList">
+						<ul class="thingCont">
+							<li class="things">
+								<a>
+									<img :src="item.serviceImage" />
+									<div class="thingName">
+										<div v-text="item.serviceTitle"></div>
+										<span>&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+									</div>
+									<span class="counts">x{{item.serviceMount}}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!--合计-->
+					<div class="totalMoney">
+						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
+						<span class="tolalLeft">合计:</span>
+					</div>
+					<div class="send" v-show="item.operation">
+						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo)">{{obj.event}}</div>
+					</div>
+				</div>
+				<div class="kong"></div>
 			</div>
-			<!--订单号-->
-			<div class="cont">
-				<span class="contLeft">订单号:</span>
-				<span class="contRight">{{contBox.ordeCounts}}</span>
-			</div>
-			<!--服务时间-->
-			<div class="cont">
-				<span class="contLeft">服务时间:</span>
-				<span class="contRight">{{contBox.timeOne}}</span>
-				<span class="contRight">{{contBox.timeOne}}</span>
-			</div>
-			<!--服务地址-->
-			<div class="cont">
-				<span class="contLeft">服务地址:</span>
-				<span class="contRight position">{{contBox.servePosition}}</span>
-			</div>
-			
-			<!--服务详情-->
-			<div class="thingList">
-				<ul class="thingCont">
-					<li class="things">
-						<a :href="contBox.thingSrc">
-							<img :src="contBox.thingImg" />
-							<div class="thingName">
-								<div v-text="contBox.thingTitle"></div>
-								<p v-text="contBox.thingIntro"></p>
-								<span v-text="contBox.thingSprice"></span>
-							</div>
-							<span class="counts">×5</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!--合计-->
-			<div class="totalMoney">
-				<span class="totalRight">￥150.00</span>
-				<span class="tolalLeft">合计:</span>
-			</div>
-			<!--派单-->
-			<div class="send">
-				<div>{{contBox.serveOne}}</div>
-				<div id="qu" v-show="contBox.serveTwoTrue">{{contBox.serveTwo}}</div>
-			</div>
-		</div>
-		<div class="kong"></div>
+				
+        </Pagination>
+		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无订单</div>
+		<confirm-modal :show="show" 
+			@cancel_modal="cancel_modal" 
+			@confirm_modal="confirm_modal" 
+			@closeModal="show = false" 
+			:has_input="true"
+			message="">
+		</confirm-modal>
 	</div>
+	
+
 </template>
 
 <script type="text/javascript">
 	export default {
 		data() {
 			return {
-				title: '我是派单',
-
-				things: [{
-					serveOne:'服务完成',
-					serveTwo:'取消订单',
-					serveTwoTrue:false,
-					Name: '朱小明',
-					Phone: '17191191610',
-					//订单号
-					ordeCounts: '123145645145',
-					//服务地址
-					servePosition: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-					//备注
-					remark: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-					//是否有备注
-					remarkTrue: true,
-					thingSrc: '#serviceDetails',
-					thingImg: '@../../static/11@3x.png',
-					thingTitle: '小明西一街',
-					thingIntro: '内芯及外表清洗',
-					thingSprice: '￥30.00/台',
-					//购买数量
-					counts: '5',
-					//服务时间
-					timeOne: '2017-08-08',
-					timeTwo: '06:10~09:14'
-				}, {
-					serveOne:'发送价格',
-					serveTwo:'取消订单',
-					serveTwoTrue:true,
-					Name: '朱小明',
-					Phone: '17191191610',
-					//订单号
-					ordeCounts: '123145645145',
-					//服务地址
-					servePosition: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-					//备注
-					remark: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-					//是否有备注
-					remarkTrue: false,
-					thingSrc: '#serviceDetails',
-					thingImg: '@../../static/11@3x.png',
-					thingTitle: '小明西一街',
-					thingIntro: '内芯及外表清洗',
-					thingSprice: '￥30.00/台',
-					//购买数量
-					counts: '5',
-					//服务时间
-					timeOne: '2017-08-08',
-					timeTwo: '06:10~09:14'
-				}]
+				show: false,
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {
+                    	params:{
+						    flag: 2
+						}
+                    }
+                },
 			}
+		},
+		created() {
+//			this.$api.workerOrderList({
+//	        	params:{
+//				    flag: 1,
+//				    page: 1,
+//				    page_size: 10
+//				}
+//		    },(res) => {
+//		    	
+//		    	
+//		    })
+		},
+		methods: {
+			render(res) {
+                res.result.list.forEach((item) => {
+                	if(item.operation == null) {
+                		item.operation = []
+                	}
+                	this.pagination.content.push(item)
+                })
+            },
+            cancel_modal() {
+            	this.show = false
+            },
+            confirm_modal(serviceMoney) {
+            	console.log(serviceMoney)
+            },
+            operateOrder(obj,key, orderNo) {
+            	if(obj.flag == 3 && obj.type == 2) {
+            		this.show = true
+            	}else {
+            		this.$api.updateOrderStatus({
+						flag: obj.flag,
+						orderNo: orderNo,
+						type: obj.type
+					}, (res) => {
+						obj.splice(key, 1)
+//						this.$router.push('/paySubmit/' + res.result.orderSn)
+					})
+            	}
+            }
 		}
 	}
 </script>
@@ -131,12 +150,13 @@
 		height: 0.78rem;
 		padding: 0 .25rem;
 		border-bottom: .02rem solid #f2f2f2;
+		display: block;
 	}
 	
 	.peopleName span {
 		float: left;
-		font-size: 0.24rem;
-		color: #999999;
+		/*font-size: 0.24rem;*/
+		color: #666;
 		line-height: .78rem;
 		margin-right: 0.15rem;
 	}
@@ -153,33 +173,32 @@
 	
 	.cont {
 		width: 7rem;
-		padding: 0 .25rem;
-		display: inline-block;
+		padding: 0.1rem .25rem;
+		overflow: hidden;
+		text-align: left;
+		display: flex;
+		position: relative;
 	}
 	
 	.cont span {
-		float: left;
-		margin-top: 0.26rem;
-		margin-right: 0.15rem;
+		
 	}
 	
 	.contLeft {
-		font-size: 0.24rem;
-		color: #CCCCCC;
-		line-height: 0.24rem;
+		color: #bbb;
+		width: 1.5rem;
 	}
 	
 	.contRight {
-		font-size: 0.22rem;
-		color: #999999;
-		line-height: 0.24rem;
+		color: #666;
+		flex: 1;
 	}
 	
-	.position {
-		width: 4.7rem;
+	.contRight.position {
+		padding-right: 1rem;
 		text-align: left;
+		min-height: 0.76rem;
 	}
-	
 	
 	.positionBtn img {
 		width: 0.2rem;
@@ -197,15 +216,13 @@
 	
 	.thingList {
 		width: 7rem;
-		padding: 0 0.25rem;
+		padding: 0.25rem;
 		background: #f5f5f9;
 		display: inline-block;
 	}
 	
 	.thingList li {
 		width: 7rem;
-		height: 1.8rem;
-		margin-top: 0.3rem;
 		position: relative;
 	}
 	
@@ -213,33 +230,29 @@
 		width: 100%;
 		height: 100%;
 		display: block;
+		display: flex;
 	}
 	/*左边图片*/
 	
 	.thingList img {
 		width: 1.40rem;
 		height: 1.40rem;
-		position: absolute;
-		left: 0.2rem;
-		top: 0.2rem;
+		margin-right: 0.3rem;
 	}
 	/*右边内容*/
 	
 	.thingName {
-		width: 5.5rem;
+		flex: 1;
 		height: 1.4rem;
-		position: absolute;
-		left: 1.85rem;
-		top: 0.2rem;
 		text-align: left;
 	}
 	/*商品名称*/
 	
 	.thingName div {
 		width: 100%;
-		height: 0.45rem;
+		height: 0.6rem;
 		font-size: 0.26rem;
-		line-height: 0.45rem;
+		line-height: 0.6rem;
 		color: #222222;
 	}
 	/*介绍*/
@@ -266,7 +279,7 @@
 		position: absolute;
 		right: 0.25rem;
 		bottom: 0.25rem;
-		font-size: 0.2rem;
+		font-size: 0.28rem;
 		color: #222222;
 	}
 	/*合计*/
@@ -284,34 +297,57 @@
 	}
 	
 	.totalRight {
-		font-size: 0.24rem;
+		font-size: 0.28rem;
 		color: #000000;
 		line-height: 0.78rem;
 	}
+	.totalRight>i{
+		font-size: 0.32rem;
+		font-style: normal;
+	}
 	
 	.tolalLeft {
-		font-size: 0.22rem;
+		font-size: 0.28rem;
 		color: #222222;
 		line-height: 0.78rem;
 	}
-	
+	.map-lnik{
+		position: absolute;
+		right: 0.25rem;
+		top: 0.1rem;
+		width: 0.8rem;
+		height: 0.7rem;
+		font-size: 0.2rem;
+		text-align: center;
+		color: #666;
+		padding-top: 0.42rem;
+		box-sizing: border-box;
+	}
+	.map-lnik:before{
+		position: absolute;
+		content: '';
+		width: 0.34rem;
+		height: 0.34rem;
+		left: 0.2rem;
+		top: 0;
+		background: url(../../../static/worker01.png) no-repeat center;
+		background-size: auto 100%; 
+	}
 	.send {
 		width: 7rem;
-		height: 0.78rem;
-		padding: 0 .25rem;
+		overflow: hidden;
+		padding: 0.25rem;
 	}
 	
 	.send div{
 		float: right;
-		width: 1.28rem;
-		height: 0.48rem;
+		height: 0.56rem;
 		font-size: 0.24rem;
 		color: #2173d6;
-		line-height: 0.48rem;
-		border-radius: 0.3rem;
+		line-height: 0.56rem;
+		border-radius: 0.28rem;
 		border: .01rem solid #8ac4f9;
-		margin-top: 0.14rem;
-		margin-right: 0.15rem;
+		padding: 0 0.2rem;
 	}
 	#qu{
 		color: #222222;

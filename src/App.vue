@@ -90,5 +90,35 @@ export default {
 	.showTime-body{
 		padding: 0.5rem 0.3rem;
 	}
-
+	.none-data-tip{
+		padding: 0.5rem;
+		color: #bbb;
+	}
+	.payWay .mint-radiolist-title{
+		display: none;
+	}
+	.payWay .mint-cell{
+		min-height: auto;
+		height: 1rem;
+		display: flex;
+		border-bottom: 1px solid #eee;
+	}
+	.payWay .mint-cell-wrapper{
+		font-size: 0.28rem;
+	}
+	.payWay .mint-radio-core{
+		width: 0.4rem;
+		height: 0.4rem;
+	}
+	.payWay .mint-radio-core::after{
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-size: 100% 100%; 
+		
+	}
+	.mint-radio-input:checked + .mint-radio-core::after{
+		background-image: url(../static/35@3x.png)
+	}
 </style >

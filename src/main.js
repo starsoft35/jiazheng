@@ -14,6 +14,7 @@ import WorkerMenu from '@/components/common/WorkerMenu'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
+import confirmModal from '@/components/common/confirmModal'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
@@ -23,6 +24,7 @@ Vue.component('Header', Header)
 Vue.component('workerPart', WorkerMenu)
 Vue.component('WorkerMenu', WorkerMenu)
 Vue.component('Pagination', Pagination)
+Vue.component('confirmModal', confirmModal)
 
 Vue.use(MintUI)
 

@@ -157,22 +157,6 @@ export default {
         http.get(true, '/service/menuList', callback, params)
     },
 
-    // 易
-    //首页
-    homeData(params, callback) {
-        http.get(true, '/main', callback, params)
-    },
-
-    //搜索服务
-    serviceSearch(params, callback) {
-        http.get(true, '/service/search', callback, params)
-    },
-
-    //全部服务列表
-    serviceMenuList(params, callback) {
-        http.get(true, '/service/menuList', callback, params)
-    },
-
     //二级服务列表
     serviceList(params, callback) {
         http.get(true, '/service/list', callback, params)
@@ -203,6 +187,11 @@ export default {
         http.post(true, '/serviceOrder/add', params, callback)
     },
 
+    //订单详情
+    serveOrderDetail(params, callback) {
+        http.get(true, '/serviceOrder/detail', callback, params)
+    },
+
     //一键下单
     addOneButtonOrder(params, callback) {
         http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)
@@ -211,7 +200,17 @@ export default {
     //分享的新人列表
     userMyShared(params, callback) {
         http.get(true, '/user/myShared', callback, params)
-    }
+    },
+
+    //工人模块订单
+    workerOrderList(params, callback) {
+        http.get(true, '/serviceOrder/listForWorker', callback, params)
+    },
+
+    //工人端更新订单状态
+    updateOrderStatus(params, callback) {
+        http.post(true, '/serviceOrder/updateOrderStatus', params, callback)
+    },
 
 
 
