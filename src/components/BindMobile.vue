@@ -53,19 +53,22 @@
                     captcha: self.captcha,
                     avatar: oauthInfo.avatar,
                     nickname: oauthInfo.nickname,
-                    openid: oauthInfo.openid,
+                    openid: oauthInfo.unionid,
                     registerToken: self.registerToken
-                }, function(response) {
+                }, function(response) {accessToken
                     let accessToken = response.result.accessToken
                     self.$token.refreshToken(
                         accessToken.access_token, 
                         accessToken.refresh_token, 
                         accessToken.expire_time)
 
+                    self.$storage.remove('oauthInfo')
+
                     let redirectURI = '/ucenter'
                     if (self.$storage.get('history_url')) {
                         redirectURI = self.$storage.get('history_url')
                     }
+                    alert(redirectURI)
                     self.$router.replace(redirectURI)
                 })
             },

@@ -69,6 +69,10 @@
                         self.loginSuccess()
                     }, function(response) {
                         if (response.err_code == 2) {
+                            // Toast({
+                            //     message: '绑定手机号码',
+                            //     position: 'bottom'
+                            // })
                             self.$storage.set('oauthInfo', info)
                             self.$router.push('/bind/mobile')
                         }
