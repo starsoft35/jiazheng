@@ -7,67 +7,70 @@
 					<span class="spanLeft fl"></span>
 				</router-link>
 				<router-link to="/Distribute">
-					<span class="spanRight fr">确认派单</span>
+					<span class="spanRight fr" @click="confirmSend(list.userId)">确认派单</span>
 				</router-link>
 				<p v-text="title"></p>
 			</div>
 		</div>
 
+		
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/user/pendingMan"  ref="pagination">
-        </Pagination>
-		    <!--列表-->
+            <!--列表-->
 			<div class="contList" v-for="(list,index) in list">
 				<ul class="contBox">
 					<li class="list_one fl">{{ list.workname }} </li>
 					<li class="list_two fl">{{ list.phone }} </li>
 					<li class="list_three fl">{{ list.num }}单 </li>
-					<li class="list_four fr" @click="selectedPeople(list.index)"></li>
+					<li class="list_four fr"></li>
 				</ul>
 			</div>
+			
+		</Pagination>  
 
 		
 	</div>
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
 				title:'派单',
+				
+                options: [],
+				
+				payWayId: '',
 
 				list:[],
 
 				pagination: {
-					
+					content: [],
 					page: 1,
 					pageSize: 15,
-				}
+				},
 				
 			}
 		},
 		created() {
 			
+			
 		},
+		mounted(){
+      		console.log(this.$route.params) 
+  		},
 		methods: {
-			changeMenu(index){
-				this.pagination = {
-                    list:[ ],
-                    page: 1, 
-					pageSize: 15,
-					param: {
-						params: {
-							type: this.menus[index].type
-						}
-					}
-				}
-			},
+
 			render(response){
 				for(var i in response.result.list){
 					this.list.push(response.result.list[i])
 				}
 			},
-			selectedPeople(k){
-				
+			selectedPeople(){
+				console.log(value)
+			},
+			confirmSend(id){
+				this.$router.push('/Distribute/')
 			}
 
 		},
@@ -142,13 +145,11 @@
 	.list_four{
 		width:0.4rem ;
 		height:0.4rem;
-		/* background: url("../../../static/35@3x.png") no-repeat; */
-		background-color: #ccc;
-		border-radius: 50%;
+		background: url("../../../static/35@3x.png") no-repeat;
 		background-size: 100% 100%;
 	}
-	.selected_img{
+	/* .selected_img{
 		background: url("../../../static/35@3x.png") no-repeat;
 		background-color: none;
-	}
+	} */
 </style>
