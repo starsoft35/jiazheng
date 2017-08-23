@@ -12,6 +12,7 @@ import { isEmptyObject } from './api/tool'
 import accessToken from './api/accessToken'
 import common from './api/common'
 import weixin from './api/weixin'
+import bridge from '@/api/bridge'
 import WorkerMenu from '@/components/common/WorkerMenu'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -36,6 +37,7 @@ Vue.prototype.$api = api
 Vue.prototype.$storage = storage
 Vue.prototype.$common = common
 Vue.prototype.$weixin = weixin
+Vue.prototype.$bridge = bridge
 Vue.prototype.$isEmptyObject = isEmptyObject
 
 new Vue({
