@@ -38,6 +38,8 @@ instance.interceptors.response.use(function(response) {
             })
             storage.set('history_url', router.history.current.path)
             router.replace('/login')
+        } else if (response.data.err_code == 2) {
+
         } else {
             Toast({
                 message: response.data.err_msg,
@@ -114,8 +116,9 @@ export default {
      * @param {*} url 请求地址
      * @param {*} params 请求参数
      * @param {*} callback 回调函数
+     * @param {*} error 错误
      */
-    post(needToken, url, params, callback, showToast) {
+    post(needToken, url, params, callback, showToast, error) {
         url = buildURL(url, needToken)
 
         if (!url) {
@@ -125,6 +128,8 @@ export default {
         instance.post(url, querystring.stringify(params)).then(function(response) {
             if (typeof callback === 'function' && response.data.err_code === 0) {
                 callback(response.data)
+            } else if (typeof error === 'function' && response.data.err_code != 0) {
+                error(response.data)
             }
             if (showToast && response.data.err_code === 0) {
                 Toast({

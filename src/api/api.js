@@ -122,6 +122,24 @@ export default {
         http.get(true, '/user/changeRole', callback)
     },
 
+    // 微信登录
+    wechatLogin(openid, callback, error) {
+        http.post(false, '/user/wechatThirdLoginCheck', {
+            open_id: openid
+        }, callback, false, error)
+    },
+
+    // 微信注册
+    wechatRegister(params, callback) {
+        http.post(false, '/user/wechatThirdLogin', {
+            captcha: params.captcha,
+            head_image: params.avatar,
+            nick_name: params.nickname,
+            open_id: params.openid,
+            register_token: params.registerToken
+        }, callback, '登录成功')
+    },
+
 
     // 易
     //首页
@@ -163,21 +181,26 @@ export default {
     serveConfirmOrder(params, callback) {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
+<<<<<<< HEAD
     
     //订单支付
     orderPayReady(params, callback) {
         http.get(true, '/serviceOrder/payReady', callback, params)
     },
     
+=======
+
+>>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     // 下订单
     serveAddOrder(params, callback) {
         http.post(true, '/serviceOrder/add', params, callback)
     },
-    
+
     //订单详情
     serveOrderDetail(params, callback) {
         http.get(true, '/serviceOrder/detail', callback, params)
     },
+<<<<<<< HEAD
     
     
     // 余额支付
@@ -190,6 +213,9 @@ export default {
         http.post(true, '/serviceOrder', params, callback)
     },
     
+=======
+
+>>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     //一键下单
     addOneButtonOrder(params, callback) {
         http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)
@@ -199,11 +225,12 @@ export default {
     userMyShared(params, callback) {
         http.get(true, '/user/myShared', callback, params)
     },
-    
+
     //工人模块订单
     workerOrderList(params, callback) {
         http.get(true, '/serviceOrder/listForWorker', callback, params)
     },
+<<<<<<< HEAD
     
     
     //工人位置
@@ -211,6 +238,9 @@ export default {
         http.get(true, '/location/getList', callback, params)
     },
     
+=======
+
+>>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     //工人端更新订单状态
     updateOrderStatus(params, callback) {
         http.post(true, '/serviceOrder/updateOrderStatus', params, callback)
