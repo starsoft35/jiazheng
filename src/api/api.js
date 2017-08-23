@@ -122,6 +122,24 @@ export default {
         http.get(true, '/user/changeRole', callback)
     },
 
+    // 微信登录
+    wechatLogin(openid, callback, error) {
+        http.post(false, '/user/wechatThirdLoginCheck', {
+            open_id: openid
+        }, callback, false, error)
+    },
+
+    // 微信注册
+    wechatRegister(params, callback) {
+        http.post(false, '/user/wechatThirdLogin', {
+            captcha: params.captcha,
+            head_image: params.avatar,
+            nick_name: params.nickname,
+            open_id: params.openid,
+            register_token: params.registerToken
+        }, callback, '登录成功')
+    },
+
 
     // 易
     //首页
@@ -164,14 +182,29 @@ export default {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
     
+    //订单支付
+    orderPayReady(params, callback) {
+        http.get(true, '/serviceOrder/payReady', callback, params)
+    },
+
     // 下订单
     serveAddOrder(params, callback) {
         http.post(true, '/serviceOrder/add', params, callback)
     },
-    
+
     //订单详情
     serveOrderDetail(params, callback) {
         http.get(true, '/serviceOrder/detail', callback, params)
+    },    
+    
+    // 余额支付
+    balancePay(params, callback) {
+        http.post(true, '/serviceOrder/balancePay', params, callback)
+    },
+    
+    // 微信支付
+    mobilePay(params, callback) {
+        http.post(true, '/serviceOrder', params, callback)
     },
     
     //一键下单
@@ -183,12 +216,16 @@ export default {
     userMyShared(params, callback) {
         http.get(true, '/user/myShared', callback, params)
     },
-    
+
     //工人模块订单
     workerOrderList(params, callback) {
         http.get(true, '/serviceOrder/listForWorker', callback, params)
     },
-    
+  
+    //工人位置
+    workerPositionList(params, callback) {
+        http.get(true, '/location/getList', callback, params)
+    },
     //工人端更新订单状态
     updateOrderStatus(params, callback) {
         http.post(true, '/serviceOrder/updateOrderStatus', params, callback)

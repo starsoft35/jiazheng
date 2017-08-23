@@ -69,6 +69,10 @@ import sendPeople from '@/components/worker/sendPeople'
 import workerMessage from '@/components/worker/workerMessage'
 //我的
 import WorkerUCenter from '@/components/worker/UCenter'
+//我的
+import Location from '@/components/location'
+//地图
+import amapPage from '@/components/amapPage'
 
 
 
@@ -94,6 +98,9 @@ import Login from '@/components/Login'
 import BindMobile from '@/components/BindMobile'
 // 地址搜索
 import AddressSearch from '@/components/AddressSearch'
+// 微信OAuth
+import OAuth from '@/components/OAuth'
+
 
 Vue.use(Router)
 
@@ -142,14 +149,17 @@ const router = new Router({
         }, {
             //确认订单 提交预约
             path: '/appointment/:id',
-            component: appointment
+            component: appointment,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //优惠券
             path: '/coupons',
             component: coupons,
             children: [{
                     path: '/coupons',
-                    redirect: '/coupons/couponsLeft/use'
+                    redirect: '/coupons/couponsLeft/useless'
                 }, {
                     path: '/coupons/couponsLeft/:status',
                     component: couponsLeft
@@ -182,7 +192,10 @@ const router = new Router({
         }, {
             //一键下单
             path: '/oneClick',
-            component: oneClick
+            component: oneClick,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //分享
             path: '/sharePage',
@@ -238,6 +251,14 @@ const router = new Router({
             //工人个人中心
             path: '/worker/ucenter',
             component: WorkerUCenter,
+        }, {
+            //地图
+            path: '/amapPage',
+            component: amapPage,
+        }, {
+            //工人位置
+            path: '/location',
+            component: Location,
         },
 
 
@@ -285,7 +306,7 @@ const router = new Router({
             }
         }, {
             // 地址列表
-            path: '/addresses/:id',
+            path: '/addresses',
             component: AddressList,
             meta: {
                 requireAuth: true
@@ -315,7 +336,7 @@ const router = new Router({
             path: '/bind/mobile',
             component: BindMobile,
             meta: {
-                requireAuth: true
+                requireAuth: false
             }
         }, {
             // 地址搜索
@@ -325,6 +346,10 @@ const router = new Router({
                 requireAuth: true,
                 keepAlive: true
             }
+        }, {
+            // 微信OAuth
+            path: '/oauth',
+            component: OAuth
         }
     ]
 })

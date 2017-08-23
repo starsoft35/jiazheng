@@ -9,7 +9,7 @@
             <p>{{title}}</p>
         </div>
     </div>
-    <div class="menu-blank"></div>
+    <div class="menu-blank" style="height: 0.92rem;"></div>
     </div>
 </template>
 
@@ -68,7 +68,7 @@
 
 <style scoped>
     .header, .headPart {
-        z-index: 1000;
+        z-index: 30;
     }
     .headPart{
         width: 100%;

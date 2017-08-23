@@ -12,15 +12,15 @@
 		<div class="order">
 			<div class="partTop clear">
 				<div class="fl">订单号</div>
-				<span class="fr">{{orderDetail.orderNo}}</span>
+				<span class="fr">{{payData.orderNo}}</span>
 			</div>
 			
 			<div class="partBottom">
 				<div class="fl">实付金额</div>
-				<span class="fr">&yen;{{orderDetail.actualPrice}}</span>
+				<span class="fr">&yen;{{payData.totalPrice}}</span>
 			</div>
 		</div>
-		<div class="serveBottom" v-if="orderKind.value == 2">
+		<div class="serveBottom" v-if="payData.orderType.value !=1">
 			<span class="fl">优惠券</span>
 			<router-link to="/coupons/couponsLeft/use">
 				<img class="fr" src="../../static/34@3x.png"/>
@@ -41,18 +41,18 @@
 		<div class="kong"></div>
 		<!---->
 		<div class="bottomBtn">
-			<router-link to="/paySubmit">确认支付</router-link>
+			<span @click="confirmPay" >确认支付</span>
 		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
 				orderSn: undefined,
-				orderDetail: {},
-				orderKind: {},
+				payData: {},
 				currCoupon: {
 		        	price: 0
 		        },
@@ -73,7 +73,7 @@
 				  }
 				],
 				
-				payWayId: '1'
+				payWayId: '1',
 			}
 		},
 		created() {
@@ -83,14 +83,112 @@
 				this.useCouponStatus = true
 				this.$storage.remove('currCoupon')
 			}
-			this.$api.serveOrderDetail({
+			this.$api.orderPayReady({
 	        	params:{
 				    orderNo: this.orderSn
 				}
 		    },(res) => {
-		    	this.orderDetail = res.result
-		    	this.orderKind = res.result.orderType
+		    	this.payData = res.result
+		    	this.options[0].label = '余额支付：' + res.result.balance
 		    })
+		},
+		methods: {
+			confirmPay() {
+				let self = this
+				
+				if(this.payWayId == '1') {
+					this.$api.balancePay({
+						orderSn: this.orderSn
+					}, (res) => {
+						Toast({
+						  message: '支付成功',
+						  position: 'middle',
+						  iconClass: 'toast-icon icon-success',
+						  duration: 1000
+						})
+						setTimeout(() => {
+							this.$router.push('/orders')
+						},800)
+					})
+				} else if(this.payWayId == '2') {
+					if (typeof QcjzBridge === 'undefined') {
+	                    Toast({
+	                        message: '不支持移动支付',
+	                        position: 'bottom'
+	                    }) 
+	                    return
+	                }
+					this.$api.mobilePay({
+						orderSn: this.orderSn,
+						pay_type: 3,
+						source: 2
+					}, (res) => {
+						let wechat = res.result.wechat
+	                    QcjzBridge.callWeChatPay(JSON.stringify({
+	                        appid: wechat.appId,
+	                        partnerid: wechat.partnerId,
+	                        prepayid: wechat.prepayId,
+	                        packageValue: 'Sign=WXPay',
+	                        noncestr: wechat.nonceStr,
+	                        timestamp: wechat.timeStamp,
+	                        sign: wechat.paySign
+	                    }), function(ret) {
+	                        if (ret == 0) {
+	                            Toast({
+								  message: '支付成功',
+								  position: 'middle',
+								  iconClass: 'toast-icon icon-success',
+								  duration: 1000
+								})
+	                        }else {
+	                        	Toast({
+								  message: '支付失败',
+								  position: 'middle',
+								  iconClass: 'toast-icon icon-error',
+								  duration: 1000
+								})
+	                        }
+	                        setTimeout(() => {
+								self.$router.push('/orders')
+							},500)
+	                    })
+					})
+				} else if(this.payWayId == '3') {
+					if (typeof QcjzBridge === 'undefined') {
+	                    Toast({
+	                        message: '不支持移动支付',
+	                        position: 'bottom'
+	                    }) 
+	                    return
+	                }
+					this.$api.mobilePay({
+						orderSn: this.orderSn,
+						pay_type: 2,
+						source: 2
+					}, (res) => {
+						QcjzBridge.callAlipay(res.result.alipay, function(ret) {
+	                        if (ret == 0) {
+	                            Toast({
+								  message: '支付成功',
+								  position: 'middle',
+								  iconClass: 'toast-icon icon-success',
+								  duration: 1000
+								})  
+	                        }else {
+	                        	Toast({
+								  message: '支付失败',
+								  position: 'middle',
+								  iconClass: 'toast-icon icon-error',
+								  duration: 1000
+								})
+	                        }
+	                        setTimeout(() => {
+								self.$router.push('/orders')
+							},500)
+	                    })
+					})
+				}
+			}
 		}
 	}
 </script>
@@ -256,13 +354,16 @@
 		left: 0;
 		bottom: 0;
 	}
-	.bottomBtn a{
+	.bottomBtn span{
 		display: block;
 		width: 100%;
 		height: 100%;
 		font-size: 0.3rem;
 		line-height: 0.8rem;
 		color: #FFFFFF;
+	}
+	.bottomBtn span.disable{
+		opacity: 0.6;
 	}
 	/*新增*/
 	.serveBottom{

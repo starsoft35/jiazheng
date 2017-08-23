@@ -49,11 +49,39 @@
             }
         },
         created () {
-            
+            let self = this
+            if (this.$route.query.oauth === '1') {
+                let info = this.$storage.get('oauthInfo')
+                this.$api.wechatLogin(info.unionid, function(response) {
+                    self.loginSuccess(response.result.accessToken)
+                }, function(response) {
+                    if (response.err_code == 2) {
+                        self.$router.push('/bind/mobile')
+                    }
+                })
+            }
         },
         methods: {
             // 微信登录
             wechatLogin() {
+                // 判断是否微信
+                let self = this
+                if (this.$common.isWeixin()) {
+                    let info = this.$storage.get('oauthInfo')
+                    if (!info) {
+                        this.$weixin.authorize()
+                        return
+                    }
+                    self.$api.wechatLogin(info.unionid, function(response) {
+                        self.loginSuccess(response.result.accessToken)
+                    }, function(response) {
+                        if (response.err_code == 2) {
+                            self.$router.push('/bind/mobile')
+                        }
+                    })
+                    return
+                }
+
                 if (typeof QcjzBridge === 'undefined') {
                     Toast({
                         message: '不支持微信登录',
@@ -61,8 +89,17 @@
                     })
                     return
                 }
-                QcjzBridge.oauth(1,function(data){
-                    
+                
+                QcjzBridge.oauth(1, function(data){
+                    let info = JSON.parse(data)
+                    self.$api.wechatLogin(info.unionid, function(response) {
+                        self.loginSuccess(response.result.accessToken)
+                    }, function(response) {
+                        if (response.err_code == 2) {
+                            self.$storage.set('oauthInfo', info)
+                            self.$router.push('/bind/mobile')
+                        }
+                    })
                 }); 
             },
 
@@ -80,8 +117,8 @@
                     return
                 }
 
-                var self = this
-                var seconds = 60
+                let self = this
+                let seconds = 60
                 function countdown() {
                     setTimeout(function() {
                         seconds--
@@ -128,20 +165,20 @@
                 var self = this
 
                 this.$api.login(this.login, function (response) {
-                    // 保存访问凭证
-                    var accessToken = response.result.accessToken
-                    self.$token.refreshToken(
-                        accessToken.access_token, 
-                        accessToken.refresh_token, 
-                        accessToken.expire_time)
-
                     // 跳转
-                    let redirectURI = '/ucenter'
-                    if (self.$storage.get('history_url')) {
-                        redirectURI = self.$storage.get('history_url')
-                    }
-                    self.$router.replace(redirectURI)
+                    self.loginSuccess(response.result.accessToken)
                 })
+            },
+
+            loginSuccess(accessToken) {
+                let self = this
+                self.$token.refreshToken(accessToken.access_token, accessToken.refresh_token, accessToken.expire_time)
+
+                let redirectURI = '/ucenter'
+                if (this.$storage.get('history_url')) {
+                    redirectURI = this.$storage.get('history_url')
+                }
+                this.$router.replace(redirectURI)
             }
         },
         watch: {

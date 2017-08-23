@@ -1,18 +1,21 @@
 <template>
 	<div id="box">
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
-			<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
-				<div class="LeftPart">
-					<img src="../../static/ren.png"/>
-					<span>{{item.price}}</span>
-				</div>
-				<div class="partRight">
-					<span>{{item.content}}</span>
-					<p>{{item.timeLimit}}</p>
+			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+				<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
+					<div class="LeftPart">
+						<img src="../../static/ren.png"/>
+						<span>{{item.price}}</span>
+					</div>
+					<div class="partRight">
+						<span>{{item.content}}</span>
+						<p>{{item.timeLimit}}</p>
+					</div>
 				</div>
 			</div>
+			
         </Pagination>
-		
+		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无优惠卷</div>
 	</div>
 </template>
 

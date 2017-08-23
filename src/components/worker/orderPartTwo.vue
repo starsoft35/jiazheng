@@ -1,5 +1,5 @@
 <template>
-	<div class="box">
+	<div class="box" ref="box">
 		
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/listForWorker">
 			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
@@ -39,7 +39,7 @@
 									<img :src="item.serviceImage" />
 									<div class="thingName">
 										<div v-text="item.serviceTitle"></div>
-										<span>&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+										<span v-if="item.orderType.value == 1">&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
 									</div>
 									<span class="counts">x{{item.serviceMount}}</span>
 								</a>
@@ -47,15 +47,15 @@
 						</ul>
 					</div>
 					<!--合计-->
-					<div class="totalMoney">
+					<div class="totalMoney" v-if="item.orderType.value == 1">
 						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
-					<div class="send" v-show="item.operation">
+					<div class="send" v-show="item.operation.length>0">
 						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo)">{{obj.event}}</div>
 					</div>
 				</div>
-				<div class="kong"></div>
+				<!--<div class="kong"></div>-->
 			</div>
 				
         </Pagination>
@@ -87,19 +87,10 @@
 						}
                     }
                 },
+                
+                currOperate: {},
+                currOrderNo: undefined
 			}
-		},
-		created() {
-//			this.$api.workerOrderList({
-//	        	params:{
-//				    flag: 1,
-//				    page: 1,
-//				    page_size: 10
-//				}
-//		    },(res) => {
-//		    	
-//		    	
-//		    })
 		},
 		methods: {
 			render(res) {
@@ -114,10 +105,19 @@
             	this.show = false
             },
             confirm_modal(serviceMoney) {
-            	console.log(serviceMoney)
+            	this.$api.updateOrderStatus({
+					flag: this.currOperate.flag,
+					orderNo: this.currOrderNo,
+					type: this.currOperate.type,
+					price: serviceMoney
+				}, (res) => {
+					
+				})
             },
             operateOrder(obj,key, orderNo) {
             	if(obj.flag == 3 && obj.type == 2) {
+            		this.currOperate = obj
+            		this.currOrderNo = orderNo
             		this.show = true
             	}else {
             		this.$api.updateOrderStatus({
@@ -348,6 +348,7 @@
 		border-radius: 0.28rem;
 		border: .01rem solid #8ac4f9;
 		padding: 0 0.2rem;
+		margin-left: 0.2rem;
 	}
 	#qu{
 		color: #222222;

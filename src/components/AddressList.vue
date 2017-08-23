@@ -48,7 +48,6 @@
         },
         created() {
         	this.status = this.$route.params.id
-        	console.log(this.status)
         },
         methods: {
             // 编辑菜单

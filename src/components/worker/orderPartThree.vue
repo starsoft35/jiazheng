@@ -51,8 +51,11 @@
 						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
+					<!--<div class="send" v-show="item.operation.length>0">
+						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo)">{{obj.event}}</div>
+					</div>-->
 				</div>
-				<div class="kong"></div>
+				<!--<div class="kong"></div>-->
 			</div>
 				
         </Pagination>

@@ -73,7 +73,7 @@ import { Toast } from 'mint-ui'
 			}
 		},
 		created() {
-			this.initData()
+//			this.initData()
 		},
 		mounted() {
 			this.$refs.Input.focus()
