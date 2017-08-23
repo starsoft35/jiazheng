@@ -78,6 +78,7 @@
                         }
                     }
                 }
+                self.$storage.set('role', 2)
             })
         },
         methods: {

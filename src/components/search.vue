@@ -32,8 +32,8 @@
 				</li>
 			</ul>
 		</div>
-		<div class="thingList" v-show="searchStatus">
-            <ul class="thingCont" v-show="serviceList.length>0">
+		<div class="thingList" v-if="searchStatus">
+            <!--<ul class="thingCont" style="margin-bottom: 1.5rem;" v-show="serviceList.length>0">
 				<li class="things" v-for="(item,index) in serviceList" :key="index">
 					<router-link :to="'/serviceDetails/' +item.id">
 						<img :src="item.listImage"/>
@@ -44,8 +44,22 @@
 						</div>
 					</router-link>
 				</li>
-			</ul>
-			<div style="background:#F5F5F9;" v-show="serviceList.length<1">没有数据</div>	
+			</ul>-->
+			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/search">
+	            <ul class="thingCont" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+					<li class="things" v-for="(item,index) in pagination.content" :key="index">
+						<router-link :to="'/serviceDetails/' +item.id">
+							<img :src="item.listImage"/>
+							<div class="thingName">
+								<div>{{item.title}}</div>
+								<p>{{item.abstractContent}}</p>
+								<span>{{item.price}}</span>
+							</div>
+						</router-link>
+					</li>
+				</ul>
+	        </Pagination>
+			<div class="none-data-tip" v-show="pagination.content.length<1">没有数据</div>	
 		</div>
 		<confirm-modal :show="show" 
 			@cancel_modal="cancel_modal" 
@@ -66,14 +80,17 @@ import { Toast } from 'mint-ui'
 				currCity: {},
 				
 				searchStatus: false,
-				serviceList: [],
 				
-				page: 1,
-				page_size: 10
+				pagination: {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {}
+                },
 			}
 		},
 		created() {
-			this.initData()
+//			this.initData()
 		},
 		mounted() {
 			this.$refs.Input.focus()
@@ -116,34 +133,61 @@ import { Toast } from 'mint-ui'
 					});
 					return
 				}
-				document.activeElement.blur();
-				this.$api.serviceSearch({
+				this.page = 1
+				this.pagination.param = {
 		        	params:{
 					    cityName: this.currCity.name,
 					    keyword: this.serviceWord,
 					    page: this.page,
 					    page_size: this.page_size
 					}
-			    },(res) => {
-			    	var flag = true
-			    	this.searchStatus = true
-			    	this.histroyList.forEach((value) => {
-			    		if(value == this.serviceWord.trim()) {
-			    			flag = false
-			    			return
-			    		}
-			    	})
-			    	if(flag) {
-			    		this.histroyList.push(this.serviceWord)
-			    		this.$storage.set('serveWord',this.histroyList)
-			    	}
-			    	this.serviceList = res.result.list
-			    })
+			    }
+				document.activeElement.blur();
+				this.searchStatus = true
+//				this.$api.serviceSearch({
+//		        	params:{
+//					    cityName: this.currCity.name,
+//					    keyword: this.serviceWord,
+//					    page: this.page,
+//					    page_size: this.page_size
+//					}
+//			    },(res) => {
+//			    	var flag = true
+//			    	this.searchStatus = true
+//			    	this.histroyList.forEach((value) => {
+//			    		if(value == this.serviceWord.trim()) {
+//			    			flag = false
+//			    			return
+//			    		}
+//			    	})
+//			    	if(flag) {
+//			    		this.histroyList.push(this.serviceWord)
+//			    		this.$storage.set('serveWord',this.histroyList)
+//			    	}
+//			    	this.serviceList = res.result.list
+//			    })
 			},
+			render(res) {
+				var flag = true
+		    	this.searchStatus = true
+		    	this.histroyList.forEach((value) => {
+		    		if(value == this.serviceWord.trim()) {
+		    			flag = false
+		    			return
+		    		}
+		    	})
+		    	if(flag) {
+		    		this.histroyList.push(this.serviceWord)
+		    		this.$storage.set('serveWord',this.histroyList)
+		    	}
+                res.result.list.forEach((item) => {
+                	this.pagination.content.push(item)
+                })
+            },
 			searchHistory(value) {
 				this.serviceWord = value
 				this.searchService()
-			}
+			},
 		},
 		beforeRouteEnter (to, from, next) {
 	    	if(/serviceDetails/g.test(from.fullPath)) {
@@ -259,6 +303,8 @@ import { Toast } from 'mint-ui'
 			height: 0.5rem;
 			margin-bottom: 0.2rem;
 			margin-top: 0.2rem;
+			display: flex;
+			justify-content: space-between;
 		}
 		.history_title span{
 			width:1.2rem ;
@@ -287,30 +333,30 @@ import { Toast } from 'mint-ui'
 			height: 0.5rem;
 		}
 		.destroy{
-			width: 0.24rem;
-			height: 0.28rem;
-			background: url("../../static/laji.png") no-repeat;
-			background-size: 100% 100%;
-			margin-top: 0.12rem;
+			width: 1rem;
+			margin-right: 0.1rem;
+			background: url("../../static/laji.png") no-repeat right center;
+			background-size: auto 60%;
 		}
 		/*物品列表*/
 	.thingList{
 		width:100%;
 		display: inline-block;
-		background: #FFFFFF;
+		
 	}
 	.thingList li{
-		width: 7.3rem;
+		width: 7.1rem;
 		height: 1.4rem;
-		padding: 0.2rem 0;
-		margin-left: 0.2rem;
+		padding: 0.2rem;
 		border-bottom: 1px solid #f2f2f2;
 		position: relative;
+		background: #FFFFFF;
 	}
 	.thingList a{
 		width: 100%;
 		height: 100%;
 		display: block;
+		position: relative;
 	}
 	/*左边图片*/
 	.thingList img{
@@ -318,7 +364,6 @@ import { Toast } from 'mint-ui'
 		height:1.40rem ;
 		position: absolute;
 		left:0rem ;
-		top: 0.2rem;
 	}
 	/*右边内容*/
 	.thingName{
@@ -326,7 +371,6 @@ import { Toast } from 'mint-ui'
 		height: 1.4rem;
 		position: absolute;
 		left: 1.7rem;
-		top: 0.2rem;
 		text-align: left;
 	}
 	/*商品名称*/

@@ -39,7 +39,7 @@
 									<img :src="item.serviceImage" />
 									<div class="thingName">
 										<div v-text="item.serviceTitle"></div>
-										<span>&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+										<span v-if="item.orderType.value == 1">&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
 									</div>
 									<span class="counts">x{{item.serviceMount}}</span>
 								</a>
@@ -47,12 +47,15 @@
 						</ul>
 					</div>
 					<!--合计-->
-					<div class="totalMoney">
+					<div class="totalMoney" v-if="item.orderType.value == 1">
 						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
+					<!--<div class="send" v-show="item.operation.length>0">
+						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo)">{{obj.event}}</div>
+					</div>-->
 				</div>
-				<div class="kong"></div>
+				<!--<div class="kong"></div>-->
 			</div>
 				
         </Pagination>

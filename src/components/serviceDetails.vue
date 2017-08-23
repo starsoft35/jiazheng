@@ -104,7 +104,8 @@
 			    		title: res.result.serviceData.title,
 			    		price: res.result.serviceData.price,
 			    		picture: res.result.serviceData.picture,
-			    		content: res.result.serviceData.content
+			    		content: res.result.serviceData.content,
+			    		type: res.result.serviceData.orderType
 			    	}
 			    	this.appointmentData = data
 			    	this.serviceData = res.result.serviceData

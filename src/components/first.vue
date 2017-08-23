@@ -1,28 +1,32 @@
 <template>
 	<div id="box">
-		<div class="head">
-			<!--地点按钮-->
-			<div class="top-position">
-				<a href="#positionChose">
-					<span>{{currCity.name}}</span>
-					<img src="../../static/1@3x.png"/>
-				</a>
+		<div>
+			<div class="head">
+				<!--地点按钮-->
+				<div class="top-position">
+					<a href="#positionChose">
+						<span>{{currCity.name}}</span>
+						<img src="../../static/1@3x.png"/>
+					</a>
+				</div>
+				<!--搜索栏-->
+				<div class="search">
+					<!--<img src=""/>-->
+					<a href="#search">
+						<img src="../../static/38@3x.png"/>
+						<span class="fa fa-search" aria-hidden="true">搜索你想要的商品</span>
+					</a>
+				</div>
+				<!--右边-->
+				<div class="join">
+					<a href="#second">
+						<img src="../../static/2@3x.png"/>
+					</a>
+				</div>
 			</div>
-			<!--搜索栏-->
-			<div class="search">
-				<!--<img src=""/>-->
-				<a href="#search">
-					<img src="../../static/38@3x.png"/>
-					<span class="fa fa-search" aria-hidden="true">搜索你想要的商品</span>
-				</a>
-			</div>
-			<!--右边-->
-			<div class="join">
-				<a href="#second">
-					<img src="../../static/2@3x.png"/>
-				</a>
-			</div>
+			<div style="height: 0.9rem;"></div>
 		</div>
+		
 		<!--banner 轮播-->
 		<div class="banner">
 			<mt-swipe :auto="0">
@@ -98,7 +102,7 @@
 				</div>
 			</li>
 		</ul>
-		<div style="height: 1rem;"></div>
+		<div style="height: 0.5rem;"></div>
 		<Menu actived="first"></Menu>
 	</div>
 </template>
@@ -118,9 +122,10 @@
 			}
 		},
 		created() {
-			let openCity = this.$storage.get('currCity')
-			if(openCity) {
-				this.currCity = openCity
+			let currCity = this.$storage.get('currCity')
+			let openCitys = this.$storage.get('openCitys')
+			if(currCity) {
+				this.currCity = currCity
 			}
 			this.$api.homeData({
 	        	params:{
@@ -131,8 +136,8 @@
 		    	this.menuList = res.result.menus
 		    	this.firstMenu = this.menuList[0]
 		    	this.hotServices = res.result.services.result.list
-		    	if(!openCity) {
-					this.$storage.set('openCitys', openCity)
+		    	if(!openCitys) {
+					this.$storage.set('openCitys', res.result.openCitys)
 				}
 		    	
 		    })
@@ -161,7 +166,10 @@
 		height: 0.5rem;
 		padding: 0.2rem 0rem;
 		background: #2d92f4;
-		position: relative;
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 40;
 	}
 	/*地点按钮*/
 	.top-position {
@@ -180,6 +188,7 @@
 		position: absolute;
 		left: 0.25rem;
 		top: 0rem;
+		overflow: hidden;
 	}
 	.top-position img{
 		width:0.18rem ;
@@ -190,10 +199,12 @@
 	}
 	/*搜索栏*/
 	.search{
-		margin-left: 1.23rem;
 		width: 5.5rem;
 		height: 0.5rem;
 		background: #FFFFFF;
+		position: absolute;
+		left: 1.2rem;
+		top: 0.2rem;
 		border-radius: 0.25rem;
 	}
 	.search a{
@@ -206,6 +217,7 @@
 		position: relative;
 		text-align: left;
 		padding-left: 0.65rem;
+		box-sizing: border-box;
 	}
 	.search img{
 		width: 0.26rem;
@@ -218,20 +230,29 @@
 	.search span{
 		height:0.5rem;
 		font-size: 0.25rem;
-		line-height: 0.5rem;
+		line-height: 0.54rem;
 		display: block;
 	}
 	/*右边商家入驻链接*/
 	.join{
-		width: 0.3rem;
-		height: 0.13rem;
+		width: 0.6rem;
+		height: 0.6rem;
 		position: absolute;
-		right:0.24rem ;
-		top:0.3rem ;
+		right:0.1rem ;
+		top:0.15rem ;
+	}
+	.join a{
+		display: block;
+		width: 0.6rem;
+		height: 0.6rem;
 	}
 	.join img{
+		display: block;
 		width: 0.3rem;
 		height: 0.3rem;
+		position: absolute;
+		left: 0.15rem;
+		top: 0.15rem;
 	}
 	/*轮播图*/
 	.banner {

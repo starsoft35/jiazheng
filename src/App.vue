@@ -12,14 +12,14 @@
 	//引入外部文件
 	import '../css/reset.css'
 	import '../js/rem.js'
-	import '../css/swiper.min.css'
-	import '../js/swiper.min.js'
+	// import '../css/swiper.min.css'
+	// import '../js/swiper.min.js'
 	import '../css/style.css'
+	import '../js/function.js'
     
-    
-export default {
-  name: 'app'
-}
+	export default {
+	name: 'app'
+	}
 </script>
 
 <style>
@@ -29,14 +29,13 @@ export default {
     }
     body {
         background: #f5f5f9;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
         font-size: 0.28rem;
         color:#222222;
         margin: 0;
         padding:0;
     }
     #app {
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
         -webkit-font-smoothing: antialiased;
         text-align: center;
         color: #2d92f4;
@@ -94,6 +93,12 @@ export default {
 		padding: 0.5rem;
 		color: #bbb;
 	}
+	.none-data-img{
+		display: inline-block;
+		width: 1.8rem;
+		height: auto;
+		margin: 0.4rem 0;
+	}
 	.payWay .mint-radiolist-title{
 		display: none;
 	}
@@ -120,5 +125,51 @@ export default {
 	}
 	.mint-radio-input:checked + .mint-radio-core::after{
 		background-image: url(../static/35@3x.png)
+	}
+	.toast-icon{
+		width: 1.5rem;
+		height: 1.5rem;
+		display: inline-block !important;
+		background-position: center;
+		background-size: 100%;
+		background-repeat: no-repeat;
+	}
+	.toast-icon.icon-success{
+		background-image: url(../static/icon-success.png);
+	}
+	.toast-icon.icon-error{
+		background-image: url(../static/icon-error.png);
+		background-size: 70%;
+	}
+	.worker-point{
+		width: 0.7rem;
+		height: 0.7rem;
+		position: relative;
+		border: 1px solid #2d92f4;
+		border-radius: 50%;
+		line-height: 0.7rem;
+		color: #fff;
+		font-size: 0.26rem;
+		overflow: hidden;
+		box-sizing: border-box;
+	}
+	/*.worker-point:before{
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		background: #000000;
+		opacity: 0.3;
+		left: 0;
+		top: 0;
+	}*/
+	.worker-point img {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		z-index: -2;
 	}
 </style >

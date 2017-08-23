@@ -11,8 +11,8 @@
             金额：¥ <input type="tel" v-model="amount" @focus="focusOnInput" class="amount">
         </div>
         <div class="button-container">
-            <div class="button" :class="{disable: buttonDisable}" @click="doWechatPay">微信支付</div>
-            <div class="button green" :class="{disable: buttonDisable}" @click="doAlipay">支付宝支付</div>
+            <div class="button" :class="{disable: buttonDisable}" @click="doPay(3)">微信支付</div>
+            <div class="button green" :class="{disable: buttonDisable}" @click="doPay(2)">支付宝支付</div>
         </div>
     </div>
 </template>
@@ -44,8 +44,9 @@
             
         },
         methods: {
-            // 微信充值
-            doWechatPay(){
+            // 支付
+            doPay(payType) {
+                let self = this
                 if (this.buttonDisable) {
                     return
                 }
@@ -60,85 +61,99 @@
                        return
                     }
                 }
-                let self = this
-                if (typeof QcjzBridge === 'undefined') {
-                    Toast({
-                        message: '不支持支付宝支付',
-                        position: 'bottom'
-                    }) 
-                    return
-                }
                 this.buttonDisable = true
-                this.$api.wechatRecharge({
-                    money: parseInt(this.amount),
-                    pay_type: 3,
-                    source: 2,
-                    templateId: this.templateId
-                }, function(response) {
-                    let wechat = response.result.wechat
-                    QcjzBridge.callWeChatPay(JSON.stringify({
-                        appid: wechat.appId,
-                        partnerid: wechat.partnerId,
-                        prepayid: wechat.prepayId,
-                        packageValue: 'Sign=WXPay',
-                        noncestr: wechat.nonceStr,
-                        timestamp: wechat.timeStamp,
-                        sign: wechat.paySign
-                    }), function(ret) {
-                        if (ret == 0) {
-                            Toast({
-                                message: '支付成功',
-                                position: 'bottom'
-                            }) 
-                            self.$router.replace('/balance')
-                        }
-                        self.buttonDisable = false
-                    })
-                })
-            },
-            // 支付宝充值
-            doAlipay() {
-                if (this.buttonDisable) {
-                    return
-                }
-                
-                if (this.templateId) {
-                    this.amount = ''
-                } else {
-                    if (!this.amount) {
-                       Toast({
-                           message: '请输入充值金额',
-                           position: 'bottom'
-                       }) 
-                       return
+
+
+                if (payType === 3) {
+                    //  微信支付
+                    let openid = ''
+                    if (this.$storage.get('oauthInfo')) {
+                        openid = this.$storage.get('oauthInfo').openid
                     }
-                }
-                let self = this
-                if (typeof QcjzBridge === 'undefined') {
-                    Toast({
-                        message: '不支持支付宝支付',
-                        position: 'bottom'
-                    }) 
-                    return
-                }
-                this.buttonDisable = true
-                this.$api.alipayRecharge({
-                    money: parseInt(this.amount),
-                    pay_type: 2,
-                    source: 2,
-                    templateId: this.templateId
-                }, function(response) {
-                    QcjzBridge.callAlipay(response.result.alipay, function(ret) {
-                        if (ret == 0) {
-                            Toast({
-                                message: '支付成功',
-                                position: 'bottom'
-                            }) 
-                            self.$router.replace('/balance')
+
+                    this.$api.wechatRecharge({
+                        money: parseInt(this.amount),
+                        openId: openid,
+                        pay_type: payType,
+                        source: this.$common.getPlatformType(),
+                        templateId: this.templateId
+                    }, function(response) {
+                        let wechat = response.result.wechat
+                        if (self.$common.isWeixin()) {
+                            // 微信公众号支付
+                            function onBridgeReady(){
+                                WeixinJSBridge.invoke(
+                                    'getBrandWCPayRequest', {
+                                        'appId': wechat.appId,                 //公众号名称，由商户传入     
+                                        'timeStamp': wechat.timeStamp,         //时间戳，自1970年以来的秒数     
+                                        'nonceStr': wechat.nonceStr,            //随机串     
+                                        'package': wechat.prepayId,     
+                                        'signType': wechat.signType,            //微信签名方式：     
+                                        'paySign': wechat.paySign               //微信签名 
+                                    },
+                                    function(res){     
+                                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                            Toast({
+                                                message: '充值成功',
+                                                position: 'bottom'
+                                            })
+                                            self.$router.replace('/balance')
+                                        }     
+                                    }
+                                ); 
+                            }
+                            if (typeof WeixinJSBridge == "undefined"){
+                                if( document.addEventListener ){
+                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                }else if (document.attachEvent){
+                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                }
+                            }else{
+                                onBridgeReady();
+                            }
+                        } else {
+                            // 微信app支付
+                            QcjzBridge.callWeChatPay(JSON.stringify({
+                                appid: wechat.appId,
+                                partnerid: wechat.partnerId,
+                                prepayid: wechat.prepayId,
+                                packageValue: 'Sign=WXPay',
+                                noncestr: wechat.nonceStr,
+                                timestamp: wechat.timeStamp,
+                                sign: wechat.paySign
+                            }), function(ret) {
+                                if (ret == 0) {
+                                    Toast({
+                                        message: '充值成功',
+                                        position: 'bottom'
+                                    }) 
+                                    self.$router.replace('/balance')
+                                }
+                                self.buttonDisable = false
+                            })
                         }
-                        self.buttonDisable = false
                     })
-                })
+                } else if (payType === 2) {
+                    // 支付宝支付
+                    this.$api.alipayRecharge({
+                        money: parseInt(this.amount),
+                        pay_type: payType,
+                        source: this.$common.getPlatformType(),
+                        templateId: this.templateId
+                    }, function(response) {
+                        QcjzBridge.callAlipay(response.result.alipay, function(ret) {
+                            if (ret == 0) {
+                                Toast({
+                                    message: '支付成功',
+                                    position: 'bottom'
+                                }) 
+                                self.$router.replace('/balance')
+                            }
+                            self.buttonDisable = false
+                        })
+                    })
+                }
             },
             // 输入金额
             focusOnInput() {

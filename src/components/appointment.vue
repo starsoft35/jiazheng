@@ -42,7 +42,7 @@
 					<div class="serveTitle fl">
 						<div>{{appointmentData.title}}</div>
 						<p>{{appointmentData.content}}</p>
-						<span>&yen;{{parseInt(appointmentData.price).toFixed(2)}}/小时</span>
+						<span v-if="appointmentData.type.value == 1">&yen;{{parseInt(appointmentData.price).toFixed(2)}}/小时</span>
 					</div>
 				</div>
 				<!--右边选择数量-->
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 			<!--优惠券-->
-			<div class="serveBottom">
+			<div class="serveBottom" v-if="appointmentData.type.value == 1">
 				<span class="fl">优惠券</span>
 				<router-link to="/coupons/couponsLeft/use">
 					<img class="fr" src="../../static/34@3x.png"/>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 		<!--结账-->
-		<div class="footPart">
+		<div class="footPart" v-if="appointmentData.type.value == 1">
 			<div class="partPrice">
 				<div class="fl">服务金额</div>
 				<span class="fr">&yen;{{parseInt(parseInt(appointmentData.price) * score).toFixed(2)}}</span>
@@ -138,30 +138,57 @@
 		        },
 		        useCouponStatus: false,
 		        
-		        appointmentData: {}
+		        appointmentData: {
+		        	type: {}
+		        }
 				
 			}
 		},
 		created() {
-			this.serviceId = this.$route.params.id
-			if(this.$storage.get('currCoupon')) {
-				this.currCoupon = this.$storage.get('currCoupon')
-				this.useCouponStatus = true
-				this.$storage.remove('currCoupon')
-			}
-			this.appointmentData = this.$storage.get('appointmentData')
-			this.$api.serveConfirmOrder(null, (res) => {
-		    	this.defaultAddr = res.result.defaultAddr
-		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
-		    	res.result.intervals.forEach((item) => {
-		    		item.name = item.interval
-		    		this.dateSlots[2].values.push(item)
-		    	})
-		    	this.dateSlots[0].values = res.result.nextTenDays
-		    	
-		    })
+//			this.initData()		
+		},
+		beforeRouteEnter (to, from, next) {
+	    	if(/orders/g.test(from.fullPath) || /paySubmit/g.test(from.fullPath) || /coupons/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			vm.score = 1
+	    			vm.dateSlots[0].values = []
+	    			vm.dateSlots[2].values = []
+	    			vm.serveDataChange =  []
+			        vm.serveDataSelect = []
+			        vm.serveData = ''
+			        vm.useCouponStatus = false
+					vm.appointmentData = {
+			        	type: {}
+			        }
+			        vm.initData()
+			        
+	        	})
+	    	}
+	    	
+	    	
 		},
 		methods:{
+			initData() {
+				this.serviceId = this.$route.params.id
+				if(this.$storage.get('currCoupon')) {
+					this.currCoupon = this.$storage.get('currCoupon')
+					this.useCouponStatus = true
+					this.$storage.remove('currCoupon')
+				}
+				this.appointmentData = this.$storage.get('appointmentData')
+				this.$api.serveConfirmOrder(null, (res) => {
+			    	this.defaultAddr = res.result.defaultAddr
+			    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+			    	res.result.intervals.forEach((item) => {
+			    		item.name = item.interval
+			    		this.dateSlots[2].values.push(item)
+			    	})
+			    	this.dateSlots[0].values = res.result.nextTenDays
+			    	
+			    })
+			},
 			onDataChange(picker, values) {
 				this.serveDataChange = values
 			},
@@ -201,7 +228,21 @@
 					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
-					this.$router.push('/paySubmit/' + res.result.orderSn)
+					
+					if(this.appointmentData.type.value == 1) {
+						this.$router.push('/paySubmit/' + res.result.orderSn)
+					}else {
+						Toast({
+						  message: '预约成功',
+						  position: 'middle',
+						  iconClass: 'toast-icon icon-success',
+						  duration: 800
+						})  
+						setTimeout(() => {
+							this.$router.push('/orders')
+						},500)
+						
+					}
 				})
 			}
 		}

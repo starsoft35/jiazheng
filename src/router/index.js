@@ -53,14 +53,6 @@ import Nearby from '@/components/Nearby'
 //工人端
 //订单
 import orderPart from '@/components/worker/orderPart'
-//待服务
-import orderPartOne from '@/components/worker/orderPartOne'
-//服务中
-import orderPartTwo from '@/components/worker/orderPartTwo'
-//已完成
-import orderPartThree from '@/components/worker/orderPartThree'
-//已取消
-import orderPartFour from '@/components/worker/orderPartFour'
 //派单
 import Distribute from '@/components/worker/Distribute'
 //派送给个人
@@ -69,6 +61,10 @@ import sendPeople from '@/components/worker/sendPeople'
 import workerMessage from '@/components/worker/workerMessage'
 //我的
 import WorkerUCenter from '@/components/worker/UCenter'
+//我的
+import Location from '@/components/location'
+//地图
+import amapPage from '@/components/amapPage'
 
 
 
@@ -94,6 +90,9 @@ import Login from '@/components/Login'
 import BindMobile from '@/components/BindMobile'
 // 地址搜索
 import AddressSearch from '@/components/AddressSearch'
+// 微信OAuth
+import OAuth from '@/components/OAuth'
+
 
 Vue.use(Router)
 
@@ -142,14 +141,17 @@ const router = new Router({
         }, {
             //确认订单 提交预约
             path: '/appointment/:id',
-            component: appointment
+            component: appointment,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //优惠券
             path: '/coupons',
             component: coupons,
             children: [{
                     path: '/coupons',
-                    redirect: '/coupons/couponsLeft/use'
+                    redirect: '/coupons/couponsLeft/useless'
                 }, {
                     path: '/coupons/couponsLeft/:status',
                     component: couponsLeft
@@ -182,7 +184,10 @@ const router = new Router({
         }, {
             //一键下单
             path: '/oneClick',
-            component: oneClick
+            component: oneClick,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //分享
             path: '/sharePage',
@@ -205,30 +210,15 @@ const router = new Router({
         }, {
             //工人端首页
             path: '/orderPart',
-            component: orderPart,
-            children: [{
-                path: '/orderPart',
-                redirect: 'orderPartOne'
-            }, {
-                path: 'orderPartOne',
-                component: orderPartOne
-            }, {
-                path: 'orderPartTwo',
-                component: orderPartTwo
-            }, {
-                path: 'orderPartThree',
-                component: orderPartThree
-            }, {
-                path: 'orderPartFour',
-                component: orderPartFour
-            }]
+            component: orderPart
+            
         }, {
             //工人端派单
             path: '/distribute',
             component: Distribute
         }, {
             //派单
-            path: '/sendPeople',
+            path: '/sendPeople/:id',
             component: sendPeople,
         }, {
             //工人端消息
@@ -238,6 +228,14 @@ const router = new Router({
             //工人个人中心
             path: '/worker/ucenter',
             component: WorkerUCenter,
+        }, {
+            //地图
+            path: '/amapPage',
+            component: amapPage,
+        }, {
+            //工人位置
+            path: '/location',
+            component: Location,
         },
 
 
@@ -285,7 +283,7 @@ const router = new Router({
             }
         }, {
             // 地址列表
-            path: '/addresses',
+            path: '/addresses/:id',
             component: AddressList,
             meta: {
                 requireAuth: true
@@ -315,7 +313,7 @@ const router = new Router({
             path: '/bind/mobile',
             component: BindMobile,
             meta: {
-                requireAuth: true
+                requireAuth: false
             }
         }, {
             // 地址搜索
@@ -325,6 +323,10 @@ const router = new Router({
                 requireAuth: true,
                 keepAlive: true
             }
+        }, {
+            // 微信OAuth
+            path: '/oauth',
+            component: OAuth
         }
     ]
 })

@@ -1,76 +1,72 @@
 <template>
 	<div id="box">
 		<Header title="派单" back="hidden"></Header>
-		<ul class="navBox">
-			<li v-for="(item, index) in menus" @click="changeMenu(index)">
-				<div class="routerLink" :class="{active: item.actived}">{{item.name}}</div>
-			</li>
-		</ul>
-		
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/pend">
-
-		</Pagination>
-
-		<div class="contBox" v-for="(contBox,index) in pagination.content">
-			<!--姓名 电话-->
-			<div class="contact">
-				<span>{{contBox.Name}}</span>
-				<span>{{contBox.Phone}}</span>
-				<div></div>
-			</div>
-			<!--订单号-->
-			<div class="cont">
-				<span class="contLeft">订单编号:</span>
-				<span class="contRight">{{contBox.ordeCounts}}</span>
-			</div>
-			<!--服务时间-->
-			<div class="cont">
-				<span class="contLeft">服务时间:</span>
-				<span class="contRight">{{contBox.timeOne}}</span>
-				<span class="contRight">{{contBox.timeOne}}</span>
-			</div>
-			<!--服务地址-->
-			<div class="cont">
-				<span class="contLeft">服务地址:</span>
-				<span class="contRight position">{{contBox.servePosition}}</span>
-			</div>
-			<!--备注-->
-			<div class="cont" v-show="contBox.remarkTrue">
-				<span class="contLeft">备&nbsp;&nbsp;&nbsp;&nbsp;注:</span>
-				<span class="contRight position">{{contBox.remark}}</span>
-			</div>
-			<!--右边去这里按钮-->
-			<div class="positionBtn">
-				<img src="../../../static/worker01.png" />
-				<span>去这里</span>
-			</div>
-			<!--服务详情-->
-			<div class="thingList">
-				<ul class="thingCont">
-					<li class="things">
-						<a :href="contBox.thingSrc">
-							<img :src="contBox.thingImg" />
-							<div class="thingName">
-								<div v-text="contBox.thingTitle"></div>
-								<p v-text="contBox.thingIntro"></p>
-								<span v-text="contBox.thingSprice"></span>
-							</div>
-							<span class="counts">×5</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!--合计-->
-			<div class="totalMoney">
-				<span class="totalRight">￥150.00</span>
-				<span class="tolalLeft">合计:</span>
-			</div>
-			<!--派单-->
-			<div class="send">
-				<div>派单</div>
-			</div>
+			
+		<div>
+			<ul class="navBox">
+				<li v-for="(item, index) in menus" @click="changeMenu(index)">
+					<div class="routerLink" :class="{active: item.actived}">{{item.name}}</div>
+				</li>
+			</ul>
+			<div style="height: 0.8rem;"></div>
 		</div>
-		<div class="kong"></div>
+		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/pend"  ref="pagination">
+			<div style="margin-bottom: 1.3rem; padding-top: 0px;">
+				<div class="contBox" v-for="(contBox,index) in pagination.content">
+					<!--姓名 电话-->
+					<a :href="'tel:' + contBox.linkPhone" class="contact">
+						<span>{{contBox.linkName}}</span>
+						<span>{{contBox.linkPhone}}</span>
+						<div></div>
+					</a>
+					<!--订单号-->
+					<div class="cont">
+						<span class="contLeft">订单编号:</span>
+						<span class="contRight">{{contBox.orderNo}}</span>
+					</div>
+					<!--服务时间-->
+					<div class="cont">
+						<span class="contLeft">服务时间:</span>
+						<span class="contRight">{{contBox.serviceTime}}</span>
+					</div>
+					<!--服务地址-->
+					<div class="cont" style="padding-bottom: 0.25rem;">
+						<span class="contLeft">服务地址:</span>
+						<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddr}}</span>
+						<a class="map-lnik" href="#">
+							<span>去这里</span>
+						</a>
+					</div>
+					
+					<!--服务详情-->
+					<div class="thingList">
+						<ul class="thingCont">
+							<li class="things">
+								<a>
+									<img :src="contBox.sImage" />
+									<div class="thingName">
+										<div v-text="contBox.sTitle"></div>
+										<span v-if="contBox.orderType == 1">&yen;{{parseInt(contBox.price).toFixed(2)}}</span>
+									</div>
+									<span class="counts">x{{contBox.mount}}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!--合计-->
+					<div class="totalMoney" v-if="contBox.orderType == 1">
+						<span class="totalRight">&yen;{{parseInt(contBox.total).toFixed(2)}}</span>
+						<span class="tolalLeft">合计:</span>
+					</div>
+					<!--派单-->
+					<div class="send" v-if="type == 1">
+						<div @click="orderMenu(contBox.orderNo)">派单</div>
+					</div>
+				</div>
+			</div>
+				
+		</Pagination>
+		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无派单</div>
 
 		<!--底部导航-->
 		<workerPart actived="second"></workerPart>
@@ -81,6 +77,7 @@
 	export default {
 		data(){
 			return {
+
 				menus: [
 					{
 						name: '待派单',
@@ -93,73 +90,60 @@
 						actived: false
 					}
 				],
+				type: 1,
 				pagination: {
+					content: [],
 					page: 1,
-					pageSize: 10,
+					pageSize: 6,
 					param: {
 						params: {
 							type: 1
 						}
 					},
-					content: [
-						{
-							Name: '朱小明',
-							Phone: '17191191610',
-							//订单号
-							ordeCounts: '123145645145',
-							//服务地址
-							servePosition: '江苏省 苏州市 工业园区 新平街288号汉嘉大厦 2013室',
-							//备注
-							remark: '暂无备注',
-							//是否有备注
-							remarkTrue: true,
-							thingSrc: '#serviceDetails',
-							thingImg: '@../../static/11@3x.png',
-							thingTitle: '小明西一街',
-							thingIntro: '内芯及外表清洗',
-							thingSprice: '￥30.00/台',
-							//购买数量
-							counts: '5',
-							//服务时间
-							timeOne: '2017-08-08',
-							timeTwo: '06:10~09:14'
-						}, {
-							Name: '朱小明',
-							Phone: '17191191610',
-							//订单号
-							ordeCounts: '123145645145',
-							//服务地址
-							servePosition: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-							//备注
-							remark: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-							//是否有备注
-							remarkTrue: false,
-							thingSrc: '#serviceDetails',
-							thingImg: '@../../static/11@3x.png',
-							thingTitle: '小明西一街',
-							thingIntro: '内芯及外表清洗',
-							thingSprice: '￥30.00/台',
-							//购买数量
-							counts: '5',
-							//服务时间
-							timeOne: '2017-08-08',
-							timeTwo: '06:10~09:14'
-						}
-					]
+					
+					
 				}
 			}
 		},
+		mounted() {
+			this.changeMenu(0)
+		},
+
+		
 		methods: {
 			changeMenu(index) {
-				for (let i in this.menus) {
+				this.type = index + 1
+				this.pagination = {
+                    content: [],
+                    page: 1, 
+					pageSize: 6,
+					param: {
+						params: {
+							type: this.type
+						}
+					}
+				}
+
+				for (var i in this.menus) {
 					this.menus[i].actived = false
 					if (i == index) {
 						this.menus[i].actived = true
 					}
 				}
+
+				this.$refs.pagination.refresh()
 			},
+			
+			//跳转工人页面
+			orderMenu(id) {
+				this.$router.push('/sendPeople/'+ id)
+			},
+		
+
 			render(response) {
-				
+				for(var i in response.result.list){
+					this.pagination.content.push(response.result.list[i])
+				}
 			}
 		}
 	}
@@ -173,6 +157,9 @@
 		margin: 0px;
 	}
 	.navBox{
+		position: fixed;
+		left: 0;
+		top: 0.92rem;
 		width: 7.5rem;
 		height: 0.78rem;
 		border-bottom: 0.02rem solid #f2f2f2;
@@ -180,6 +167,7 @@
 		display: flex;
 		-webkit-box-orient: horizontal;
 		display: -webkit-box;
+		z-index: 50;
 	}
 	.navBox li{
 		-webkit-box-flex: 1;
@@ -189,6 +177,7 @@
 		color:#666;
 		line-height:0.78rem ;
 		display: inline-block;
+		padding: 0 0.2rem;
 	}
 	.routerLink.active {
 		color: #2173d6;
@@ -210,6 +199,7 @@
 		padding: 0 .25rem;
 		border-bottom: 1px solid #f2f2f2;
 		margin-bottom: .2rem;
+		display: block;
 	}
 	.contact span {
 		float: left;
@@ -227,14 +217,14 @@
 		margin-top: 0.2rem;
 	}
 	/*订单内容*/
-	
 	.cont {
 		width: 7rem;
 		padding: 0 .25rem;
 		display: inline-block;
+		position: relative;
 	}
 	
-	.cont span {
+	.cont>span {
 		float: left;
 		margin-top: 0.12rem;
 		margin-right: 0.15rem;
@@ -257,6 +247,7 @@
 	.position {
 		width: 4.7rem;
 		text-align: left;
+		min-height: 0.75rem;
 	}
 	/*右边去这里按钮*/
 	
@@ -327,6 +318,7 @@
 		font-size: 0.26rem;
 		line-height: 0.45rem;
 		color: #666;
+		padding-bottom: 0.3rem;
 	}
 	/*介绍*/
 	
@@ -394,9 +386,31 @@
 		height: 0.48rem;
 		font-size: 0.26rem;
 		color: #258ef3;
-		line-height: 0.48rem;
+		line-height: 0.5rem;
 		border-radius: 0.3rem;
 		border: 1px solid #258ef3;
 		margin-top: 0.14rem;
+	}
+	.map-lnik{
+		position: absolute;
+		right: 0.25rem;
+		top: 0.1rem;
+		width: 0.8rem;
+		height: 0.7rem;
+		font-size: 0.2rem;
+		text-align: center;
+		color: #666;
+		padding-top: 0.42rem;
+		box-sizing: border-box;
+	}
+	.map-lnik:before{
+		position: absolute;
+		content: '';
+		width: 0.34rem;
+		height: 0.34rem;
+		left: 0.2rem;
+		top: 0;
+		background: url(../../../static/worker01.png) no-repeat center;
+		background-size: auto 100%; 
 	}
 </style>

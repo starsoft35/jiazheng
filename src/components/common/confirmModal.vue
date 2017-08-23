@@ -7,7 +7,7 @@
 	    		<div class="modal-body">
 	    			<div class="modal-icon" :class="has_icon" v-if="has_icon"></div>
 	    			<div class="modal-message" v-html="message" v-if="message"></div>
-	    			<div class="modal-input">
+	    			<div class="modal-input" v-if="has_input">
 	    				<span>&yen;</span>
 	    				<input ref="Input" class="input" v-model="serviceMoney" type="tel" placeholder="请输入服务费用"/>
 	    			</div>
@@ -59,10 +59,12 @@ export default {
     methods: {
     	cancel() {
     		this.$emit('closeModal')
+    		this.serviceMoney = ''
     	},
     	cancel_operate() {
     		this.$emit('closeModal')
     		this.$emit('cancel_modal')
+    		this.serviceMoney = ''
     	},
     	confirm_operate() {
     		this.$emit('closeModal')
@@ -72,6 +74,7 @@ export default {
     		if(this.serviceMoney || this.serviceMoney === 0) {
     			this.$emit('closeModal')
     			this.$emit('confirm_modal', this.serviceMoney)
+    			this.serviceMoney = ''
     		}else {
     			Toast({
 				  message: '请输入服务费用',
@@ -195,6 +198,7 @@ export default {
 	color: #2173d6;
 	margin-right: 0.3rem;
 	text-align: right;
+	margin-top: 0.1rem;
 }
 .modal-input>input{
 	height: 0.8rem;

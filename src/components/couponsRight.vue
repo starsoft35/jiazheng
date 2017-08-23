@@ -1,20 +1,25 @@
 <template>
 	<div id="box">
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
-			<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
-				<div class="LeftPart">
-					<img src="../../static/ren.png"/>
-					<span>{{item.price}}</span>
-				</div>
-				<div class="partRight">
-					<span>{{item.content}}</span>
-					<p>{{item.timeLimit}}</p>
-					<img class="rightImg" src="../../static/324234234@3x.png"/>
+			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length > 0">
+				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
+					<div class="LeftPart">
+						<img src="../../static/ren.png"/>
+						<span>{{item.price}}</span>
+					</div>
+					<div class="partRight">
+						<span>{{item.content}}</span>
+						<p>{{item.timeLimit}}</p>
+						<img class="rightImg" src="../../static/324234234@3x.png"/>
+					</div>
 				</div>
 			</div>
-       </Pagination>
-		
-		
+				
+        </Pagination>
+        <div class="none-data-tip" v-if="pagination.content.length == 0">
+			<img class="none-data-img" src="../../static/42@2x.png" />
+			<p>暂无不可使用优惠卷</p>
+		</div>	
 	</div>
 </template>
 

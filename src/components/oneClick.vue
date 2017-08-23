@@ -132,25 +132,48 @@
 			}
 		},
 		created() {
-			this.$api.serveConfirmOrder(null, (res) => {
-		    	this.defaultAddr = res.result.defaultAddr
-		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
-		    	res.result.intervals.forEach((item) => {
-		    		item.name = item.interval
-		    		this.dateSlots[2].values.push(item)
-		    	})
-		    	this.dateSlots[0].values = res.result.nextTenDays
-		    	
-		    })
-			this.$api.serviceMenuList({
-	        	params:{
-				    menuId: 1,
-				}
-		    },(res) => {
-		    	this.serviceSlots[0].values = res.result
-		    })
+//			this.initData()	
+		},
+		beforeRouteEnter (to, from, next) {
+	    	if(/orders/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			vm.dateSlots[0].values = []
+	    			vm.dateSlots[2].values = []
+	    			vm.serviceSlots[0].values = []
+	    			vm.remark = ''
+	    			vm.serveDataChange = []
+			        vm.serveDataSelect = []
+			        vm.serveData = ''
+			        vm.serviceChange = {}
+		       	    vm.serviceSelect = {}
+		       	    vm.initData()
+	        	})
+	    	}
+	    	
+	    	
 		},
 		methods:{
+			initData() {
+				this.$api.serveConfirmOrder(null, (res) => {
+			    	this.defaultAddr = res.result.defaultAddr
+			    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+			    	res.result.intervals.forEach((item) => {
+			    		item.name = item.interval
+			    		this.dateSlots[2].values.push(item)
+			    	})
+			    	this.dateSlots[0].values = res.result.nextTenDays
+			    	
+			    })
+				this.$api.serviceMenuList({
+		        	params:{
+					    menuId: 1,
+					}
+			    },(res) => {
+			    	this.serviceSlots[0].values = res.result
+			    })
+			},
 			onDataChange(picker, values) {
 				this.serveDataChange = values
 			},
@@ -195,7 +218,15 @@
 					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
-					this.$router.push('/paySubmit/' + res.result.orderSn)
+					Toast({
+					  message: '预约成功',
+					  position: 'middle',
+					  iconClass: 'toast-icon icon-success',
+					  duration: 800
+					})  
+					setTimeout(() => {
+						this.$router.push('/orders')
+					},500)
 				})
 			}
 		}
