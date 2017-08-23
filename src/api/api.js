@@ -181,16 +181,12 @@ export default {
     serveConfirmOrder(params, callback) {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
-<<<<<<< HEAD
     
     //订单支付
     orderPayReady(params, callback) {
         http.get(true, '/serviceOrder/payReady', callback, params)
     },
-    
-=======
 
->>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     // 下订单
     serveAddOrder(params, callback) {
         http.post(true, '/serviceOrder/add', params, callback)
@@ -199,9 +195,7 @@ export default {
     //订单详情
     serveOrderDetail(params, callback) {
         http.get(true, '/serviceOrder/detail', callback, params)
-    },
-<<<<<<< HEAD
-    
+    },    
     
     // 余额支付
     balancePay(params, callback) {
@@ -213,9 +207,6 @@ export default {
         http.post(true, '/serviceOrder', params, callback)
     },
     
-=======
-
->>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     //一键下单
     addOneButtonOrder(params, callback) {
         http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)
@@ -230,17 +221,11 @@ export default {
     workerOrderList(params, callback) {
         http.get(true, '/serviceOrder/listForWorker', callback, params)
     },
-<<<<<<< HEAD
-    
-    
+  
     //工人位置
     workerPositionList(params, callback) {
         http.get(true, '/location/getList', callback, params)
     },
-    
-=======
-
->>>>>>> 0fbbbe15fdb240e8ade0ccc1ab2eecae8abcfcbb
     //工人端更新订单状态
     updateOrderStatus(params, callback) {
         http.post(true, '/serviceOrder/updateOrderStatus', params, callback)
