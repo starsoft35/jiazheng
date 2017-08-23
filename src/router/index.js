@@ -306,7 +306,7 @@ const router = new Router({
             }
         }, {
             // 地址列表
-            path: '/addresses',
+            path: '/addresses/:id',
             component: AddressList,
             meta: {
                 requireAuth: true

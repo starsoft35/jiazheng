@@ -95,6 +95,12 @@ export default {
 		padding: 0.5rem;
 		color: #bbb;
 	}
+	.none-data-img{
+		display: inline-block;
+		width: 1.8rem;
+		height: auto;
+		margin: 0.4rem 0;
+	}
 	.payWay .mint-radiolist-title{
 		display: none;
 	}

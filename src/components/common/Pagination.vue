@@ -63,6 +63,7 @@ export default {
                     if (isRefresh) {
                         self.param.page = 1
                         self.param.content = []
+                        self.allLoaded = false
                     }
 
                     self.render(response)

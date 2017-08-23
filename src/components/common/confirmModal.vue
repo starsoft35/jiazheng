@@ -7,7 +7,7 @@
 	    		<div class="modal-body">
 	    			<div class="modal-icon" :class="has_icon" v-if="has_icon"></div>
 	    			<div class="modal-message" v-html="message" v-if="message"></div>
-	    			<div class="modal-input">
+	    			<div class="modal-input" v-if="has_input">
 	    				<span>&yen;</span>
 	    				<input ref="Input" class="input" v-model="serviceMoney" type="tel" placeholder="请输入服务费用"/>
 	    			</div>

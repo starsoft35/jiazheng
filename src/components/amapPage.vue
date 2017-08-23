@@ -34,7 +34,7 @@
 					var markers = [];
 					this.workerPosution.forEach((item) => {
 						if(!item.headImage) {
-							item.headImage = '../../static/worker09.png'
+							item.headImage = '../../static/avatar-default.png'
 						}
 						var marke  = new AMap.Marker({
 										position: [item.longitude, item.latitude],
