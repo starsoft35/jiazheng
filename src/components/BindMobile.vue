@@ -62,7 +62,7 @@
                         accessToken.refresh_token, 
                         accessToken.expire_time)
 
-                    self.$storage.set('role', result.role)
+                    self.$storage.set('role', response.result.role)
                     let redirectURI = '/ucenter'
                     if (self.$storage.get('history_url')) {
                         redirectURI = self.$storage.get('history_url')

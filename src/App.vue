@@ -12,13 +12,10 @@
 	//引入外部文件
 	import '../css/reset.css'
 	import '../js/rem.js'
-	// import '../css/swiper.min.css'
-	// import '../js/swiper.min.js'
 	import '../css/style.css'
-	import '../js/function.js'
     
 	export default {
-	name: 'app'
+		name: 'app'
 	}
 </script>
 
