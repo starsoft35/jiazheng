@@ -1,72 +1,7 @@
 <template>
 	<div class="box" ref="box">
 		
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/listForWorker">
-			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
-				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
-					<!--姓名 电话-->
-					<a :href="'tel:'+ item.userPhone " class="peopleName">
-						<span>{{item.userName}}</span>
-						<span>{{item.userPhone}}</span>
-						<div></div>
-					</a>
-					<!--订单号-->
-					<div style="padding: 0.15rem 0;">
-						<div class="cont">
-							<span class="contLeft">订单号：</span>
-							<span class="contRight">{{item.orderNo}}</span>
-						</div>
-						<!--服务时间-->
-						<div class="cont">
-							<span class="contLeft">服务时间：</span>
-							<span class="contRight">{{item.serviceTime}}</span>
-						</div>
-						<!--服务地址-->
-						<div class="cont">
-							<span class="contLeft">服务地址：</span>
-							<span class="contRight position">{{item.serviceAddress.address}}</span>
-							<a class="map-lnik" href="#">
-								<span>去这里</span>
-							</a>
-						</div>
-					</div>
-					
-					<!--服务详情-->
-					<div class="thingList">
-						<ul class="thingCont">
-							<li class="things">
-								<a>
-									<img :src="item.serviceImage" />
-									<div class="thingName">
-										<div v-text="item.serviceTitle"></div>
-										<span v-if="item.orderType.value == 1">&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
-									</div>
-									<span class="counts">x{{item.serviceMount}}</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-					<!--合计-->
-					<div class="totalMoney" v-if="item.orderType.value == 1">
-						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
-						<span class="tolalLeft">合计:</span>
-					</div>
-					<div class="send" v-show="item.operation.length>0">
-						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo)">{{obj.event}}</div>
-					</div>
-				</div>
-				<!--<div class="kong"></div>-->
-			</div>
-				
-        </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无订单</div>
-		<confirm-modal :show="show" 
-			@cancel_modal="cancel_modal" 
-			@confirm_modal="confirm_modal" 
-			@closeModal="show = false" 
-			:has_input="true"
-			message="">
-		</confirm-modal>
+		
 	</div>
 	
 
@@ -93,43 +28,7 @@
 			}
 		},
 		methods: {
-			render(res) {
-                res.result.list.forEach((item) => {
-                	if(item.operation == null) {
-                		item.operation = []
-                	}
-                	this.pagination.content.push(item)
-                })
-            },
-            cancel_modal() {
-            	this.show = false
-            },
-            confirm_modal(serviceMoney) {
-            	this.$api.updateOrderStatus({
-					flag: this.currOperate.flag,
-					orderNo: this.currOrderNo,
-					type: this.currOperate.type,
-					price: serviceMoney
-				}, (res) => {
-					
-				})
-            },
-            operateOrder(obj,key, orderNo) {
-            	if(obj.flag == 3 && obj.type == 2) {
-            		this.currOperate = obj
-            		this.currOrderNo = orderNo
-            		this.show = true
-            	}else {
-            		this.$api.updateOrderStatus({
-						flag: obj.flag,
-						orderNo: orderNo,
-						type: obj.type
-					}, (res) => {
-						obj.splice(key, 1)
-//						this.$router.push('/paySubmit/' + res.result.orderSn)
-					})
-            	}
-            }
+			
 		}
 	}
 </script>

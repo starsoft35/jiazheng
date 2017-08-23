@@ -1,7 +1,7 @@
 <template>
     <ul class="nav_bottm">
         <li :class="{'active':first.active}">
-            <router-link to='/orderPart/orderPartOne'>
+            <router-link to='/orderPart'>
                 <img :src="first.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
