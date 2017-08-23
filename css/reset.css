@@ -55,6 +55,21 @@ clear {
 .kong{
 	width: 7.5rem;
 	height: 2rem;
-	display: block;
-	
+	display: block;	
 }
+
+/* 1px */
+.hr{
+	position: relative
+  }
+
+.hr::after{
+content:'';
+display:block;
+position:absolute;
+left:0;
+bottom:0;
+width:100%;
+border-top:1px solid #f2f2f2;
+}
+  

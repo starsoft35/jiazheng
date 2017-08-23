@@ -169,7 +169,7 @@ const router = new Router({
             component: addPosition
         }, {
             //订单详情
-            path: '/orderDetail',
+            path: '/orderDetail/:id',
             component: orderDetail
         }, {
             //订单支付
