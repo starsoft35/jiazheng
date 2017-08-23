@@ -2,7 +2,7 @@
 	<div id="box">
 		<!--顶部-->
 		<Header title="订单"></Header>
-		<div style="height: 0.8rem;">
+		<div>
 			<ul class="navBox">
 				<li>
 					<router-link class="routerLink" to="/orderPart/orderPartOne" replace>待服务</router-link>
@@ -17,6 +17,7 @@
 					<router-link class="routerLink" to="/orderPart/orderPartFour" replace>已取消</router-link>
 				</li>
 			</ul>
+			<div style="height: 0.8rem;"></div>
 		</div>
 		
 		<router-view></router-view>
@@ -31,6 +32,9 @@
 			return {
 				title:'订单'
 			}
+		},
+		methods: {
+			
 		}
 	}
 </script>

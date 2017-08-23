@@ -93,7 +93,9 @@
 	}
 	.headCont a{
 		display: block;
+		
 	}
+	
 	.headCont span{
 		color: #FFFFFF;
 		width: 0.32rem;

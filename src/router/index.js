@@ -69,6 +69,10 @@ import sendPeople from '@/components/worker/sendPeople'
 import workerMessage from '@/components/worker/workerMessage'
 //我的
 import WorkerUCenter from '@/components/worker/UCenter'
+//我的
+import Location from '@/components/location'
+//地图
+import amapPage from '@/components/amapPage'
 
 
 
@@ -142,14 +146,17 @@ const router = new Router({
         }, {
             //确认订单 提交预约
             path: '/appointment/:id',
-            component: appointment
+            component: appointment,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //优惠券
             path: '/coupons',
             component: coupons,
             children: [{
                     path: '/coupons',
-                    redirect: '/coupons/couponsLeft/use'
+                    redirect: '/coupons/couponsLeft/useless'
                 }, {
                     path: '/coupons/couponsLeft/:status',
                     component: couponsLeft
@@ -182,7 +189,10 @@ const router = new Router({
         }, {
             //一键下单
             path: '/oneClick',
-            component: oneClick
+            component: oneClick,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //分享
             path: '/sharePage',
@@ -238,6 +248,14 @@ const router = new Router({
             //工人个人中心
             path: '/worker/ucenter',
             component: WorkerUCenter,
+        }, {
+            //地图
+            path: '/amapPage',
+            component: amapPage,
+        }, {
+            //工人位置
+            path: '/location',
+            component: Location,
         },
 
 

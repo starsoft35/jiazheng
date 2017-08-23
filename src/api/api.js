@@ -164,6 +164,11 @@ export default {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
     
+    //订单支付
+    orderPayReady(params, callback) {
+        http.get(true, '/serviceOrder/payReady', callback, params)
+    },
+    
     // 下订单
     serveAddOrder(params, callback) {
         http.post(true, '/serviceOrder/add', params, callback)
@@ -172,6 +177,17 @@ export default {
     //订单详情
     serveOrderDetail(params, callback) {
         http.get(true, '/serviceOrder/detail', callback, params)
+    },
+    
+    
+    // 余额支付
+    balancePay(params, callback) {
+        http.post(true, '/serviceOrder/balancePay', params, callback)
+    },
+    
+    // 微信支付
+    mobilePay(params, callback) {
+        http.post(true, '/serviceOrder', params, callback)
     },
     
     //一键下单
@@ -187,6 +203,12 @@ export default {
     //工人模块订单
     workerOrderList(params, callback) {
         http.get(true, '/serviceOrder/listForWorker', callback, params)
+    },
+    
+    
+    //工人位置
+    workerPositionList(params, callback) {
+        http.get(true, '/location/getList', callback, params)
     },
     
     //工人端更新订单状态
