@@ -29,13 +29,13 @@
 					</div>
 					<span class="numbers" v-show="orderBox.numberPart">×{{orderBox.spanTwo}}</span>
 				</div>
-				<div class="middlePart hr">
+				<div class="middlePart ">
 					<span>￥{{orderBox.spanOne}}</span>
 					<span>合计:</span>
 				</div>
 		<div class="bottomBtn">
 			<div class="send" v-show="orderBox.operation">
-				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in orderBox.operation" @click="operateOrder(obj)">{{obj.event}}</div>
+				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">{{obj.event}}</div>
 			</div>
 		</div>
 
@@ -49,6 +49,8 @@
 </template>
 
 <script type="text/javascript">
+   import { MessageBox, Toast } from 'mint-ui'
+
 	export default {
 		data() {
 			return {
@@ -242,14 +244,34 @@
                 }} else {					
 				}
 			},
-			operateOrder(obj) {
+			operateOrder(obj,orderNo) {
+			if(obj.operationType=='1'){
 			this.$api.updateOrderStatus({
 				flag: obj.flag,
-				orderNo: this.orderNo,
+				orderNo: orderNo,
 				type: obj.type
 			}, (res) => {
 				console.log(res)
+			// 	Toast({
+			// 	message: '请输入昵称',
+			// 	position: 'bottom'
+            // })
 			})
+			}else if(obj.operationType=='2'){
+				window.location.href="tel:"+obj.linkPhone
+			}else if(obj.operationType=='4'){		
+				this.$router.push({path: '/orderDetail/'+orderNo})
+			}else if(obj.operationType=='5'){	
+				this.$api.updateOrderStatus({
+				flag: obj.flag,
+				orderNo: orderNo,
+				type: obj.type
+			}, (res) => {
+
+			})
+
+			}
+
 		}
 		},
 	}
@@ -366,6 +388,7 @@
 		width: 7.06rem;
 		height: 0.8rem;
 		padding: 0 .22rem;
+		border-bottom: 0.01rem solid #f2f2f2
 	}
 	.middlePart span {
 		float: right;
@@ -431,6 +454,7 @@
 		width: 7.25rem;
 		overflow: hidden;
 		padding: 0.16rem 0;
+		color: #2d92f4
 	}
 
 	.send div{

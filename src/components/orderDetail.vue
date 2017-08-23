@@ -76,9 +76,10 @@
 		</div>
 		<!--订单具体信息-->
 		<div class="clientMessage">
-			<div class="contList clear" v-for="(contList,index) in positionMsg">
-				<div>{{contList.theLeft}}</div>
+			<div class="contList  " v-for="(contList,index) in positionMsg">
+				<div>{{contList.theLeft}}
 				<span>{{contList.theRight}}</span>
+				</div>
 			</div>
 		</div>
 		<!--底部-->
@@ -165,7 +166,10 @@ export default {
 					//下单时间
 					this.orderTime=result.orderTime;
 					//按钮状态
-					this.operation=result.operation;		
+					if(result.operation=='null'){
+						result.operation=[]
+					}
+					this.operation=result.operation.reverse();				
 				}
 				
 			},
@@ -183,18 +187,38 @@ export default {
 			// 		console.log(res)
 			// 	}
 			// )
-			// window.history.go(-1)
+
 			// console.log(this.$route)	
 		},
 		operateOrder(obj) {
+		if(obj.operationType=='1'){
+		this.$api.updateOrderStatus({
+			flag: obj.flag,
+			orderNo: this.orderNo,
+			type: obj.type
+		}, (res) => {
+			console.log(res)
+		// 	Toast({
+		// 	message: '请输入昵称',
+		// 	position: 'bottom'
+		// })
+		})
+		}else if(obj.operationType=='2'){
+			window.location.href="tel:"+obj.linkPhone
+		}else if(obj.operationType=='4'){		
+			this.$router.push({path: '/orderDetail/'+orderNo})
+		}else if(obj.operationType=='5'){	
 			this.$api.updateOrderStatus({
-				flag: obj.flag,
-				orderNo: this.orderNo,
-				type: obj.type
-			}, (res) => {
-				console.log(res)
-			})
+			flag: obj.flag,
+			orderNo: this.orderNo,
+			type: obj.type
+		}, (res) => {
+
+		})
+
 		}
+
+	}
 	}
 }
 </script>
@@ -303,10 +327,11 @@ export default {
 }
 
 .bottomPart img {
-	width: 0.2rem;
-	height: 0.24rem;
+	width: 0.15rem;
+	height: 0.20rem;
+	margin-top: 0.08rem;
 	float: right;
-	margin-left: 0.15rem;
+	margin-left: 0.13rem;
 }
 
 .textRight {
@@ -430,7 +455,7 @@ export default {
 	width: 7rem;
 	display: inline-block;
 	padding-top: 0.2rem;
-	border-top: 2px solid #f2f2f2;
+	border-top: 0.01rem solid #f2f2f2;
 }
 
 .messageList {
@@ -472,7 +497,7 @@ export default {
 
 .mesageBottom span {
 	line-height: 0.26rem;
-	font-size: 0.24rem;
+	font-size: 0.28rem;
 	display: block;
 	float: right;
 	color: #ff5400;
@@ -501,7 +526,6 @@ export default {
 
 
 
-
 /*客户具体信息*/
 
 .clientMessage {
@@ -517,30 +541,25 @@ export default {
 
 .contList {
 	width: 7rem;
+	line-height: 0.86rem;
 	display: inline-block;
-	border-top: 2px solid #f2f2f2;
+	border-top: 0.01rem solid #f2f2f2;
 }
 
 .contList div {
 	float: left;
-	height: 0.24rem;
-	padding: 0.3rem 0.05rem;
-	font-size: 0.22rem;
-	line-height: 0.24rem;
+	font-size: 0.28rem;
 	color: #7a7a7a;
 }
 
 .contList span {
 	float: left;
 	display: inline-block;
-	font-size: 0.24rem;
+	font-size: 0.28rem;
 	color: #222222;
 	width: 5.6rem;
-	padding: 0.3rem 0.05rem;
 	text-align: left;
 }
-
-
 
 
 
@@ -556,10 +575,11 @@ export default {
 .send {
 	width: 7.25rem;
 	overflow: hidden;
-	padding: 0.16rem 0;
+	height: 0.86rem;
 }
 
 .send div{
+	margin-top: 0.15rem;
 	float: right;
 	margin-left: 0.2rem;
 	font-size: 0.24rem;
