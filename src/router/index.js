@@ -241,7 +241,7 @@ const router = new Router({
             component: Distribute
         }, {
             //派单
-            path: '/sendPeople',
+            path: '/sendPeople/:id',
             component: sendPeople,
         }, {
             //工人端消息
