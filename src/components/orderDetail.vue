@@ -165,7 +165,9 @@ export default {
 					//下单时间
 					this.orderTime=result.orderTime;
 					//按钮状态
-					this.operation=result.operation;		
+					this.operation=result.operation;
+					
+					this.$storage.set('currOrderFlow', res.result.orderFlow)
 				}
 				
 			},

@@ -1,55 +1,22 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>		
-		<span></span>
-		<div class="box-left">
-			<div class="box-left-icon left-img">
-				<img src="../../static/28@3x.png" v-if="orderStatus5">
-				<img src="../../static/22@3x.png" v-else>
+		<Header title="订单详情"></Header>
+		<div class="orderProcess">
+			<div class="orderProcess-item" v-for="(item, index) in orderFlow">
+				<div class="process-left"></div>
+				<div class="process-right">
+					<p>
+						<span class="tit">{{item.flow}}</span>
+						<span>服务王朝</span>
+					</p>
+					<p>
+						<span>服务王朝</span>
+					</p>
 				</div>
-			<div class="left-span"><img src="../../static/order/icon-span.png"></div>
-			<div class="box-left-icon left-img">
-				<img src="../../static/23@3x.png" v-if="orderStatus4">
-				<img src="../../static/30@3x.png" v-else>
-				</div>
-			<div class="left-span"><img src="../../static/order/icon-span.png"></div>
-			<div class="box-left-icon left-img">
-				<img src="../../static/24@3x.png" v-if="orderStatus3">
-				<img src="../../static/31@3x.png" v-else>
-				</div>
-			<div class="left-span"><img src="../../static/order/icon-span.png"></div>
-			<div class="box-left-icon left-img">
-				<img src="../../static/25@3x.png" v-if="orderStatus2">
-				<img src="../../static/29@3x.png" v-else>
-				</div>
-			<div class="left-span"><img src="../../static/order/icon-span.png"></div>
-			<div class="box-left-icon left-img">
-				<img src="../../static/26@3x.png" v-if="orderStatus1">
-				<img src="../../static/32@3x.png" v-else>
-				</div>
-		</div>
-		<div class="box-right">
-			<div class="right-wraper" v-for="item in rightItem">
-			<div class="img-bg"><img src="../../static/order/icon-triangle.png" alt=""></div>
-			<div class="right-item" >
-				<div class="right-top">
-					<span class="right-top-left" >服务完成{{item.title}}</span><span class="right-top-right">2017-07-24 10:22 {{item.time}}</span>
-				</div>
-				<div class="right-bottom">
-					<span class="right-bottom-left" >感谢使用同城家政 {{item.info}}</span>
-					<span class="right-bottom-right"><img src="../../static/27@3x.png" v-if="item.phone"></span>	
-				</div>
-			</div>
 			</div>
 		</div>
+		
 	</div>
 </template>
 
@@ -57,48 +24,11 @@
 	export default {
 		data() {
 			return {
-				title: '我是demo',
-				picked:'',
-				// 订单状态
-				orderStatus1:true,
-				orderStatus2:false,
-				orderStatus3:false,
-				orderStatus4:false,
-				orderStatus5:false,
-				rightItem:[
-					{
-						title:0,
-						time:0,
-						info:0,
-						phone:0	
-					},
-					{
-						title:0,
-						time:0,
-						info:0,
-						phone:0	
-					},
-					{
-						title:0,
-						time:0,
-						info:0,
-						phone:0	
-					},
-					{
-						title:0,
-						time:0,
-						info:0,
-						phone:0	
-					},
-					{
-						title:0,
-						time:0,
-						info:0,
-						phone:0	
-					}
-				]
-				
+				orderFlow: []
 			}
+		},
+		created() {
+			this.orderFlow = this.$storage.get('currOrderFlow')
 		}
 	}
 </script>
@@ -110,7 +40,80 @@
 		padding: 0px;
 		margin: 0px;
 	}
-	
+	.orderProcess{
+		padding: 0.2rem;
+	}
+	.orderProcess-item{
+		display: flex;
+		align-items: center;
+		padding: 0.2rem 0;
+	}
+	.orderProcess-item:nth-of-type(1) .process-left{
+		background-color: #22ac38;
+	}
+	.process-left{
+		width: 0.54rem;
+		height: 0.54rem;
+		border-radius: 50%;
+		background-color: #999;
+		margin-right: 0.3rem;
+		position: relative;
+	}
+	.process-left:before{
+		content: '';
+		position: absolute;
+		width: 0;
+		border-left: 1px solid #999;
+		height: 1rem;
+		left: 50%;
+		top: -1.1rem;
+		transform: translateX(-50%);
+	}
+	.process-left:after{
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 70%;
+	}
+	.orderProcess-item:nth-of-type(1) .process-left:after{
+		background-image: url(../../static/26@3x.png);
+	}
+	.orderProcess-item:nth-of-type(1) .process-left:before{
+		display: none;
+	}
+	.process-right{
+		flex: 1;
+		padding: 0.2rem;
+		background: #fff;
+		position: relative;
+	}
+	.process-right:before{
+		position: absolute;
+		content: '';
+		width: 0.16rem;
+		height: 0.3rem;
+		background: url(../../static/order/icon-triangle.png) no-repeat center;
+		left: -0.16rem;
+		background-size: auto 100%;
+		top: 50%;
+		margin-top: -0.15rem;
+	}
+	.process-right>p{
+		display: flex;
+		justify-content: space-between;
+		color: #999;
+		line-height: 1.8;
+		font-size: 0.26rem;
+	}
+	.process-right>p span.tit{
+		font-size: 0.28rem;
+		color: #333;
+	}
 	.headPart {
 		width: 100%;
 		height: 0.92rem;

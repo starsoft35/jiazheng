@@ -33,11 +33,9 @@
 					<span>￥{{orderBox.spanOne}}</span>
 					<span>合计:</span>
 				</div>
-		<div class="bottomBtn">
-			<div class="send" v-show="orderBox.operation">
-				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in orderBox.operation" @click="operateOrder(obj)">{{obj.event}}</div>
-			</div>
-		</div>
+				<div class="send" v-show="orderBox.operation.length>0">
+					<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in orderBox.operation" @click="operateOrder(obj)">{{obj.event}}</div>
+				</div>
 
 				</router-link>
 			</div>
@@ -203,7 +201,10 @@
 				let orderCont= res.result.list
 				if (res.err_code=="0") {
 					this.orderCont== orderCont
-				for (let i in orderCont) {
+				for (let i in orderCont) {	
+					if(orderCont[i].operation == null) {
+                		orderCont[i].operation = []
+                	}
 					orderCont[i].operation.reverse()
                     this.orderCont.push({
 						topTime: orderCont[i].orderTime,
@@ -421,10 +422,6 @@
 	
 	/*底部按钮*/
 
-	.bottomBtn {
-		height: 0.8rem;
-		background: #FFFFFF;
-	}
 
 
 	.send {
@@ -436,15 +433,17 @@
 	.send div{
 		float: right;
 		margin-left: 0.2rem;
-		font-size: 0.24rem;
-		line-height: 0.42rem;
+		font-size: 0.26rem;
+		height: 0.56rem;
+		line-height: 0.58rem;
 		border-radius: 0.28rem;
 		border: .01rem solid #8ac4f9;
-		padding: 0 0.2rem;
+		color:#2173d6;
+		padding: 0 0.24rem;
 	}
 
 	.send .send-color{
 		color: #888;
-		border: .01rem solid #888;
+		border: .01rem solid #666;
 	}
 </style>
