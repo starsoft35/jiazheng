@@ -81,17 +81,9 @@
                     })
                     return
                 }
-
-                if (typeof QcjzBridge === 'undefined') {
-                    Toast({
-                        message: '不支持微信登录',
-                        position: 'bottom'
-                    })
-                    return
-                }
-                
-                QcjzBridge.oauth(1, function(data){
-                    let info = JSON.parse(data)
+                // oauth认证
+                this.$bridge.wechatOAuth().then(response => {
+                    let info = JSON.parse(response)
                     self.$api.wechatLogin(info.unionid, function(response) {
                         self.loginSuccess(response.result)
                     }, function(response) {
@@ -100,7 +92,7 @@
                             self.$router.push('/bind/mobile')
                         }
                     })
-                }); 
+                })
             },
 
             // 切换注册协议状态

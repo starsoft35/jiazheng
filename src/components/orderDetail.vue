@@ -170,6 +170,9 @@ export default {
 						result.operation=[]
 					}
 					this.operation=result.operation.reverse();				
+			
+					
+					this.$storage.set('currOrderFlow', res.result.orderFlow)
 				}
 				
 			},

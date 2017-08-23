@@ -100,16 +100,21 @@ export default {
         http.get(true, '/charge/templateList', callback)
     },
 
+    // 充值
+    recharge(params, callback) {
+        http.post(true, '/charge', params, callback)
+    },
+
     // 支付宝充值
     alipayRecharge(params, callback) {
         params.pay_type = 2
-        http.post(true, '/charge', params, callback)
+        this.recharge(params, callback)
     },
 
     // 微信支付充值
     wechatRecharge(params, callback) {
         params.pay_type = 3
-        http.post(true, '/charge', params, callback)
+        this.recharge(params, callback)
     },
 
     // 获取附近菜单
@@ -181,7 +186,7 @@ export default {
     serveConfirmOrder(params, callback) {
         http.get(true, '/serviceOrder/preOrder', callback, params)
     },
-    
+
     //订单支付
     orderPayReady(params, callback) {
         http.get(true, '/serviceOrder/payReady', callback, params)
@@ -195,18 +200,18 @@ export default {
     //订单详情
     serveOrderDetail(params, callback) {
         http.get(true, '/serviceOrder/detail', callback, params)
-    },    
-    
+    },
+
     // 余额支付
     balancePay(params, callback) {
         http.post(true, '/serviceOrder/balancePay', params, callback)
     },
-    
+
     // 微信支付
     mobilePay(params, callback) {
         http.post(true, '/serviceOrder', params, callback)
     },
-    
+
     //一键下单
     addOneButtonOrder(params, callback) {
         http.post(true, '/serviceOrder/addOneButtonOrder', params, callback)
@@ -221,7 +226,7 @@ export default {
     workerOrderList(params, callback) {
         http.get(true, '/serviceOrder/listForWorker', callback, params)
     },
-  
+
     //工人位置
     workerPositionList(params, callback) {
         http.get(true, '/location/getList', callback, params)
@@ -232,10 +237,10 @@ export default {
     },
     // 获取工人端派单页菜单
     updateOrderMenu(params, callback) {
-        http.get(true, '/serviceOrder/pend', params, callback  )
+        http.get(true, '/serviceOrder/pend', params, callback)
     },
     //工人列表
-    updateOrderPeople(callback){
+    updateOrderPeople(callback) {
         http.get(true, '/user/pendingMan', callback)
     }
 

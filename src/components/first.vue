@@ -116,8 +116,9 @@
 				menuList: [],
 				firstMenu: {},
 				currCity: {
-					name: '苏州',
-					id: 106
+					latitude: 31.298886,
+					longitude: 120.585316,
+					name: ''
 				}
 			}
 		},
@@ -129,13 +130,16 @@
 			}
 			this.$api.homeData({
 	        	params:{
-				    cityName: this.currCity.name
+				    cityName: this.currCity.name,
+				    latitude: this.currCity.latitude,
+				    longitude: this.currCity.longitude
 				}
 		    },(res) => {
 		    	this.homeData = res.result
 		    	this.menuList = res.result.menus
 		    	this.firstMenu = this.menuList[0]
 		    	this.hotServices = res.result.services.result.list
+		    	this.currCity.name = res.result.currentCity
 		    	if(!openCitys) {
 					this.$storage.set('openCitys', res.result.openCitys)
 				}
