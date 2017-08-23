@@ -230,9 +230,14 @@ export default {
     updateOrderStatus(params, callback) {
         http.post(true, '/serviceOrder/updateOrderStatus', params, callback)
     },
-
-
-
+    // 获取工人端派单页菜单
+    updateOrderMenu(params, callback) {
+        http.get(true, '/serviceOrder/pend', params, callback  )
+    },
+    //工人列表
+    updateOrderPeople(callback){
+        http.get(true, '/user/pendingMan', callback)
+    }
 
 
 }

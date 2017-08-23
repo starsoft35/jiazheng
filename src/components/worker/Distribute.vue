@@ -7,7 +7,7 @@
 			</li>
 		</ul>
 		
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/pend">
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/pend"  ref="pagination">
 
 		</Pagination>
 
@@ -55,19 +55,19 @@
 								<p v-text="contBox.thingIntro"></p>
 								<span v-text="contBox.thingSprice"></span>
 							</div>
-							<span class="counts">×5</span>
+							<span class="counts">{{contBox.thingNumber}}</span>
 						</a>
 					</li>
 				</ul>
 			</div>
 			<!--合计-->
 			<div class="totalMoney">
-				<span class="totalRight">￥150.00</span>
+				<span class="totalRight">{{contBox.thingMoney}}</span>
 				<span class="tolalLeft">合计:</span>
 			</div>
 			<!--派单-->
 			<div class="send">
-				<div>派单</div>
+				<div @click="orderMenu(contBox.ordeCounts)">派单</div>
 			</div>
 		</div>
 		<div class="kong"></div>
@@ -81,6 +81,7 @@
 	export default {
 		data(){
 			return {
+
 				menus: [
 					{
 						name: '待派单',
@@ -94,72 +95,69 @@
 					}
 				],
 				pagination: {
+					content: [],
 					page: 1,
-					pageSize: 10,
+					pageSize: 15,
 					param: {
 						params: {
 							type: 1
 						}
 					},
-					content: [
-						{
-							Name: '朱小明',
-							Phone: '17191191610',
-							//订单号
-							ordeCounts: '123145645145',
-							//服务地址
-							servePosition: '江苏省 苏州市 工业园区 新平街288号汉嘉大厦 2013室',
-							//备注
-							remark: '暂无备注',
-							//是否有备注
-							remarkTrue: true,
-							thingSrc: '#serviceDetails',
-							thingImg: '@../../static/11@3x.png',
-							thingTitle: '小明西一街',
-							thingIntro: '内芯及外表清洗',
-							thingSprice: '￥30.00/台',
-							//购买数量
-							counts: '5',
-							//服务时间
-							timeOne: '2017-08-08',
-							timeTwo: '06:10~09:14'
-						}, {
-							Name: '朱小明',
-							Phone: '17191191610',
-							//订单号
-							ordeCounts: '123145645145',
-							//服务地址
-							servePosition: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-							//备注
-							remark: '外交部以文件形式正式发布《印度边防部队在中印边界锡金段越界进入中国领土的事实和中国的立场》，其中将该事件的起因经过、印方所持借口，以书面形式历述清晰',
-							//是否有备注
-							remarkTrue: false,
-							thingSrc: '#serviceDetails',
-							thingImg: '@../../static/11@3x.png',
-							thingTitle: '小明西一街',
-							thingIntro: '内芯及外表清洗',
-							thingSprice: '￥30.00/台',
-							//购买数量
-							counts: '5',
-							//服务时间
-							timeOne: '2017-08-08',
-							timeTwo: '06:10~09:14'
-						}
-					]
+					
+					
 				}
 			}
 		},
+		created() {
+			
+		},
+
+		
 		methods: {
 			changeMenu(index) {
-				for (let i in this.menus) {
+				this.pagination = {
+                    content: [],
+                    page: 1, 
+					pageSize: 15,
+					param: {
+						params: {
+							type: this.menus[index].type
+						}
+					}
+				}
+
+				for (var i in this.menus) {
 					this.menus[i].actived = false
 					if (i == index) {
 						this.menus[i].actived = true
 					}
 				}
+
+				this.$refs.pagination.refresh()
 			},
+			
+			//跳转工人页面
+			orderMenu(id) {
+				this.$router.push('/sendPeople/'+ id)
+			},
+		
+
 			render(response) {
-				
+				for(var i in response.result.list){
+					this.pagination.content.push({
+						Name:response.result.list[i].linkName,
+						Phone:response.result.list[i].linkPhone,
+						thingNumber:response.result.list[i].mount,
+						ordeCounts:response.result.list[i].orderNo,
+						remark:response.result.list[i].orderType,
+						thingSprice:response.result.list[i].price,
+						thingImg:response.result.list[i].sImage,
+						thingTitle:response.result.list[i].sTitle,
+						servePosition:response.result.list[i].serviceAddr,
+						timeOne:response.result.list[i].serviceTime,
+						thingMoney:response.result.list[i].total,
+					})
+				}
 			}
 		}
 	}

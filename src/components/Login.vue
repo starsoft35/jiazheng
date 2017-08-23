@@ -53,7 +53,7 @@
             if (this.$route.query.oauth === '1') {
                 let info = this.$storage.get('oauthInfo')
                 this.$api.wechatLogin(info.unionid, function(response) {
-                    self.loginSuccess(response.result.accessToken)
+                    self.loginSuccess(response.result)
                 }, function(response) {
                     if (response.err_code == 2) {
                         self.$router.push('/bind/mobile')
@@ -93,7 +93,7 @@
                 QcjzBridge.oauth(1, function(data){
                     let info = JSON.parse(data)
                     self.$api.wechatLogin(info.unionid, function(response) {
-                        self.loginSuccess(response.result.accessToken)
+                        self.loginSuccess(response.result)
                     }, function(response) {
                         if (response.err_code == 2) {
                             self.$storage.set('oauthInfo', info)
@@ -166,13 +166,16 @@
 
                 this.$api.login(this.login, function (response) {
                     // 跳转
-                    self.loginSuccess(response.result.accessToken)
+                    self.loginSuccess(response.result)
                 })
             },
 
-            loginSuccess(accessToken) {
+            loginSuccess(result) {
                 let self = this
+                let accessToken = result.accessToken
                 self.$token.refreshToken(accessToken.access_token, accessToken.refresh_token, accessToken.expire_time)
+
+                self.$storage.set('role', result.role)
 
                 let redirectURI = '/ucenter'
                 if (this.$storage.get('history_url')) {

@@ -116,6 +116,7 @@
                         }
                     }
                 }
+                self.$storage.set('role', 1)
             })
         },
         methods: {

@@ -55,15 +55,14 @@
                     nickname: oauthInfo.nickname,
                     openid: oauthInfo.unionid,
                     registerToken: self.registerToken
-                }, function(response) {accessToken
+                }, function(response) {
                     let accessToken = response.result.accessToken
                     self.$token.refreshToken(
                         accessToken.access_token, 
                         accessToken.refresh_token, 
                         accessToken.expire_time)
 
-                    self.$storage.remove('oauthInfo')
-
+                    self.$storage.set('role', result.role)
                     let redirectURI = '/ucenter'
                     if (self.$storage.get('history_url')) {
                         redirectURI = self.$storage.get('history_url')
