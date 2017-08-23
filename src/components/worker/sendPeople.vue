@@ -3,24 +3,29 @@
 		<!--顶部-->
 		<div class="headPart">
 			<div class="headCont">
-				<router-link to="/sendOrders/sendOrderLeft">
+				<router-link to="/Distribute">
 					<span class="spanLeft fl"></span>
 				</router-link>
-				<router-link to="/sendOrders/sendOrderLeft">
+				<router-link to="/Distribute">
 					<span class="spanRight fr">确认派单</span>
 				</router-link>
 				<p v-text="title"></p>
 			</div>
 		</div>
-		<!--列表-->
+
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/user/pendingMan"  ref="pagination">
+        </Pagination>
+		    <!--列表-->
 			<div class="contList" v-for="(list,index) in list">
 				<ul class="contBox">
-					<li class="list_one fl">{{list.Name}}</li>
-					<li class="list_two fl">{{list.Mobile}}</li>
-					<li class="list_three fl">{{list.count}}单</li>
-					<li class="list_four fr"></li>
+					<li class="list_one fl">{{ list.workname }} </li>
+					<li class="list_two fl">{{ list.phone }} </li>
+					<li class="list_three fl">{{ list.num }}单 </li>
+					<li class="list_four fr" @click="selectedPeople(list.index)"></li>
 				</ul>
 			</div>
+
+		
 	</div>
 </template>
 
@@ -29,23 +34,46 @@
 		data(){
 			return {
 				title:'派单',
-				list:[
-					{
-						Name:'朱小明',
-						Mobile:'17191191610',
-						count:10,
-					},{
-						Name:'朱小明',
-						Mobile:'17191191610',
-						count:10,
-					},{
-						Name:'朱小明',
-						Mobile:'17191191610',
-						count:10,
-					}
-				]
+
+				list:[],
+
+				pagination: {
+					
+					page: 1,
+					pageSize: 15,
+				}
+				
 			}
-		}
+		},
+		created() {
+			
+		},
+		methods: {
+			changeMenu(index){
+				this.pagination = {
+                    list:[ ],
+                    page: 1, 
+					pageSize: 15,
+					param: {
+						params: {
+							type: this.menus[index].type
+						}
+					}
+				}
+			},
+			render(response){
+				for(var i in response.result.list){
+					this.list.push(response.result.list[i])
+				}
+			},
+			selectedPeople(k){
+				
+			}
+
+		},
+		
+
+
 	}
 </script>
 
@@ -114,7 +142,13 @@
 	.list_four{
 		width:0.4rem ;
 		height:0.4rem;
-		background: url("../../../static/35@3x.png") no-repeat;
+		/* background: url("../../../static/35@3x.png") no-repeat; */
+		background-color: #ccc;
+		border-radius: 50%;
 		background-size: 100% 100%;
+	}
+	.selected_img{
+		background: url("../../../static/35@3x.png") no-repeat;
+		background-color: none;
 	}
 </style>
