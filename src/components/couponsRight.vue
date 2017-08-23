@@ -16,8 +16,10 @@
 			</div>
 				
         </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无优惠卷</div>
-		
+        <div class="none-data-tip" v-if="pagination.content.length == 0">
+			<img class="none-data-img" src="../../static/42@2x.png" />
+			<p>暂无不可使用优惠卷</p>
+		</div>	
 	</div>
 </template>
 

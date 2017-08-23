@@ -7,8 +7,10 @@
             暂无订单消息
         </div>
 
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/list">
-			<div class="orderBox" v-for="(orderBox,index) in orderCont" v-show="pagination.content.length > 0">
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/list" >
+			<div>
+			<div class="orderBox"  v-for="(orderBox,index) in orderCont" v-show="pagination.content.length > 0" >
+			<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
 				<div class="topMessage clear">
 					<span class="topLeft fl">{{orderBox.topTime}}</span>
 					<span class="topRight fr">{{orderBox.topText}}</span>
@@ -22,25 +24,24 @@
 						<div class="serveTitle fl">
 							<div>{{orderBox.serveTitle}}</div>
 							<span v-bind:class="{spanOneStyle:orderBox.contOne,spanTwoStyle:orderBox.contTwo}">{{orderBox.serveCont}}</span>
-							<p v-show="orderBox.pricePart">￥30.00/小时</p>
+							<p v-show="orderBox.pricePart">￥{{orderBox.pricePart}}/小时</p>
 						</div>
 					</div>
-					<span class="numbers" v-show="orderBox.numberPart">×5</span>
+					<span class="numbers" v-show="orderBox.numberPart">×{{orderBox.spanTwo}}</span>
 				</div>
-				<div class="middlePart">
+				<div class="middlePart hr">
 					<span>￥{{orderBox.spanOne}}</span>
 					<span>合计:</span>
-					<span>共计{{orderBox.spanTwo}}项服务</span>
 				</div>
-				<div class="bottomPart">
-					<router-link :to="orderBox.rightBtnSrc">
-						<div v-bind:class="{ colorOne: orderBox.oneStyle, colorTwo: orderBox.twoStyle }">{{orderBox.rightBtn}}</div>
-					</router-link>
-					<router-link :to="orderBox.leftBtnSrc">
-						<div class="colorOne" v-show="orderBox.bottomBtn">取消订单</div>
-					</router-link>
-				</div>
+		<div class="bottomBtn">
+			<div class="send" v-show="orderBox.operation">
+				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in orderBox.operation" @click="operateOrder(obj)">{{obj.event}}</div>
 			</div>
+		</div>
+
+				</router-link>
+			</div>
+</div>
 		</Pagination>
 		
 		<Menu actived="third"></Menu>
@@ -59,22 +60,172 @@
                 },
 				orderCont:[
 				//有价格待付款样式
-					{
-						topTime:'2017-07-09 01:25',
-						topText:'待付款',
-						serveImg:'@../../static/back.png',
-						serveTitle:'家庭保洁',
-						serveCont:'等待工人与您确认服务信息',
-						spanOne:'0.00',
-						spanTwo:'1',
-						rightBtn:'去支付',
-						rightBtnSrc:'/paySubmitTwo',
-						leftBtnSrc:'/first',
+					// {
+					// 	topTime:'2017-07-09 01:25',
+					// 	topText:'待付款',
+					// 	serveImg:'@../../static/back.png',
+					// 	serveTitle:'家庭保洁',
+					// 	serveCont:'等待工人与您确认服务信息',
+					// 	spanOne:'0.00',
+					// 	spanTwo:'1',
+					// 	rightBtn:'去支付',
+					// 	rightBtnSrc:'/paySubmitTwo',
+					// 	leftBtnSrc:'/first',
+					// 	//按钮的有颜色
+					// 	oneStyle:false,
+					// 	twoStyle:true,
+					// 	//有价格时价格和数量的显示
+					// 	pricePart:true,
+					// 	numberPart:true,
+					// 	//有价格时左边的按钮
+					// 	bottomBtn:true,
+					// 	//有价格时单价上面文字样式
+					// 	textOne:false,
+					// 	textTwo:true,
+					// 	//有价格时图片右边中间span的样式
+					// 	contOne:false,
+					// 	contTwo:true
+					// },
+					// //有价格已付款样式
+					// {
+					// 	topTime:'2017-07-09 01:25',
+					// 	topText:'服务完成',
+					// 	serveImg:'@../../static/back.png',
+					// 	serveTitle:'家庭保洁',
+					// 	serveCont:'等待工人与您确认服务信息',
+					// 	spanOne:'0.00',
+					// 	spanTwo:'1',
+					// 	rightBtn:'评价',
+					// 	rightBtnSrc:'/paySubmitTwo',
+					// 	leftBtnSrc:'/first',
+					// 	//按钮的有颜色
+					// 	oneStyle:false,
+					// 	twoStyle:true,
+					// 	//有价格时价格和数量的显示
+					// 	pricePart:true,
+					// 	numberPart:true,
+					// 	//有价格时左边的按钮
+					// 	bottomBtn:false,
+					// 	//有价格时单价上面文字样式
+					// 	textOne:false,
+					// 	textTwo:true,
+					// 	//有价格时图片右边中间span的样式
+					// 	contOne:false,
+					// 	contTwo:true
+					// },
+					// //无价格等待派遣工人
+					// {
+					// 	topTime:'2017-07-09 01:25',
+					// 	topText:'等待派遣工人',
+					// 	serveImg:'@../../static/back.png',
+					// 	serveTitle:'家庭保洁',
+					// 	serveCont:'等待工人与您确认服务信息',
+					// 	spanOne:'0.00',
+					// 	spanTwo:'1',
+					// 	rightBtn:'取消订单',
+					// 	rightBtnSrc:'/paySubmitTwo',
+					// 	leftBtnSrc:'/first',
+					// 	//按钮的有颜色
+					// 	oneStyle:true,
+					// 	twoStyle:false,
+					// 	//价格和数量的显示
+					// 	pricePart:false,
+					// 	numberPart:false,
+					// 	//有价格时左边的按钮
+					// 	bottomBtn:false,
+					// 	//有价格时单价上面文字样式
+					// 	textOne:false,
+					// 	textTwo:true,
+					// 	//有价格时图片右边中间span的样式
+					// 	contOne:true,
+					// 	contTwo:false
+					// },
+					// //无价格等待确认服务完成
+					// {
+					// 	topTime:'2017-07-09 01:25',
+					// 	topText:'等待确认服务完成',
+					// 	serveImg:'@../../static/back.png',
+					// 	serveTitle:'家庭保洁',
+					// 	serveCont:'等待工人与您确认服务信息',
+					// 	spanOne:'300.00',
+					// 	spanTwo:'1',
+					// 	rightBtn:'确认支付',
+					// 	rightBtnSrc:'/paySubmitTwo',
+					// 	leftBtnSrc:'/first',
+					// 	//按钮的有颜色
+					// 	oneStyle:false,
+					// 	twoStyle:true,
+					// 	//价格和数量的显示
+					// 	pricePart:false,
+					// 	numberPart:false,
+					// 	//有价格时左边的按钮
+					// 	bottomBtn:false,
+					// 	//有价格时单价上面文字样式
+					// 	textOne:false,
+					// 	textTwo:true,
+					// 	//有价格时图片右边中间span的样式
+					// 	contOne:true,
+					// 	contTwo:false
+					// },
+					// //无价格评价
+					// {
+					// 	topTime:'2017-07-09 01:25',
+					// 	topText:'服务完成',
+					// 	serveImg:'@../../static/back.png',
+					// 	serveTitle:'家庭保洁',
+					// 	serveCont:'等待工人与您确认服务信息',
+					// 	spanOne:'300.00',
+					// 	spanTwo:'1',
+					// 	rightBtn:'评价',
+					// 	rightBtnSrc:'/paySubmit',
+					// 	leftBtnSrc:'/first',
+					// 	//按钮的有颜色
+					// 	oneStyle:false,
+					// 	twoStyle:true,
+					// 	//价格和数量的显示
+					// 	pricePart:false,
+					// 	numberPart:false,
+					// 	//有价格时左边的按钮
+					// 	bottomBtn:false,
+					// 	//有价格时单价上面文字样式
+					// 	textOne:false,
+					// 	textTwo:true,
+					// 	//有价格时图片右边中间span的样式
+					// 	contOne:true,
+					// 	contTwo:false
+					// }
+				]
+			}
+		},
+		methods: {
+			render(res) {
+				console.info(res)
+				let orderCont= res.result.list
+				if (res.err_code=="0") {
+					this.orderCont== orderCont
+				for (let i in orderCont) {
+					orderCont[i].operation.reverse()
+                    this.orderCont.push({
+						topTime: orderCont[i].orderTime,
+						topText:orderCont[i].orderStatus,
+						serveImg:orderCont[i].serviceImage,
+						serveTitle:orderCont[i].serviceTitle,
+						//暂无接口
+						// serveCont:orderCont[i].orderStatus, 
+						spanOne:orderCont[i].totalPrice,
+						spanTwo:orderCont[i].serviceMount,
+						rightBtn:orderCont[i].orderStatus,
+						rightBtnSrc:orderCont[i].orderStatus,
+						leftBtnSrc:orderCont[i].orderStatus,
+						// 订单编码
+						orderNo:orderCont[i].orderNo,
+						//按钮事件
+						operation:orderCont[i].operation,
 						//按钮的有颜色
 						oneStyle:false,
 						twoStyle:true,
 						//有价格时价格和数量的显示
-						pricePart:true,
+						pricePart:orderCont[i].unitPrice,
 						numberPart:true,
 						//有价格时左边的按钮
 						bottomBtn:true,
@@ -84,123 +235,23 @@
 						//有价格时图片右边中间span的样式
 						contOne:false,
 						contTwo:true
-					},
-					//有价格已付款样式
-					{
-						topTime:'2017-07-09 01:25',
-						topText:'服务完成',
-						serveImg:'@../../static/back.png',
-						serveTitle:'家庭保洁',
-						serveCont:'等待工人与您确认服务信息',
-						spanOne:'0.00',
-						spanTwo:'1',
-						rightBtn:'评价',
-						rightBtnSrc:'/paySubmitTwo',
-						leftBtnSrc:'/first',
-						//按钮的有颜色
-						oneStyle:false,
-						twoStyle:true,
-						//有价格时价格和数量的显示
-						pricePart:true,
-						numberPart:true,
-						//有价格时左边的按钮
-						bottomBtn:false,
-						//有价格时单价上面文字样式
-						textOne:false,
-						textTwo:true,
-						//有价格时图片右边中间span的样式
-						contOne:false,
-						contTwo:true
-					},
-					//无价格等待派遣工人
-					{
-						topTime:'2017-07-09 01:25',
-						topText:'等待派遣工人',
-						serveImg:'@../../static/back.png',
-						serveTitle:'家庭保洁',
-						serveCont:'等待工人与您确认服务信息',
-						spanOne:'0.00',
-						spanTwo:'1',
-						rightBtn:'取消订单',
-						rightBtnSrc:'/paySubmitTwo',
-						leftBtnSrc:'/first',
-						//按钮的有颜色
-						oneStyle:true,
-						twoStyle:false,
-						//价格和数量的显示
-						pricePart:false,
-						numberPart:false,
-						//有价格时左边的按钮
-						bottomBtn:false,
-						//有价格时单价上面文字样式
-						textOne:false,
-						textTwo:true,
-						//有价格时图片右边中间span的样式
-						contOne:true,
-						contTwo:false
-					},
-					//无价格等待确认服务完成
-					{
-						topTime:'2017-07-09 01:25',
-						topText:'等待确认服务完成',
-						serveImg:'@../../static/back.png',
-						serveTitle:'家庭保洁',
-						serveCont:'等待工人与您确认服务信息',
-						spanOne:'300.00',
-						spanTwo:'1',
-						rightBtn:'确认支付',
-						rightBtnSrc:'/paySubmitTwo',
-						leftBtnSrc:'/first',
-						//按钮的有颜色
-						oneStyle:false,
-						twoStyle:true,
-						//价格和数量的显示
-						pricePart:false,
-						numberPart:false,
-						//有价格时左边的按钮
-						bottomBtn:false,
-						//有价格时单价上面文字样式
-						textOne:false,
-						textTwo:true,
-						//有价格时图片右边中间span的样式
-						contOne:true,
-						contTwo:false
-					},
-					//无价格评价
-					{
-						topTime:'2017-07-09 01:25',
-						topText:'服务完成',
-						serveImg:'@../../static/back.png',
-						serveTitle:'家庭保洁',
-						serveCont:'等待工人与您确认服务信息',
-						spanOne:'300.00',
-						spanTwo:'1',
-						rightBtn:'评价',
-						rightBtnSrc:'/paySubmit',
-						leftBtnSrc:'/first',
-						//按钮的有颜色
-						oneStyle:false,
-						twoStyle:true,
-						//价格和数量的显示
-						pricePart:false,
-						numberPart:false,
-						//有价格时左边的按钮
-						bottomBtn:false,
-						//有价格时单价上面文字样式
-						textOne:false,
-						textTwo:true,
-						//有价格时图片右边中间span的样式
-						contOne:true,
-						contTwo:false
-					}
-				]
-			}
-		},
-		methods: {
-			render(response) {
-				console.info(response)
-			}
+                    });
+					this.pagination.content.push({
+						orderNo:orderCont[i].orderNo	
+					});
+                }} else {					
+				}
+			},
+			operateOrder(obj) {
+			this.$api.updateOrderStatus({
+				flag: obj.flag,
+				orderNo: this.orderNo,
+				type: obj.type
+			}, (res) => {
+				console.log(res)
+			})
 		}
+		},
 	}
 </script>
 
@@ -366,5 +417,34 @@
         background: url("../../static/43@3x.png") no-repeat center center;
         background-size: 1.5rem;
         height: 2.2rem;
-    }
+	}
+	
+	/*底部按钮*/
+
+	.bottomBtn {
+		height: 0.8rem;
+		background: #FFFFFF;
+	}
+
+
+	.send {
+		width: 7.25rem;
+		overflow: hidden;
+		padding: 0.16rem 0;
+	}
+
+	.send div{
+		float: right;
+		margin-left: 0.2rem;
+		font-size: 0.24rem;
+		line-height: 0.42rem;
+		border-radius: 0.28rem;
+		border: .01rem solid #8ac4f9;
+		padding: 0 0.2rem;
+	}
+
+	.send .send-color{
+		color: #888;
+		border: .01rem solid #888;
+	}
 </style>

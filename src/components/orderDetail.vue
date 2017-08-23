@@ -13,8 +13,8 @@
 		<div class="headMessge">
 			<div class="topPart">
 				<img src="../../static/32@2x.png" />
-				<div class="putItem fl">提交订单</div>
-				<div class="timePart fr">2017-07-24 10:22</div>
+				<div class="putItem fl">{{orderStatus}}</div>
+				<div class="timePart fr">{{orderTime}}</div>
 			</div>
 			<div class="bottomPart">
 				<div class="textLeft fl">您的订单已提交，请立即支付</div>
@@ -30,32 +30,32 @@
 				<!--左边介绍-->
 				<div class="serveLeft">
 					<div class="serveBack fl">
-						<img src="../../static/back.png" />
+						<img :src="serviceImage">
 					</div>
 					<div class="serveTitle fl">
-						<div>家庭保洁</div>
-						<p>内芯及外表清洗</p>
+						<div>{{serviceTitle}}</div>
+						<p >内芯及外表清洗</p>
 						<span>￥30/小时</span>
 					</div>
 				</div>
 				<!--右边选择数量-->
 				<div class="serveRight fr">
-					<div class="serveBtn fr">×5</div>
+					<div class="serveBtn fr">×{{serviceMount}}</div>
 				</div>
 			</div>
 			<!--订单金额信息-->
 			<div class="moneyMesage">
 				<div class="messageList">
 					<div>服务金额</div>
-					<span>￥ 150.00</span>
+					<span>￥{{totalPrice}}</span>
 				</div>
 				<div class="messageList">
 					<div>优惠金额</div>
-					<span>￥ 150.00</span>
+					<span>￥ {{couponPrice}}</span>
 				</div>
 				<div class="mesageBottom">
 					<div>实付金额</div>
-					<span>￥ 150.00</span>
+					<span>￥{{actualPrice}}</span>
 				</div>
 			</div>
 		</div>
@@ -83,375 +83,494 @@
 		</div>
 		<!--底部-->
 		<div class="bottomBtn">
-				<div class="btnLeft">
-					<router-link to="/paySubmit">去支付</router-link>
-				</div>
-				<div class="btnRight">
-					<router-link to="/paySubmit">取消订单</router-link>
-				</div>
-
+			<!-- <div class="btnLeft">
+				<router-link :to="{ path: '/paySubmit/'+orderNo}">去支付</router-link>
+			</div>
+			<div class="btnRight">
+				<div @click="goBack">取消订单</div>
+			</div> -->
+			<div class="send" v-show="operation">
+				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in operation" @click="operateOrder(obj)">{{obj.event}}</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
-	export default {
-		data() {
-			return {
-				title: '订单详情',
-				msg: [{
-					leftMsg: '联系人:',
-					rightMsg: '张三三'
-				}, {
-					leftMsg: '服务时间:',
-					rightMsg: '2017-07-24 09:00~12:00'
-				}, {
-					leftMsg: '联系电话:',
-					rightMsg: '17191191610'
-				}, {
-					leftMsg: '服务地址:',
-					rightMsg: '江苏省苏州市  江苏省苏州市江苏省苏州市江苏省苏州市江苏省苏州市'
-				}],
-				positionMsg: [{
-					theLeft: '订单号码',
-					theRight: '12465465461516513215'
-				}, {
-					theLeft: '下单时间',
-					theRight: '2017-07-24 09:00~12:00'
-				}]
-			}
+export default {
+	data() {
+		return {
+			title: '订单详情',
+			msg: [],
+			name:true,
+			actualPrice: 0,
+			couponPrice: 0,
+			orderStatus: 0,
+			totalPrice:0,
+			serviceMount:0,
+			orderTime:0,
+			orderNo:0,
+			serviceTitle:'',
+			serviceImage: '',
+			operation:'',
+			positionMsg: [],
+		}
+	},
+	created() {
+		let type = this.$route.params.id
+		this.$api.serveOrderDetail(
+			{ params: { orderNo: type } },
+			(res) => {
+				console.log(res.result)
+				let result = res.result
+				if (res.err_code == '0') {
+					this.msg = [{
+						leftMsg: '联系人:',
+						rightMsg: result.linkMan
+					}, {
+						leftMsg: '服务时间:',
+						rightMsg: result.serviceTime
+					}, {
+						leftMsg: '联系电话:',
+						rightMsg: result.linkPhone
+					}, {
+						leftMsg: '服务地址:',
+						rightMsg: result.serviceAddr
+					}]
+
+					this.positionMsg = [{
+						theLeft: '订单号码',
+						theRight: result.orderNo
+					}, {
+						theLeft: '下单时间',
+						theRight: result.orderTime
+					}]
+
+					// 订单当前状态
+					this.orderStatus = result.orderStatus;
+					// 实付金额
+					this.actualPrice = result.actualPrice;
+					// 优惠卷
+					this.couponPrice = result.couponPrice;
+					//服务图片
+					this.serviceImage = result.serviceImage;
+					//服务数量
+					this.serviceMount=result.serviceMount;
+					//总价
+					this.totalPrice=result.totalPrice;
+					//服务标题
+					this.serviceTitle=result.serviceTitle;
+					// 订单编号
+					this.orderNo=result.orderNo;
+					//下单时间
+					this.orderTime=result.orderTime;
+					//按钮状态
+					this.operation=result.operation;		
+				}
+				
+			},
+		)
+	},
+	methods: {
+		goBack(){
+			// this.$api.updateOrderStatus(
+			// 	{ 
+			// 		flag:flag,
+			// 		orderNo:this.prderNo,
+			// 		type:1
+			// 	},
+			// 	(res)=>{
+			// 		console.log(res)
+			// 	}
+			// )
+			// window.history.go(-1)
+			// console.log(this.$route)	
+		},
+		operateOrder(obj) {
+			this.$api.updateOrderStatus({
+				flag: obj.flag,
+				orderNo: this.orderNo,
+				type: obj.type
+			}, (res) => {
+				console.log(res)
+			})
 		}
 	}
+}
 </script>
 
 <style scoped>
-	#box {
-		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
-	}
-	
-	.headPart {
-		width: 100%;
-		height: 0.92rem;
-		background: #2d91f4;
-		overflow: hidden;
-	}
-	
-	.headCont {
-		width: 7rem;
-		height: 0.32rem;
-		margin: 0.25rem;
-		/*border: 1px solid red;*/
-	}
-	
-	.headCont a {
-		display: block;
-	}
-	
-	.headCont span {
-		color: #FFFFFF;
-		width: 0.32rem;
-		height: 0.32rem;
-		background: url("../../static/return.png");
-		background-size: 100% 100%;
-	}
-	
-	.headCont p {
-		height: 0.32rem;
-		color: #FFFFFF;
-		font-size: 0.32rem;
-	}
-	/*顶部提示信息*/
-	
-	.headMessge {
-		width: 7rem;
-		height: 1.55rem;
-		padding: 0 .25rem;
-		background: #FFFFFF;
-		overflow: hidden;
-	}
-	
-	.topPart {
-		width: 7rem;
-		height: 0.4rem;
-		margin-top: .3rem;
-	}
-	
-	.topPart img {
-		width: 0.4rem;
-		height: 0.4rem;
-		float: left;
-	}
-	
-	.putItem {
-		width: 1.5rem;
-		height: 0.4rem;
-		font-size: 0.26rem;
-		line-height: 0.4rem;
-		text-align: left;
-		color: #222222;
-		margin-left: 0.2rem;
-	}
-	
-	.timePart {
-		width: 2rem;
-		height: 0.4rem;
-		font-size: 0.2rem;
-		text-align: right;
-		line-height: 0.4rem;
-		color: #c9c9c9;
-	}
-	
-	.bottomPart {
-		width: 7rem;
-		height: 0.24rem;
-		margin-top: 0.2rem;
-		font-size: 0.24rem;
-	}
-	
-	.textLeft {
-		width: 3.5rem;
-		height: 0.24rem;
-		color: #c9c9c9;
-		text-align: left;
-		margin-left: 0.6rem;
-	}
-	
-	.bottomPart img {
-		width: 0.2rem;
-		height: 0.24rem;
-		float: right;
-		margin-left: 0.15rem;
-	}
-	
-	.textRight {
-		width: 1.5rem;
-		height: 0.24rem;
-		color: #89d395;
-		text-align: right;
-	}
-	
-	.bottomPart a {
-		float: right;
-		display: block;
-	}
-	/*订单信息*/
-	
-	.serveCount {
-		width: 7rem;
-		display: inline-block;
-		padding: 0 .25rem;
-		background: #FFFFFF;
-		overflow: hidden;
-	}
-	
-	.cont {
-		width: 100%;
-		display: inline-block;
-		padding-bottom: 0.2rem;
-	}
-	/*左边部分*/
-	
-	.serveLeft {
-		display: inline-block;
-		float: left;
-	}
-	/*服务图片*/
-	
-	.serveBack {
-		width: 1.4rem;
-		height: 1.4rem;
-		margin-top: 0.2rem;
-	}
-	
-	.serveBack img {
-		width: 100%;
-		height: 100%;
-	}
-	
-	.serveTitle {
-		width: 3rem;
-		height: 1.4rem;
-		margin: .2rem 0 0 .25rem;
-		text-align: left;
-	}
-	
-	.serveTitle div {
-		width: 3rem;
-		height: 0.45rem;
-		font-size: 0.24rem;
-		line-height: 0.45rem;
-		color: #4e4e4e;
-		margin-bottom: 0.1rem;
-	}
-	
-	.serveTitle p {
-		width: 3rem;
-		height: 0.5rem;
-		font-size: 0.2rem;
-		line-height: 0.5rem;
-		color: #adadad;
-	}
-	
-	.serveTitle span {
-		width: 3rem;
-		height: 0.26rem;
-		font-size: 0.26rem;
-		color: #ff5400;
-	}
-	/*右边*/
-	
-	.serveRight {
-		width: 2rem;
-		height: 1.4rem;
-	}
-	
-	.serveBtn {
-		width: 1rem;
-		height: 0.2rem;
-		margin-top: 1.3rem;
-		font-size: 0.2rem;
-		color: #222222;
-		text-align: right;
-	}
-	/*订单金额信息*/
-	
-	.moneyMesage {
-		width: 7rem;
-		display: inline-block;
-		padding-top: 0.2rem;
-		border-top: 2px solid #f2f2f2;
-	}
-	
-	.messageList {
-		width: 6.9rem;
-		height: 0.24rem;
-		padding: 0 0.05rem 0.12rem;
-		color: #999999;
-	}
-	
-	.messageList div {
-		width: 1.5rem;
-		height: 0.24rem;
-		font-size: 0.24rem;
-		float: left;
-		text-align: left;
-	}
-	
-	.messageList span {
-		line-height: 0.24rem;
-		font-size: 0.22rem;
-		display: block;
-		float: right;
-	}
-	
-	.mesageBottom {
-		width: 6.9rem;
-		height: 0.26rem;
-		padding: 0.1rem 0.05rem 0.12rem;
-	}
-	
-	.mesageBottom div {
-		width: 1.5rem;
-		height: 0.26rem;
-		font-size: 0.26rem;
-		float: left;
-		text-align: left;
-		color: #222222;
-	}
-	
-	.mesageBottom span {
-		line-height: 0.26rem;
-		font-size: 0.24rem;
-		display: block;
-		float: right;
-		color: #ff5400;
-	}
-	/*服务信息标题*/
-	
-	.serveMesage {
-		width: 7.5rem;
-		height: 0.7rem;
-	}
-	
-	.serveMesage span {
-		float: left;
-		margin-left: 0.3rem;
-		font-size: 0.24rem;
-		line-height: 0.7rem;
-		display: block;
-		color: #222222;
-	}
-	/*客户具体信息*/
-	
-	.clientMessage {
-		width: 7rem;
-		display: inline-block;
-		background: #FFFFFF;
-		padding: 0 0.25rem;
-	}
-	
-	.clientMessage :nth-of-type(1) {
-		border: none;
-	}
-	
-	.contList {
-		width: 7rem;
-		display: inline-block;
-		border-top: 2px solid #f2f2f2;
-	}
-	
-	.contList div {
-		float: left;
-		height: 0.24rem;
-		padding: 0.3rem 0.05rem;
-		font-size: 0.22rem;
-		line-height: 0.24rem;
-		color: #7a7a7a;
-	}
-	
-	.contList span {
-		float: left;
-		display: inline-block;
-		font-size: 0.24rem;
-		color: #222222;
-		width: 5.6rem;
-		padding: 0.3rem 0.05rem;
-		text-align: left;
-	}
-	/*底部按钮*/
-	
-	.bottomBtn {
-		width: ;
-		height: 0.8rem;
-		margin-top: 0.33rem;
-		border: 2px solid #ededef;
-		background: #FFFFFF;
-		/*overflow: hidden;*/
-	}
-	.bottomBtn a{
-		display: block;
-	}
-	.bottomBtn div {
-		height: 0.48rem;
-		width: 1.3rem;
-		font-size: 0.22rem;
-		line-height: 0.48rem;
-		float: right;
-		border-radius: 0.25rem;
-	}
-	
-	.btnLeft{
-		color: #2173d6;
-		border: 2px solid #2173d6;
-		margin: 0.13rem 0.24rem 0 0;
-	}
-	
-	.btnRight{
-		color: #c5c5c5;
-		border: 2px solid #c5c5c5;
-		margin: 0.13rem 0.22rem 0 0;
-	}
+
+
+
+#box {
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.headPart {
+	width: 100%;
+	height: 0.92rem;
+	background: #2d91f4;
+	overflow: hidden;
+}
+
+.headCont {
+	width: 7rem;
+	height: 0.32rem;
+	margin: 0.25rem;
+	/*border: 1px solid red;*/
+}
+
+.headCont a {
+	display: block;
+}
+
+.headCont span {
+	color: #FFFFFF;
+	width: 0.32rem;
+	height: 0.32rem;
+	background: url("../../static/return.png");
+	background-size: 100% 100%;
+}
+
+.headCont p {
+	height: 0.32rem;
+	color: #FFFFFF;
+	font-size: 0.32rem;
+}
+
+
+
+
+
+/*顶部提示信息*/
+
+.headMessge {
+	width: 7rem;
+	height: 1.55rem;
+	padding: 0 .25rem;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+
+.topPart {
+	width: 7rem;
+	height: 0.4rem;
+	margin-top: .3rem;
+}
+
+.topPart img {
+	width: 0.4rem;
+	height: 0.4rem;
+	float: left;
+}
+
+.putItem {
+	width: 1.5rem;
+	height: 0.4rem;
+	font-size: 0.26rem;
+	line-height: 0.4rem;
+	text-align: left;
+	color: #222222;
+	margin-left: 0.2rem;
+}
+
+.timePart {
+	width: 2rem;
+	height: 0.4rem;
+	font-size: 0.2rem;
+	text-align: right;
+	line-height: 0.4rem;
+	color: #c9c9c9;
+}
+
+.bottomPart {
+	width: 7rem;
+	height: 0.24rem;
+	margin-top: 0.2rem;
+	font-size: 0.24rem;
+}
+
+.textLeft {
+	width: 3.5rem;
+	height: 0.24rem;
+	color: #c9c9c9;
+	text-align: left;
+	margin-left: 0.6rem;
+}
+
+.bottomPart img {
+	width: 0.2rem;
+	height: 0.24rem;
+	float: right;
+	margin-left: 0.15rem;
+}
+
+.textRight {
+	width: 1.5rem;
+	height: 0.24rem;
+	color: #89d395;
+	text-align: right;
+}
+
+.bottomPart a {
+	float: right;
+	display: block;
+}
+
+
+
+
+
+/*订单信息*/
+
+.serveCount {
+	width: 7rem;
+	display: inline-block;
+	padding: 0 .25rem;
+	background: #FFFFFF;
+	overflow: hidden;
+}
+
+.cont {
+	width: 100%;
+	display: inline-block;
+	padding-bottom: 0.2rem;
+}
+
+
+
+
+
+/*左边部分*/
+
+.serveLeft {
+	display: inline-block;
+	float: left;
+}
+
+
+
+
+
+/*服务图片*/
+
+.serveBack {
+	width: 1.4rem;
+	height: 1.4rem;
+	margin-top: 0.2rem;
+}
+
+.serveBack img {
+	width: 100%;
+	height: 100%;
+}
+
+.serveTitle {
+	width: 3rem;
+	height: 1.4rem;
+	margin: .2rem 0 0 .25rem;
+	text-align: left;
+}
+
+.serveTitle div {
+	width: 3rem;
+	height: 0.45rem;
+	font-size: 0.24rem;
+	line-height: 0.45rem;
+	color: #4e4e4e;
+	margin-bottom: 0.1rem;
+}
+
+.serveTitle p {
+	width: 3rem;
+	height: 0.5rem;
+	font-size: 0.2rem;
+	line-height: 0.5rem;
+	color: #adadad;
+}
+
+.serveTitle span {
+	width: 3rem;
+	height: 0.26rem;
+	font-size: 0.26rem;
+	color: #ff5400;
+}
+
+
+
+
+
+/*右边*/
+
+.serveRight {
+	width: 2rem;
+	height: 1.4rem;
+}
+
+.serveBtn {
+	width: 1rem;
+	height: 0.2rem;
+	margin-top: 1.3rem;
+	font-size: 0.2rem;
+	color: #222222;
+	text-align: right;
+}
+
+
+
+
+
+/*订单金额信息*/
+
+.moneyMesage {
+	width: 7rem;
+	display: inline-block;
+	padding-top: 0.2rem;
+	border-top: 2px solid #f2f2f2;
+}
+
+.messageList {
+	width: 6.9rem;
+	height: 0.24rem;
+	padding: 0 0.05rem 0.12rem;
+	color: #999999;
+}
+
+.messageList div {
+	width: 1.5rem;
+	height: 0.24rem;
+	font-size: 0.24rem;
+	float: left;
+	text-align: left;
+}
+
+.messageList span {
+	line-height: 0.24rem;
+	font-size: 0.22rem;
+	display: block;
+	float: right;
+}
+
+.mesageBottom {
+	width: 6.9rem;
+	height: 0.26rem;
+	padding: 0.1rem 0.05rem 0.12rem;
+}
+
+.mesageBottom div {
+	width: 1.5rem;
+	height: 0.26rem;
+	font-size: 0.26rem;
+	float: left;
+	text-align: left;
+	color: #222222;
+}
+
+.mesageBottom span {
+	line-height: 0.26rem;
+	font-size: 0.24rem;
+	display: block;
+	float: right;
+	color: #ff5400;
+}
+
+
+
+
+
+/*服务信息标题*/
+
+.serveMesage {
+	width: 7.5rem;
+	height: 0.7rem;
+}
+
+.serveMesage span {
+	float: left;
+	margin-left: 0.3rem;
+	font-size: 0.24rem;
+	line-height: 0.7rem;
+	display: block;
+	color: #222222;
+}
+
+
+
+
+
+/*客户具体信息*/
+
+.clientMessage {
+	width: 7rem;
+	display: inline-block;
+	background: #FFFFFF;
+	padding: 0 0.25rem;
+}
+
+.clientMessage :nth-of-type(1) {
+	border: none;
+}
+
+.contList {
+	width: 7rem;
+	display: inline-block;
+	border-top: 2px solid #f2f2f2;
+}
+
+.contList div {
+	float: left;
+	height: 0.24rem;
+	padding: 0.3rem 0.05rem;
+	font-size: 0.22rem;
+	line-height: 0.24rem;
+	color: #7a7a7a;
+}
+
+.contList span {
+	float: left;
+	display: inline-block;
+	font-size: 0.24rem;
+	color: #222222;
+	width: 5.6rem;
+	padding: 0.3rem 0.05rem;
+	text-align: left;
+}
+
+
+
+
+
+/*底部按钮*/
+
+.bottomBtn {
+	height: 0.8rem;
+	margin-top: 0.33rem;
+	background: #FFFFFF;
+}
+
+
+.send {
+	width: 7.25rem;
+	overflow: hidden;
+	padding: 0.16rem 0;
+}
+
+.send div{
+	float: right;
+	margin-left: 0.2rem;
+	font-size: 0.24rem;
+	line-height: 0.42rem;
+	border-radius: 0.28rem;
+	border: .01rem solid #8ac4f9;
+	padding: 0 0.2rem;
+}
+
+.send .send-color{
+	color: #888;
+	border: .01rem solid #999;
+}
 </style>

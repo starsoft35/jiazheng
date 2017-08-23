@@ -57,15 +57,8 @@
 		},
 		methods: {
             render(res) {
-                this.serveTitle = res.result.menuName
                 res.result.serviceList.list.forEach((item) => {
-                	this.pagination.content.push({
-                        abstractContent: item.abstractContent,
-                        id: item.id,
-                        listImage: item.listImage,
-                        price: item.price,
-                        title: item.title
-                    })
+                	this.pagination.content.push(item)
                 })
             }
         }

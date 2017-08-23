@@ -1,73 +1,61 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<router-link to="/Distribute">
-					<span class="spanLeft fl"></span>
-				</router-link>
-				<router-link to="/Distribute">
-					<span class="spanRight fr">确认派单</span>
-				</router-link>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="派单" operation="确认派单" :action="pendingWorker"></Header>
 
+		
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/user/pendingMan"  ref="pagination">
-        </Pagination>
-		    <!--列表-->
-			<div class="contList" v-for="(list,index) in list">
-				<ul class="contBox">
-					<li class="list_one fl">{{ list.workname }} </li>
-					<li class="list_two fl">{{ list.phone }} </li>
-					<li class="list_three fl">{{ list.num }}单 </li>
-					<li class="list_four fr" @click="selectedPeople(list.index)"></li>
-				</ul>
-			</div>
+            <div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+            	<div class="contList" v-for="(list,index) in pagination.content" :key="index" @click="selectIndex = index">
+					<ul class="contBox">
+						<li class="list_one fl">{{ list.workname }} </li>
+						<li class="list_two fl">{{ list.phone }} </li>
+						<li class="list_three fl">{{ list.num }}单 </li>
+						<li class="list_four fr" :class="{'active' : selectIndex == index}"></li>
+					</ul>
+				</div>	
+            </div>
+		</Pagination>  
 
 		
 	</div>
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
-				title:'派单',
-
-				list:[],
+				orderNo: undefined,
 
 				pagination: {
-					
+					content: [],
 					page: 1,
-					pageSize: 15,
-				}
+					pageSize: 25,
+				},
+				selectIndex: 0
 				
 			}
 		},
-		created() {
-			
-		},
+		created(){
+      		this.orderNo = this.$route.params.id
+  		},
 		methods: {
-			changeMenu(index){
-				this.pagination = {
-                    list:[ ],
-                    page: 1, 
-					pageSize: 15,
-					param: {
-						params: {
-							type: this.menus[index].type
-						}
-					}
-				}
-			},
+
 			render(response){
 				for(var i in response.result.list){
-					this.list.push(response.result.list[i])
+					this.pagination.content.push(response.result.list[i])
 				}
 			},
-			selectedPeople(k){
-				
+			pendingWorker() {
+				this.$api.updateOrderStatus({
+					flag: 2,
+					orderNo: this.orderNo,
+					type: 2,
+					workerId: this.pagination.content[this.selectIndex].userId
+				}, (res) => {
+					this.$router.go(-1)
+				})
 			}
 
 		},
@@ -142,13 +130,17 @@
 	.list_four{
 		width:0.4rem ;
 		height:0.4rem;
-		/* background: url("../../../static/35@3x.png") no-repeat; */
-		background-color: #ccc;
+		border: 1px solid #ddd;
 		border-radius: 50%;
+		box-sizing: border-box;
+	}
+	.list_four.active{
+		border: 0;
+		background: url("../../../static/35@3x.png") no-repeat;
 		background-size: 100% 100%;
 	}
-	.selected_img{
+	/* .selected_img{
 		background: url("../../../static/35@3x.png") no-repeat;
 		background-color: none;
-	}
+	} */
 </style>

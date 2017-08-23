@@ -26,14 +26,13 @@
     }
     body {
         background: #f5f5f9;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
         font-size: 0.28rem;
         color:#222222;
         margin: 0;
         padding:0;
     }
     #app {
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
         -webkit-font-smoothing: antialiased;
         text-align: center;
         color: #2d92f4;
@@ -90,6 +89,12 @@
 	.none-data-tip{
 		padding: 0.5rem;
 		color: #bbb;
+	}
+	.none-data-img{
+		display: inline-block;
+		width: 1.8rem;
+		height: auto;
+		margin: 0.4rem 0;
 	}
 	.payWay .mint-radiolist-title{
 		display: none;

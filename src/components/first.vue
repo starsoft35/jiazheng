@@ -122,9 +122,10 @@
 			}
 		},
 		created() {
-			let openCity = this.$storage.get('currCity')
-			if(openCity) {
-				this.currCity = openCity
+			let currCity = this.$storage.get('currCity')
+			let openCitys = this.$storage.get('openCitys')
+			if(currCity) {
+				this.currCity = currCity
 			}
 			this.$api.homeData({
 	        	params:{
@@ -135,8 +136,8 @@
 		    	this.menuList = res.result.menus
 		    	this.firstMenu = this.menuList[0]
 		    	this.hotServices = res.result.services.result.list
-		    	if(!openCity) {
-					this.$storage.set('openCitys', openCity)
+		    	if(!openCitys) {
+					this.$storage.set('openCitys', res.result.openCitys)
 				}
 		    	
 		    })

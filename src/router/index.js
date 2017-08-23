@@ -53,14 +53,6 @@ import Nearby from '@/components/Nearby'
 //工人端
 //订单
 import orderPart from '@/components/worker/orderPart'
-//待服务
-import orderPartOne from '@/components/worker/orderPartOne'
-//服务中
-import orderPartTwo from '@/components/worker/orderPartTwo'
-//已完成
-import orderPartThree from '@/components/worker/orderPartThree'
-//已取消
-import orderPartFour from '@/components/worker/orderPartFour'
 //派单
 import Distribute from '@/components/worker/Distribute'
 //派送给个人
@@ -179,7 +171,7 @@ const router = new Router({
             component: addPosition
         }, {
             //订单详情
-            path: '/orderDetail',
+            path: '/orderDetail/:id',
             component: orderDetail
         }, {
             //订单支付
@@ -218,23 +210,8 @@ const router = new Router({
         }, {
             //工人端首页
             path: '/orderPart',
-            component: orderPart,
-            children: [{
-                path: '/orderPart',
-                redirect: 'orderPartOne'
-            }, {
-                path: 'orderPartOne',
-                component: orderPartOne
-            }, {
-                path: 'orderPartTwo',
-                component: orderPartTwo
-            }, {
-                path: 'orderPartThree',
-                component: orderPartThree
-            }, {
-                path: 'orderPartFour',
-                component: orderPartFour
-            }]
+            component: orderPart
+            
         }, {
             //工人端派单
             path: '/distribute',
