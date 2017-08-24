@@ -51,7 +51,7 @@
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>
             </router-link>
-            <a href="tel:400-800-1236" class="item">
+            <a :href="getHotline" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
                 <div class="label">{{hotline}}</div>
@@ -89,6 +89,11 @@
                 balance: 0.00,  // 余额
                 coupons: 0,     // 优惠券数量
                 hotline: ''     // 热线电话
+            }
+        },
+        computed: {
+            getHotline() {
+                return 'tel:' + this.hotline
             }
         },
         created: function() {
