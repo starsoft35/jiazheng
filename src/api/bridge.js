@@ -130,5 +130,18 @@ export default {
                 })
             })
         })
+    },
+
+    // 选择图片
+    choosePhoto() {
+        return new Promise((resolve, reject) => {
+            setupWebViewJavascriptBridge(bridge => {
+                alert('开始选择图片')
+                bridge.callHandler('choosePhoto', null, response => {
+                    alert('选择图片回调')
+                    resolve(response)
+                })
+            })
+        })
     }
 }
