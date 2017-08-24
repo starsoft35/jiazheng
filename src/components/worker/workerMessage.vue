@@ -2,7 +2,7 @@
     <div class="message-container">
         <Header title="消息" back="hidden"></Header>
 
-        <div class="none-message" v-if="pagination.content.length == 0">
+        <div class="none-message" v-if="pagination.content.length == 0 && pagination.loadEnd">
             <div class="bg"></div>
             暂无消息
         </div>
@@ -28,7 +28,8 @@
                 pagination: {
                     content: [],
                     page: 1, 
-                    pageSize: 10
+                    pageSize: 10,
+                    loadEnd: false
                 }
             }
         },

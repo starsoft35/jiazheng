@@ -15,7 +15,7 @@
 			</div>
 			
         </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">
+		<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
 			<img class="none-data-img" src="../../static/42@2x.png" />
 			<p>暂无可使用优惠卷</p>
 		</div>
@@ -34,9 +34,11 @@
                     	params:{
 						    flag: 1
 						}
-                    }
+                    },
+                    loadEnd: false
                 },
-                currCoupon: {}
+                currCoupon: {},
+                loadEnd: false
 			}
 		},
 		created() {

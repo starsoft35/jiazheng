@@ -11,7 +11,7 @@
 			<div style="height: 0.8rem;"></div>
 		</div>
 		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/listForWorker" ref="pagination">
-			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+			<div style="margin-bottom: 1.5rem;" v-show="pagination.content.length>0">
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
 					<!--姓名 电话-->
 					<a :href="'tel:'+ item.userPhone " class="peopleName">
@@ -68,7 +68,7 @@
 			</div>
 				
         </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无订单</div>
+		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无订单</div>
 		<confirm-modal :show="show" 
 			@cancel_modal="cancel_modal" 
 			@confirm_modal="confirm_modal" 
@@ -114,7 +114,8 @@
 						params: {
 							flag: 1
 						}
-					}
+					},
+					loadEnd: false
                 }
 			}
 		},

@@ -25,7 +25,7 @@
 			}
 		},
 		created() {
-			this.status = this.$route.params.status
+			this.status = this.$route.params.status || 'useless'
 		}
 	}
 </script>

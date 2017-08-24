@@ -4,7 +4,7 @@
 		
 		<div class="thingList">
 			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/list">
-	            <ul class="thingCont" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+	            <ul class="thingCont" style="margin-bottom: 1rem;" v-show="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
 							<img :src="item.listImage"/>
@@ -19,7 +19,7 @@
 	        </Pagination>
 				
 		</div>
-		<div v-if="pagination.content.length == 0" class="none-data-tip">暂无该服务</div>
+		<div v-show="pagination.content.length == 0 && pagination.loadEnd" class="none-data-tip">暂无该服务</div>
 	</div>
 </template>
 
@@ -35,7 +35,8 @@
                     content: [],
                     page: 1, 
                     pageSize: 10,
-                    param: {}
+                    param: {},
+                    loadEnd: false
                 },
 			}
 		},
@@ -57,6 +58,7 @@
 		},
 		methods: {
             render(res) {
+            	this.serveTitle = res.result.menuName
                 res.result.serviceList.list.forEach((item) => {
                 	this.pagination.content.push(item)
                 })
@@ -108,10 +110,9 @@
 		
 	}
 	.thingList li{
-		width: 7.3rem;
+		width: 7.1rem;
 		height: 1.4rem;
-		padding: 0.2rem 0;
-		margin-left: 0.2rem;
+		padding: 0.2rem;
 		border-bottom: 1px solid #f2f2f2;
 		position: relative;
 		background: #FFFFFF;
@@ -120,6 +121,7 @@
 		width: 100%;
 		height: 100%;
 		display: block;
+		position: relative;
 	}
 	/*左边图片*/
 	.thingList img{
@@ -127,7 +129,6 @@
 		height:1.40rem ;
 		position: absolute;
 		left:0rem ;
-		top: 0.2rem;
 	}
 	/*右边内容*/
 	.thingName{
@@ -135,7 +136,6 @@
 		height: 1.4rem;
 		position: absolute;
 		left: 1.7rem;
-		top: 0.2rem;
 		text-align: left;
 	}
 	/*商品名称*/

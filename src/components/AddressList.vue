@@ -2,7 +2,7 @@
     <div class="address-list">
         <Header title="地址管理"></Header>
 
-        <div class="none-content" v-if="pagination.content.length == 0">暂无地址信息</div>
+        <div class="none-content" v-if="pagination.content.length == 0 && pagination.loadEnd">暂无地址信息</div>
 
         <Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceAddress/list">        
             <div class="address-container">
@@ -41,9 +41,11 @@
                 pagination: {
                     content: [],
                     page: 1, 
-                    pageSize: 10
+                    pageSize: 10,
+                    loadEnd: false
                 },
-                status: ''
+                status: '',
+                
             }
         },
         created() {

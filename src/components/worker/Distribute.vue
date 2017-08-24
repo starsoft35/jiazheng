@@ -11,7 +11,7 @@
 			<div style="height: 0.8rem;"></div>
 		</div>
 		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/pend"  ref="pagination">
-			<div style="margin-bottom: 1.3rem; padding-top: 0px;">
+			<div style="margin-bottom: 1.3rem; padding-top: 0px;" v-show="pagination.content.length > 1">
 				<div class="contBox" v-for="(contBox,index) in pagination.content">
 					<!--姓名 电话-->
 					<a :href="'tel:' + contBox.linkPhone" class="contact">
@@ -66,7 +66,7 @@
 			</div>
 				
 		</Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无派单</div>
+		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无派单</div>
 
 		<!--底部导航-->
 		<workerPart actived="second"></workerPart>
@@ -100,7 +100,7 @@
 							type: 1
 						}
 					},
-					
+					loadEnd: false
 					
 				}
 			}

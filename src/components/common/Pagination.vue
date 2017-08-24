@@ -58,6 +58,7 @@ export default {
         // 加载分页
         loadPage(isRefresh) {
             let self = this
+            self.param.loadEnd = false
             setTimeout(function() {
                 self.$http.page(self.needToken, self.uri, self.param, function(response) {
                     if (isRefresh) {
@@ -67,8 +68,8 @@ export default {
                     }
 
                     self.render(response)
-
-                    if (response.result.page >= response.result.total_pages || response.result.total_pages === 0) {
+					self.param.loadEnd = true
+                    if (response.result.page >= response.result.total_pages || response.result.total_pages === 0 ) {
                         // 设置加1
                         self.allLoaded = true
                     } else {

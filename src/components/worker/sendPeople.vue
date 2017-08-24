@@ -4,7 +4,7 @@
 		<Header title="派单" operation="确认派单" :action="pendingWorker"></Header>
 
 		
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/user/pendingMan"  ref="pagination">
+		<Pagination :render="render" :param="pagination" :topDistance="30" :need-token="true" uri="/user/pendingMan"  ref="pagination">
             <div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
             	<div class="contList" v-for="(list,index) in pagination.content" :key="index" @click="selectIndex = index">
 					<ul class="contBox">
@@ -16,7 +16,7 @@
 				</div>	
             </div>
 		</Pagination>  
-
+		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无可派单员工</div>
 		
 	</div>
 </template>
@@ -32,6 +32,7 @@ import { Toast } from 'mint-ui'
 					content: [],
 					page: 1,
 					pageSize: 25,
+					loadEnd: false
 				},
 				selectIndex: 0
 				

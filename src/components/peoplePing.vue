@@ -39,7 +39,7 @@
 			</div>
 				
         </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0">暂无评论</div>
+		<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">暂无评论</div>
 		
 	</div>
 </template>
@@ -57,9 +57,9 @@
                     content: [],
                     page: 1, 
                     pageSize: 10,
-                    param: {}
+                    param: {},
+                    loadEnd: false
                 },
-				
 			}
 		},
 		created() {

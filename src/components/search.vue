@@ -4,7 +4,7 @@
 		<div class="head_part">
 			<div class="search fl">
 				<img src="../../static/search-icon.png"/>
-			    <input type="text" ref="Input" @input="searchStatus = false" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
+			    <input type="text" ref="Input" @input="backSearch" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
 			</div>
 			<a class="returnFirst fr" @click="back">取消</a>
 		</div>
@@ -45,7 +45,7 @@
 					</router-link>
 				</li>
 			</ul>-->
-			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/search">
+			<Pagination :render="render" :param="pagination" :topDistance="30" :need-token="true" uri="/service/search">
 	            <ul class="thingCont" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
@@ -59,7 +59,7 @@
 					</li>
 				</ul>
 	        </Pagination>
-			<div class="none-data-tip" v-show="pagination.content.length<1">没有数据</div>	
+			<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">没有数据</div>	
 		</div>
 		<confirm-modal :show="show" 
 			@cancel_modal="cancel_modal" 
@@ -85,8 +85,11 @@ import { Toast } from 'mint-ui'
                     content: [],
                     page: 1, 
                     pageSize: 10,
-                    param: {}
+                    param: {},
+                    loadEnd: false
                 },
+                
+                
 			}
 		},
 		created() {
@@ -124,6 +127,9 @@ import { Toast } from 'mint-ui'
 				  duration: 1000
 				});
 			},
+			backSearch() {
+				this.searchStatus = false
+			},
 			searchService() {
 				if(!this.serviceWord) {
 					Toast({
@@ -134,6 +140,7 @@ import { Toast } from 'mint-ui'
 					return
 				}
 				this.page = 1
+				this.pagination.content = []
 				this.pagination.param = {
 		        	params:{
 					    cityName: this.currCity.name,

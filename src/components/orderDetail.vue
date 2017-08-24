@@ -166,7 +166,7 @@ export default {
 					//下单时间
 					this.orderTime=result.orderTime;
 					//按钮状态
-					if(result.operation=='null'){
+					if(result.operation == null){
 						result.operation=[]
 					}
 					this.operation=result.operation.reverse();				

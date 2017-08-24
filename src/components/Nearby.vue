@@ -13,7 +13,7 @@
 		<div class="nav-blank"></div>
 		
 		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceMenu/getServiceByFirstCategory" ref="pagination">
-			<div class="service-container">
+			<div class="service-container" v-show="pagination.content.length>0">
 				<div class="service" v-for="(item, index) in pagination.content" @click="toDetail(index)">
 					<img :src="item.icon"/>
 					<div class="content">
@@ -24,6 +24,7 @@
 				</div>
 			</div>
 		</Pagination>
+		<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">暂无服务</div>
 		<!--底部导航-->
 		<Menu actived="second"></Menu>
 	</div>
@@ -44,7 +45,8 @@
 						params: {
 							firstCategoryId: 5
 						}
-					}
+					},
+					loadEnd: false
                 }
 			}
 		},
@@ -162,6 +164,7 @@
 		width: 7.5rem;
 		height: 0.8rem;
 		overflow-x: auto;
+		z-index: 20;
 	}
 	
 	.nav {
