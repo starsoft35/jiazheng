@@ -3,11 +3,10 @@
         <Header title="个人中心" operation="保存" :action="saveUpdate"></Header>
 
         <div class="container">
-            <div class="row avatar">
+            <div class="row avatar" @click="changeAvatar">
                 <label>
                     <div class="arrow"></div>
                     <img :src="avatar" alt="avatar">
-                    <input type="file" class="avatar-input" name="avatar" @change="changeAvatar" accept="image/*">
                     头像
                     <div class="clear"></div>
                 </label>
@@ -95,11 +94,14 @@
 
             // 切换头像
             changeAvatar(e) {
-                let self = this
-                let formData = new FormData()
-                formData.append('file', e.target.files[0])
-                this.$api.updateAvatar(formData, function(response) {
-                    self.avatar =  response.result.data
+                // let self = this
+                // let formData = new FormData()
+                // formData.append('file', e.target.files[0])
+                // this.$api.updateAvatar(formData, function(response) {
+                //     self.avatar =  response.result.data
+                // })
+                this.$bridge.choosePhoto().then(response => {
+                    this.avatar = response
                 })
             }
         }
@@ -145,10 +147,6 @@
         padding-right: .1rem;
         color: #666;
         border: 0;
-    }
-    .row .avatar-input {
-        opacity: 0;
-        float: right;
     }
     .row .arrow {
         float: right;
