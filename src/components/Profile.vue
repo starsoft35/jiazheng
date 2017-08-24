@@ -3,10 +3,11 @@
         <Header title="个人中心" operation="保存" :action="saveUpdate"></Header>
 
         <div class="container">
-            <div class="row avatar" @click="changeAvatar">
+            <div class="row avatar" @click="uploadAvatar">
                 <label>
                     <div class="arrow"></div>
                     <img :src="avatar" alt="avatar">
+                    <input type="file" class="avatar-input" name="avatar" @change="changeAvatar" accept="image/*" v-if="isWeixin">
                     头像
                     <div class="clear"></div>
                 </label>
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-    import { MessageBox, Toast } from 'mint-ui'
+    import { MessageBox, Toast, Indicator } from 'mint-ui'
 
     export default {
         data() {
@@ -60,6 +61,12 @@
                 self.nickname = response.result.nickName
                 self.mobile = response.result.phone
             })
+        },
+
+        computed: {
+            isWeixin() {
+                return this.$common.isWeixin()
+            }
         },
 
         methods: {
@@ -92,18 +99,27 @@
                 })
             },
 
-            // 切换头像
-            changeAvatar(e) {
-                // let self = this
-                // let formData = new FormData()
-                // formData.append('file', e.target.files[0])
-                // this.$api.updateAvatar(formData, function(response) {
-                //     self.avatar =  response.result.data
-                // })
+            // 上传头像
+            uploadAvatar() {
                 this.$bridge.choosePhoto().then(response => {
                     this.avatar = response
                 })
+            },
+
+            // 切换头像
+            changeAvatar(e) {
+                Indicator.open('上传中...')
+                let self = this
+                let formData = new FormData()
+                formData.append('file', e.target.files[0])
+                this.$api.updateAvatar(formData, function(response) {
+                    self.avatar =  response.result.data
+                    Indicator.close()
+                })
             }
+        },
+        destroyed() {
+            Indicator.close()
         }
     }
 </script>
@@ -156,7 +172,10 @@
         color: #999;
         font-size: .3rem;
     }
-
+    .row .avatar-input {
+        opacity: 0;
+        float: right;
+    }
     .logout {
         margin-top: 1.5rem;
     }

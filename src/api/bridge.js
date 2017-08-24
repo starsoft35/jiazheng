@@ -27,7 +27,7 @@ setupWebViewJavascriptBridge(function(bridge) {
             'Javascript Responds': 'Wee!'
         };
         responseCallback(data);
-    });
+    })
 
     // 获取登录凭证
     bridge.registerHandler('getAccessToken', (data, responseCallback) => {
@@ -48,6 +48,11 @@ setupWebViewJavascriptBridge(function(bridge) {
             // 跳转工人信息
             router.push('/workerMessage')
         }
+    })
+
+    // 绑定推送编号
+    bridge.registerHandler('bindRegistrationId', (data, responseCallback) => {
+        responseCallback(false)
     })
 
     // 上传地理位置

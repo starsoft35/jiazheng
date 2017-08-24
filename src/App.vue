@@ -20,14 +20,14 @@
 </script>
 
 <style>
-	* {
+	/* * {
 		-webkit-user-select: none;
 	  	-moz-user-select: none;
   		-khtml-user-select: none;
 		   user-select: none;
 		   -webkit-touch-callout: none;
 		   -webkit-appearance: none; 
-	}
+	} */
 	html, body {
         position: relative;
         height: 100%;
@@ -38,8 +38,8 @@
         color:#222222;
         margin: 0;
 		padding:0;
-		-webkit-overflow-scrolling: touch;
-  		overflow-scrolling: touch;
+		/* -webkit-overflow-scrolling: touch; */
+  		/* overflow-scrolling: touch; */
     }
     #app {
         font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
