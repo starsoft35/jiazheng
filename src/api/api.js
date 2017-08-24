@@ -207,7 +207,7 @@ export default {
         http.post(true, '/serviceOrder/balancePay', params, callback)
     },
 
-    // 微信支付
+    // 移动支付
     mobilePay(params, callback) {
         http.post(true, '/serviceOrder', params, callback)
     },

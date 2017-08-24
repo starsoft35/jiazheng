@@ -20,7 +20,7 @@
 				<span class="fr">&yen;{{payData.totalPrice}}</span>
 			</div>
 		</div>
-		<div class="serveBottom" v-if="payData.orderType.value !=1">
+		<div class="serveBottom" v-if="orderType.value !=1">
 			<span class="fl">优惠券</span>
 			<router-link to="/coupons/couponsLeft/use">
 				<img class="fr" src="../../static/34@3x.png"/>
@@ -53,6 +53,7 @@ import { Toast } from 'mint-ui'
 			return {
 				orderSn: undefined,
 				payData: {},
+				orderType: {},
 				currCoupon: {
 		        	price: 0
 		        },
@@ -89,6 +90,7 @@ import { Toast } from 'mint-ui'
 				}
 		    },(res) => {
 		    	this.payData = res.result
+		    	this.orderType = res.result.orderType
 		    	this.options[0].label = '余额支付：' + res.result.balance
 		    })
 		},
@@ -97,6 +99,7 @@ import { Toast } from 'mint-ui'
 				let self = this
 				
 				if(this.payWayId == '1') {
+					//余额支付
 					this.$api.balancePay({
 						orderSn: this.orderSn
 					}, (res) => {
@@ -107,85 +110,104 @@ import { Toast } from 'mint-ui'
 						  duration: 1000
 						})
 						setTimeout(() => {
-							this.$router.push('/orders')
-						},800)
+							this.$router.replace('/orders')
+						},500)
 					})
 				} else if(this.payWayId == '2') {
-					if (typeof QcjzBridge === 'undefined') {
-	                    Toast({
-	                        message: '不支持移动支付',
-	                        position: 'bottom'
-	                    }) 
-	                    return
-	                }
+					//  微信支付
+                    let openid = ''
+                    if (this.$storage.get('oauthInfo')) {
+                        openid = this.$storage.get('oauthInfo').openid
+                    }
 					this.$api.mobilePay({
 						orderSn: this.orderSn,
 						pay_type: 3,
-						source: 2
+						source: this.$common.getPlatformType(),
 					}, (res) => {
 						let wechat = res.result.wechat
-	                    QcjzBridge.callWeChatPay(JSON.stringify({
-	                        appid: wechat.appId,
-	                        partnerid: wechat.partnerId,
-	                        prepayid: wechat.prepayId,
-	                        packageValue: 'Sign=WXPay',
-	                        noncestr: wechat.nonceStr,
-	                        timestamp: wechat.timeStamp,
-	                        sign: wechat.paySign
-	                    }), function(ret) {
-	                        if (ret == 0) {
-	                            Toast({
-								  message: '支付成功',
-								  position: 'middle',
-								  iconClass: 'toast-icon icon-success',
-								  duration: 1000
-								})
-	                        }else {
-	                        	Toast({
-								  message: '支付失败',
-								  position: 'middle',
-								  iconClass: 'toast-icon icon-error',
-								  duration: 1000
-								})
-	                        }
-	                        setTimeout(() => {
-								self.$router.push('/orders')
-							},500)
-	                    })
+                        if (self.$common.isWeixin()) {
+                            // 微信公众号支付
+                            function onBridgeReady(){
+                                WeixinJSBridge.invoke(
+                                    'getBrandWCPayRequest', {
+                                        'appId': wechat.appId,                 //公众号名称，由商户传入     
+                                        'timeStamp': wechat.timeStamp,         //时间戳，自1970年以来的秒数     
+                                        'nonceStr': wechat.nonceStr,            //随机串     
+                                        'package': wechat.prepayId,     
+                                        'signType': wechat.signType,            //微信签名方式：     
+                                        'paySign': wechat.paySign               //微信签名 
+                                    },
+                                    function(res){     
+                                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                            Toast({
+											  message: '支付成功',
+											  position: 'middle',
+											  iconClass: 'toast-icon icon-success',
+											  duration: 1000
+											})
+                                            setTimeout(() => {
+												self.$router.replace('/orders')
+											},500)
+                                        }     
+                                    }
+                                ); 
+                            }
+                            if (typeof WeixinJSBridge == "undefined"){
+                                if( document.addEventListener ){
+                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                }else if (document.attachEvent){
+                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                }
+                            }else{
+                                onBridgeReady();
+                            }
+                        } else {
+                            // 微信app支付
+                            self.$bridge.wechatPay({
+                                appid: wechat.appId,
+                                partnerid: wechat.partnerId,
+                                prepayid: wechat.prepayId,
+                                packageValue: 'Sign=WXPay',
+                                noncestr: wechat.nonceStr,
+                                timestamp: wechat.timeStamp,
+                                sign: wechat.paySign
+                            }).then(ret => {
+                                if (ret === '0') {
+                                    Toast({
+									  message: '支付成功',
+									  position: 'middle',
+									  iconClass: 'toast-icon icon-success',
+									  duration: 1000
+									})
+                                    setTimeout(() => {
+										self.$router.replace('/orders')
+									},500)
+                                    
+                                }
+                            })
+                        }
 					})
 				} else if(this.payWayId == '3') {
-					if (typeof QcjzBridge === 'undefined') {
-	                    Toast({
-	                        message: '不支持移动支付',
-	                        position: 'bottom'
-	                    }) 
-	                    return
-	                }
+					//支付宝支付
 					this.$api.mobilePay({
 						orderSn: this.orderSn,
 						pay_type: 2,
-						source: 2
+						source: this.$common.getPlatformType(),
 					}, (res) => {
-						QcjzBridge.callAlipay(res.result.alipay, function(ret) {
-	                        if (ret == 0) {
-	                            Toast({
+						self.$bridge.alipay(res.result.alipay).then(ret => {
+                            if (ret === '0') {
+                                Toast({
 								  message: '支付成功',
 								  position: 'middle',
 								  iconClass: 'toast-icon icon-success',
 								  duration: 1000
-								})  
-	                        }else {
-	                        	Toast({
-								  message: '支付失败',
-								  position: 'middle',
-								  iconClass: 'toast-icon icon-error',
-								  duration: 1000
 								})
-	                        }
-	                        setTimeout(() => {
-								self.$router.push('/orders')
-							},500)
-	                    })
+                                setTimeout(() => {
+									self.$router.replace('/orders')
+								},500)
+                            }
+                        })
 					})
 				}
 			}
