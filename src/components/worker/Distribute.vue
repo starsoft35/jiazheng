@@ -46,7 +46,7 @@
 									<img :src="contBox.sImage" />
 									<div class="thingName">
 										<div v-text="contBox.sTitle"></div>
-										<span v-if="contBox.orderType == 1">&yen;{{parseInt(contBox.price).toFixed(2)}}</span>
+										<span>&yen;{{parseInt(contBox.price).toFixed(2)}}</span>
 									</div>
 									<span class="counts">x{{contBox.mount}}</span>
 								</a>
@@ -54,7 +54,7 @@
 						</ul>
 					</div>
 					<!--合计-->
-					<div class="totalMoney" v-if="contBox.orderType == 1">
+					<div class="totalMoney">
 						<span class="totalRight">&yen;{{parseInt(contBox.total).toFixed(2)}}</span>
 						<span class="tolalLeft">合计:</span>
 					</div>
@@ -102,17 +102,23 @@
 					},
 					loadEnd: false
 					
-				}
+				},
+				
+				pending_status: 0
+				
 			}
 		},
+		created() {
+			this.pending_status = this.$route.params.id
+		},
 		mounted() {
-			this.changeMenu(0)
+			this.changeMenu(this.pending_status)
 		},
 
 		
 		methods: {
 			changeMenu(index) {
-				this.type = index + 1
+				this.type = Number(index) + 1
 				this.pagination = {
                     content: [],
                     page: 1, 

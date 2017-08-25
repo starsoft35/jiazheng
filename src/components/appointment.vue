@@ -42,11 +42,11 @@
 					<div class="serveTitle fl">
 						<div>{{appointmentData.title}}</div>
 						<p>{{appointmentData.content}}</p>
-						<span v-if="appointmentData.type.value == 1">&yen;{{parseInt(appointmentData.price).toFixed(2)}}/小时</span>
+						<span>&yen;{{parseInt(appointmentData.price).toFixed(2)}}/小时</span>
 					</div>
 				</div>
 				<!--右边选择数量-->
-				<div class="serveRight fr">
+				<div class="serveRight fr" v-if="appointmentData.type.value == 1">
 					<div class="serveBtn">
 						<div class="btnLeft fl" @click="reduce" >-</div>
 						<span>{{score}}</span>

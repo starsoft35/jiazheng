@@ -1,7 +1,7 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<Header title="分享有礼"></Header>
+		<Header title="分享有礼" operation="我的二维码" :action="showMyCode"></Header>
 		<div class="sharePage-content">
 			<img src="../../static/sa@3x.png" class="fullAuto"  />
 			<p class="share-tip">新人注册即可获取优惠</p>
@@ -19,22 +19,43 @@
 				</div>
 			</div>
 		</div>
+		<div class="qr-code-content" v-show="showCode">
+			<div class="bg-content" @click="showCode = false"></div>
+			<div class="qr-code-box">
+				<qrcode 
+					value="https://www.baidu.com/" 
+					:options="{ size: 170 }">
+				</qrcode>
+				<p style="padding: 0.2rem; color: #fff;">（ 扫码邀请好友 ）</p>
+			</div>
+				
+			
+		</div>
 		
 	</div>
 </template>
 
 <script type="text/javascript">
-	
+import Qrcode from 'vue-qrcode'
 	export default {
+		components: {
+		  qrcode: Qrcode
+		},
 		data() {
 			return {
-				userShareList: []
+				userShareList: [],
+				showCode: false
 			}
 		},
 		created() {
 			this.$api.userMyShared(null,(res) => {
 		    	this.userShareList = res.result.list
 		    })
+		},
+		methods: {
+			showMyCode() {
+				this.showCode = !this.showCode
+			}
 		}
 	}
 </script>
@@ -104,5 +125,29 @@
 		flex: 1;
 		line-height: 0.5rem;
 		text-align: left;
+	}
+	.qr-code-content{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0.92rem;
+		bottom: 0;
+		z-index: 100;
+	}
+	.bg-content{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 101;
+		background: rgba(0,0,0,0.7);
+	}
+	.qr-code-box{
+		position: absolute;
+		z-index: 105;
+		left: 50%;
+		transform: translateX(-50%);
+		top: 2rem;
 	}
 </style>

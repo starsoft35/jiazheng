@@ -59,7 +59,7 @@
 		methods: {
             render(res) {
             	this.serveTitle = res.result.menuName
-                res.result.serviceList.list.forEach((item) => {
+                res.result.list.forEach((item) => {
                 	this.pagination.content.push(item)
                 })
             }

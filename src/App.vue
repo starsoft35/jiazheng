@@ -13,6 +13,7 @@
 	import '../css/reset.css'
 	import '../js/rem.js'
 	import '../css/style.css'
+	
     
 	export default {
 		name: 'app'

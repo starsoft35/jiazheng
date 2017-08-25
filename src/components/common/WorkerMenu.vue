@@ -7,7 +7,7 @@
             </router-link>
         </li>
         <li :class="{'active':second.active}">
-            <router-link to='/distribute'>
+            <router-link to='/distribute/0'>
                 <img :src="second.icon" alt="派单"/>
                 <div>派单</div>
             </router-link>

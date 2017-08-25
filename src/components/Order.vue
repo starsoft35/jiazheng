@@ -2,280 +2,157 @@
 	<div id="box">
 		<Header title="订单" back="hidden"></Header>
 
-		<div class="none-message" v-if="pagination.content.length == 0">
+		<div class="none-message" v-show="pagination.content.length == 0 && pagination.loadEnd">
             <div class="bg"></div>
-            暂无订单消息
+            	暂无订单消息
         </div>
 
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/list" >
-			<div>
-			<div class="orderBox"  v-for="(orderBox,index) in orderCont" v-show="pagination.content.length > 0" >
-			<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
-				<div class="topMessage clear">
-					<span class="topLeft fl">{{orderBox.topTime}}</span>
-					<span class="topRight fr">{{orderBox.topText}}</span>
-				</div>
-				<div class="cont">
-					<!--左边图片-->
-					<div class="serveLeft">
-						<div class="serveBack fl">
-							<img :src="orderBox.serveImg" />
+		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/list" ref="pagination" >
+			<div style="margin-bottom: 0.4rem;" v-show="pagination.content.length > 0">
+				<div class="orderBox"  v-for="(orderBox,index) in pagination.content"  >
+					<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
+						<div class="topMessage clear">
+							<span class="topLeft fl">{{orderBox.orderTime}}</span>
+							<span class="topRight fr">{{orderBox.orderStatus}}</span>
 						</div>
-						<div class="serveTitle fl">
-							<div>{{orderBox.serveTitle}}</div>
-							<span v-bind:class="{spanOneStyle:orderBox.contOne,spanTwoStyle:orderBox.contTwo}">{{orderBox.serveCont}}</span>
-							<p v-show="orderBox.pricePart">￥{{orderBox.pricePart}}/小时</p>
+						<div class="order-addr">地址：{{orderBox.serviceAddr}}</div>
+						<div class="cont">
+							<!--左边图片-->
+							<div class="serveLeft">
+								<div class="serveBack fl">
+									<img :src="orderBox.serviceImage" />
+								</div>
+								<div class="serveTitle fl">
+									<div>{{orderBox.serviceTitle}}</div>
+									<p class="num">&yen;{{orderBox.unitPrice}}/小时
+										<span class="numbers">x{{orderBox.serviceMount}}</span>
+									</p>
+								</div>
+							</div>
+							
+						</div>
+						<div class="middlePart ">
+							<span>&yen;{{orderBox.totalPrice}}</span>
+							<span>合计:</span>
+						</div>
+						
+	
+					</router-link>
+					<div class="send" v-show="orderBox.operation.length>0">
+						<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">
+							<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
+							<span v-if="obj.operationType == 2 "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
 						</div>
 					</div>
-					<span class="numbers" v-show="orderBox.numberPart">×{{orderBox.spanTwo}}</span>
 				</div>
-				<div class="middlePart ">
-					<span>￥{{orderBox.spanOne}}</span>
-					<span>合计:</span>
-				</div>
-		<div class="bottomBtn">
-			<div class="send" v-show="orderBox.operation">
-				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">{{obj.event}}</div>
 			</div>
-		</div>
-
-				</router-link>
-			</div>
-</div>
 		</Pagination>
-		
+		<pj-modal 
+			@closeModal="show = false"
+			@cancel_modal="cancel_modal" 
+			@confirm_modal="confirm_modal"
+			:show="show">
+			
+		</pj-modal>
 		<Menu actived="third"></Menu>
 	</div>
 </template>
 
 <script type="text/javascript">
-   import { MessageBox, Toast } from 'mint-ui'
-
+    import { MessageBox, Toast } from 'mint-ui'
+	import pjModal from '@/components/common/pinjiaModal'
 	export default {
+		components: {
+			pjModal
+		},
 		data() {
 			return {
-				hidden:true,
+				show: false,
 				pagination: {
                     content: [],
                     page: 1, 
-                    pageSize: 10
+                    pageSize: 10,
+                    loadEnd: false
                 },
-				orderCont:[
-				//有价格待付款样式
-					// {
-					// 	topTime:'2017-07-09 01:25',
-					// 	topText:'待付款',
-					// 	serveImg:'@../../static/back.png',
-					// 	serveTitle:'家庭保洁',
-					// 	serveCont:'等待工人与您确认服务信息',
-					// 	spanOne:'0.00',
-					// 	spanTwo:'1',
-					// 	rightBtn:'去支付',
-					// 	rightBtnSrc:'/paySubmitTwo',
-					// 	leftBtnSrc:'/first',
-					// 	//按钮的有颜色
-					// 	oneStyle:false,
-					// 	twoStyle:true,
-					// 	//有价格时价格和数量的显示
-					// 	pricePart:true,
-					// 	numberPart:true,
-					// 	//有价格时左边的按钮
-					// 	bottomBtn:true,
-					// 	//有价格时单价上面文字样式
-					// 	textOne:false,
-					// 	textTwo:true,
-					// 	//有价格时图片右边中间span的样式
-					// 	contOne:false,
-					// 	contTwo:true
-					// },
-					// //有价格已付款样式
-					// {
-					// 	topTime:'2017-07-09 01:25',
-					// 	topText:'服务完成',
-					// 	serveImg:'@../../static/back.png',
-					// 	serveTitle:'家庭保洁',
-					// 	serveCont:'等待工人与您确认服务信息',
-					// 	spanOne:'0.00',
-					// 	spanTwo:'1',
-					// 	rightBtn:'评价',
-					// 	rightBtnSrc:'/paySubmitTwo',
-					// 	leftBtnSrc:'/first',
-					// 	//按钮的有颜色
-					// 	oneStyle:false,
-					// 	twoStyle:true,
-					// 	//有价格时价格和数量的显示
-					// 	pricePart:true,
-					// 	numberPart:true,
-					// 	//有价格时左边的按钮
-					// 	bottomBtn:false,
-					// 	//有价格时单价上面文字样式
-					// 	textOne:false,
-					// 	textTwo:true,
-					// 	//有价格时图片右边中间span的样式
-					// 	contOne:false,
-					// 	contTwo:true
-					// },
-					// //无价格等待派遣工人
-					// {
-					// 	topTime:'2017-07-09 01:25',
-					// 	topText:'等待派遣工人',
-					// 	serveImg:'@../../static/back.png',
-					// 	serveTitle:'家庭保洁',
-					// 	serveCont:'等待工人与您确认服务信息',
-					// 	spanOne:'0.00',
-					// 	spanTwo:'1',
-					// 	rightBtn:'取消订单',
-					// 	rightBtnSrc:'/paySubmitTwo',
-					// 	leftBtnSrc:'/first',
-					// 	//按钮的有颜色
-					// 	oneStyle:true,
-					// 	twoStyle:false,
-					// 	//价格和数量的显示
-					// 	pricePart:false,
-					// 	numberPart:false,
-					// 	//有价格时左边的按钮
-					// 	bottomBtn:false,
-					// 	//有价格时单价上面文字样式
-					// 	textOne:false,
-					// 	textTwo:true,
-					// 	//有价格时图片右边中间span的样式
-					// 	contOne:true,
-					// 	contTwo:false
-					// },
-					// //无价格等待确认服务完成
-					// {
-					// 	topTime:'2017-07-09 01:25',
-					// 	topText:'等待确认服务完成',
-					// 	serveImg:'@../../static/back.png',
-					// 	serveTitle:'家庭保洁',
-					// 	serveCont:'等待工人与您确认服务信息',
-					// 	spanOne:'300.00',
-					// 	spanTwo:'1',
-					// 	rightBtn:'确认支付',
-					// 	rightBtnSrc:'/paySubmitTwo',
-					// 	leftBtnSrc:'/first',
-					// 	//按钮的有颜色
-					// 	oneStyle:false,
-					// 	twoStyle:true,
-					// 	//价格和数量的显示
-					// 	pricePart:false,
-					// 	numberPart:false,
-					// 	//有价格时左边的按钮
-					// 	bottomBtn:false,
-					// 	//有价格时单价上面文字样式
-					// 	textOne:false,
-					// 	textTwo:true,
-					// 	//有价格时图片右边中间span的样式
-					// 	contOne:true,
-					// 	contTwo:false
-					// },
-					// //无价格评价
-					// {
-					// 	topTime:'2017-07-09 01:25',
-					// 	topText:'服务完成',
-					// 	serveImg:'@../../static/back.png',
-					// 	serveTitle:'家庭保洁',
-					// 	serveCont:'等待工人与您确认服务信息',
-					// 	spanOne:'300.00',
-					// 	spanTwo:'1',
-					// 	rightBtn:'评价',
-					// 	rightBtnSrc:'/paySubmit',
-					// 	leftBtnSrc:'/first',
-					// 	//按钮的有颜色
-					// 	oneStyle:false,
-					// 	twoStyle:true,
-					// 	//价格和数量的显示
-					// 	pricePart:false,
-					// 	numberPart:false,
-					// 	//有价格时左边的按钮
-					// 	bottomBtn:false,
-					// 	//有价格时单价上面文字样式
-					// 	textOne:false,
-					// 	textTwo:true,
-					// 	//有价格时图片右边中间span的样式
-					// 	contOne:true,
-					// 	contTwo:false
-					// }
-				]
+				
+				currOrder: {}
 			}
 		},
 		methods: {
 			render(res) {
-				console.info(res)
-				let orderCont= res.result.list
-				if (res.err_code=="0") {
-					this.orderCont== orderCont
-				for (let i in orderCont) {	
-					if(orderCont[i].operation == null) {
-                		orderCont[i].operation = []
+				for(var i in res.result.list){
+					if(res.result.list[i].operation == null) {
+                		res.result.list[i].operation = []
                 	}
-					orderCont[i].operation.reverse()
-                    this.orderCont.push({
-						topTime: orderCont[i].orderTime,
-						topText:orderCont[i].orderStatus,
-						serveImg:orderCont[i].serviceImage,
-						serveTitle:orderCont[i].serviceTitle,
-						//暂无接口
-						// serveCont:orderCont[i].orderStatus, 
-						spanOne:orderCont[i].totalPrice,
-						spanTwo:orderCont[i].serviceMount,
-						rightBtn:orderCont[i].orderStatus,
-						rightBtnSrc:orderCont[i].orderStatus,
-						leftBtnSrc:orderCont[i].orderStatus,
-						// 订单编码
-						orderNo:orderCont[i].orderNo,
-						//按钮事件
-						operation:orderCont[i].operation,
-						//按钮的有颜色
-						oneStyle:false,
-						twoStyle:true,
-						//有价格时价格和数量的显示
-						pricePart:orderCont[i].unitPrice,
-						numberPart:true,
-						//有价格时左边的按钮
-						bottomBtn:true,
-						//有价格时单价上面文字样式
-						textOne:false,
-						textTwo:true,
-						//有价格时图片右边中间span的样式
-						contOne:false,
-						contTwo:true
-                    });
-					this.pagination.content.push({
-						orderNo:orderCont[i].orderNo	
-					});
-                }} else {					
+					res.result.list[i].operation.reverse()
+					this.pagination.content.push(res.result.list[i])
 				}
 			},
 			operateOrder(obj,orderNo) {
-			if(obj.operationType=='1'){
-			this.$api.updateOrderStatus({
-				flag: obj.flag,
-				orderNo: orderNo,
-				type: obj.type
-			}, (res) => {
-				console.log(res)
-			// 	Toast({
-			// 	message: '请输入昵称',
-			// 	position: 'bottom'
-            // })
-			})
-			}else if(obj.operationType=='2'){
-				window.location.href="tel:"+obj.linkPhone
-			}else if(obj.operationType=='4'){		
-				this.$router.push({path: '/orderDetail/'+orderNo})
-			}else if(obj.operationType=='5'){	
+				if(obj.operationType=='1'){
+					this.$api.updateOrderStatus({
+						flag: obj.flag,
+						orderNo: orderNo,
+						type: obj.type
+					}, (res) => {
+						Toast({
+						  message: '操作成功',
+						  position: 'middle',
+						  iconClass: 'toast-icon icon-success',
+						  duration: 1000
+						})
+                        setTimeout(() => {
+                        	this.pagination = {
+			                    content: [],
+			                    page: 1, 
+								pageSize: 10,
+								loadEnd: false
+							}
+							this.$refs.pagination.refresh()
+						},500)
+					})
+				}else if(obj.operationType=='4'){		
+					this.$router.push('/paySubmit/'+ orderNo)
+				}else if(obj.operationType=='5'){	
+					this.show = true
+					this.currOrder = {
+						flag: obj.flag,
+						type: obj.type,
+						orderNo: orderNo
+					}
+				}
+					
+
+			},
+			cancel_modal() {
+				console.log('取消')
+			},
+			confirm_modal(star, advice) {
 				this.$api.updateOrderStatus({
-				flag: obj.flag,
-				orderNo: orderNo,
-				type: obj.type
-			}, (res) => {
+					evaluateContent: advice,
+					starLevel: star,
+					flag: this.currOrder.flag,
+					orderNo: this.currOrder.orderNo,
+					type: this.currOrder.type
+				}, (res) => {
+					Toast({
+					  message: '评价成功',
+					  position: 'middle',
+					  iconClass: 'toast-icon icon-success',
+					  duration: 1000
+					})
+                    setTimeout(() => {
+                    	this.pagination = {
+		                    content: [],
+		                    page: 1, 
+							pageSize: 10,
+							loadEnd: false
+						}
+						this.$refs.pagination.refresh()
+					},500)
+				})
+			},
 
-			})
-
-			}
-
-		}
 		},
 	}
 </script>
@@ -294,7 +171,7 @@
 		display: inline-block;
 		background: #FFFFFF;
 		color: #222222;
-		margin-top: 0.2rem;
+		margin-top: 0.3rem;
 	}
 	
 	.topMessage {
@@ -323,18 +200,24 @@
 		display: inline-block;
 		padding-bottom: 0.2rem;
 		background: #F9F9F9;
+		position: relative;
 	}
 	.numbers{
-		float: right;
-		font-size: 0.26rem;
+		padding-right: 0.2rem;
 		color: #666;
-		margin-top:1.1rem ;
 	}
 	/*左边部分*/
 	
 	.serveLeft {
-		display: inline-block;
-		float: left;
+		display: flex;
+		position: relative;
+		
+	}
+	.order-addr{
+		padding: 0.15rem 0.2rem;
+		text-align: left;
+		color: #666;
+		border-top: 1px solid #eee;
 	}
 	/*服务图片*/
 	
@@ -349,7 +232,7 @@
 	}
 	
 	.serveTitle {
-		width: 3rem;
+		flex: 1;
 		height: 1.4rem;
 		margin: 0 0 0 .22rem;
 		text-align: left;
@@ -377,6 +260,11 @@
 		font-size: 0.28rem;
 		color: #666;
 		margin-top: 0.1rem;
+	}
+	.serveTitle p.num{
+		display: flex;
+		justify-content: space-between;
+		color: #FF5400;
 	}
 	/*样式二*/
 	/*有价格*/
@@ -466,6 +354,11 @@
 		border: .01rem solid #8ac4f9;
 		color:#2173d6;
 		padding: 0 0.24rem;
+	}
+	.send div span, .send div a{
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
 	.send .send-color{

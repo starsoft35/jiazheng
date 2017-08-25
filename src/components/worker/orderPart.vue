@@ -48,7 +48,7 @@
 									<img :src="item.serviceImage" />
 									<div class="thingName">
 										<div v-text="item.serviceTitle"></div>
-										<span v-if="item.orderType.value == 1">&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+										<span>&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
 									</div>
 									<span class="counts">x{{item.serviceMount}}</span>
 								</a>
@@ -56,7 +56,7 @@
 						</ul>
 					</div>
 					<!--合计-->
-					<div class="totalMoney" v-if="item.orderType.value == 1">
+					<div class="totalMoney">
 						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
@@ -82,6 +82,7 @@
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
@@ -116,15 +117,18 @@
 						}
 					},
 					loadEnd: false
-                }
+                },
+                
+                order_status: 0
 			}
 		},
 		mounted() {
-			this.changeMenu(0)
+			this.changeMenu(this.order_status)
 		},
 		methods: {
 			// 切换菜单
 			changeMenu(index) {
+				this.order_status = index
 				this.pagination = {
                     content: [],
                     page: 1, 
@@ -161,7 +165,15 @@
 					type: this.currOperate.type,
 					price: serviceMoney
 				}, (res) => {
-					
+					Toast({
+					  message: res.err_msg,
+					  position: 'middle',
+					  iconClass: 'toast-icon icon-success',
+					  duration: 1000
+					})
+	                setTimeout(() => {
+						this.changeMenu(this.order_status)
+					},500)
 				})
             },
             operateOrder(obj,key, orderNo, operation) {
@@ -175,8 +187,15 @@
 						orderNo: orderNo,
 						type: obj.type
 					}, (res) => {
-						operation.splice(key, 1)
-//						this.$router.push('/paySubmit/' + res.result.orderSn)
+						Toast({
+						  message: res.err_msg,
+						  position: 'middle',
+						  iconClass: 'toast-icon icon-success',
+						  duration: 1000
+						})
+		                setTimeout(() => {
+							this.changeMenu(this.order_status)
+						},500)
 					})
             	}
             }

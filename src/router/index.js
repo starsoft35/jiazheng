@@ -214,7 +214,7 @@ const router = new Router({
             
         }, {
             //工人端派单
-            path: '/distribute',
+            path: '/distribute/:id',
             component: Distribute
         }, {
             //派单

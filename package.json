@@ -17,6 +17,7 @@
     "moment": "^2.18.1",
     "querystring": "^0.2.0",
     "vue": "^2.3.3",
+    "vue-qrcode": "github:xkeshi/vue-qrcode",
     "vue-router": "^2.3.1",
     "vuex": "^2.3.1"
   },

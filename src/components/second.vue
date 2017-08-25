@@ -8,10 +8,10 @@
 				<div class="process-right">
 					<p>
 						<span class="tit">{{item.flow}}</span>
-						<span>服务王朝</span>
+						<span>{{item.time}}</span>
 					</p>
 					<p>
-						<span>服务王朝</span>
+						<span>{{item.info}}</span>
 					</p>
 				</div>
 			</div>
@@ -49,15 +49,21 @@
 		padding: 0.2rem 0;
 	}
 	.orderProcess-item:nth-of-type(1) .process-left{
-		background-color: #22ac38;
+		background-image: url(../../static/during.png);
+		background-size: 100% 100%;
+		border: none;
 	}
 	.process-left{
 		width: 0.54rem;
 		height: 0.54rem;
 		border-radius: 50%;
-		background-color: #999;
+		
+		border: 1px solid #258ef3;
 		margin-right: 0.3rem;
 		position: relative;
+		box-sizing: border-box;
+		background: url(../../static/finish.png) no-repeat center;
+		background-size: 80% 80%;
 	}
 	.process-left:before{
 		content: '';
@@ -68,20 +74,6 @@
 		left: 50%;
 		top: -1.1rem;
 		transform: translateX(-50%);
-	}
-	.process-left:after{
-		content: '';
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: 70%;
-	}
-	.orderProcess-item:nth-of-type(1) .process-left:after{
-		background-image: url(../../static/26@3x.png);
 	}
 	.orderProcess-item:nth-of-type(1) .process-left:before{
 		display: none;

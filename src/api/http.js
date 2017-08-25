@@ -39,7 +39,10 @@ instance.interceptors.response.use(function(response) {
             storage.set('history_url', router.history.current.path)
             router.replace('/login')
         } else if (response.data.err_code == 2) {
-
+			Toast({
+                message: response.data.err_msg,
+                position: 'bottom'
+            })
         } else {
             Toast({
                 message: response.data.err_msg,

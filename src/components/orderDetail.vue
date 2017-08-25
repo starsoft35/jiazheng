@@ -1,23 +1,16 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>
+		<Header title="订单详情"></Header>
 		<!--顶部提示信息-->
 		<div class="headMessge">
 			<div class="topPart">
 				<img src="../../static/32@2x.png" />
-				<div class="putItem fl">{{orderStatus}}</div>
-				<div class="timePart fr">{{orderTime}}</div>
+				<div class="putItem fl">{{orderDetail.orderStatus}}</div>
+				<div class="timePart fr">{{orderDetail.orderTime}}</div>
 			</div>
 			<div class="bottomPart">
-				<div class="textLeft fl">您的订单已提交，请立即支付</div>
+				<div class="textLeft fl">{{orderFlow[0].info}}</div>
 				<router-link to="/second">
 					<img src="../../static/33@2x.png" />
 					<div class="textRight fr">更多状态</div>
@@ -30,198 +23,197 @@
 				<!--左边介绍-->
 				<div class="serveLeft">
 					<div class="serveBack fl">
-						<img :src="serviceImage">
+						<img :src="orderDetail.serviceImage">
 					</div>
 					<div class="serveTitle fl">
-						<div>{{serviceTitle}}</div>
-						<p >内芯及外表清洗</p>
-						<span>￥30/小时</span>
+						<div>{{orderDetail.serviceTitle}}</div>
+						<span class="num">&yen;{{orderDetail.unitPrice}}/小时
+							<span class="numbers" style="padding-right: 0.2rem;">x{{orderDetail.serviceMount}}</span>
+						</span>
 					</div>
-				</div>
-				<!--右边选择数量-->
-				<div class="serveRight fr">
-					<div class="serveBtn fr">×{{serviceMount}}</div>
 				</div>
 			</div>
 			<!--订单金额信息-->
 			<div class="moneyMesage">
 				<div class="messageList">
 					<div>服务金额</div>
-					<span>￥{{totalPrice}}</span>
+					<span>&yen;{{orderDetail.totalPrice}}</span>
 				</div>
 				<div class="messageList">
 					<div>优惠金额</div>
-					<span>￥ {{couponPrice}}</span>
+					<span>&yen;{{orderDetail.couponPrice}}</span>
 				</div>
 				<div class="mesageBottom">
 					<div>实付金额</div>
-					<span>￥{{actualPrice}}</span>
+					<span>&yen;{{orderDetail.actualPrice}}</span>
 				</div>
 			</div>
 		</div>
 		<!--服务信息标题-->
-		<div class="serveMesage clear">
-			<span>服务信息</span>
-		</div>
-		<!--客户具体信息-->
-		<div class="clientMessage">
-			<div class="contList clear" v-for="(contList,index) in msg">
-				<div>{{contList.leftMsg}}</div>
-				<span>{{contList.rightMsg}}</span>
-			</div>
-		</div>
-		<!--订单信息标题-->
-		<div class="serveMesage clear">
-			<span>服务信息</span>
-		</div>
-		<!--订单具体信息-->
-		<div class="clientMessage">
-			<div class="contList  " v-for="(contList,index) in positionMsg">
-				<div>{{contList.theLeft}}
-				<span>{{contList.theRight}}</span>
+		<div class="serveMesage">
+			<p>服务信息</p>
+			<div class="info-list">
+				<div class="info-item">
+					<span class="info-tit">联系人：</span>
+					<span class="info-text">{{orderDetail.linkMan}}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-tit">服务时间：</span>
+					<span class="info-text">{{orderDetail.serviceTime}}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-tit">联系电话：</span>
+					<span class="info-text">{{orderDetail.linkPhone}}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-tit">服务地址：</span>
+					<span class="info-text">{{orderDetail.serviceAddr}}</span>
 				</div>
 			</div>
 		</div>
-		<!--底部-->
-		<div class="bottomBtn">
-			<!-- <div class="btnLeft">
-				<router-link :to="{ path: '/paySubmit/'+orderNo}">去支付</router-link>
-			</div>
-			<div class="btnRight">
-				<div @click="goBack">取消订单</div>
-			</div> -->
-			<div class="send" v-show="operation">
-				<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj, key) in operation" @click="operateOrder(obj)">{{obj.event}}</div>
+		<div class="serveMesage" v-if="orderDetail.worker != undefined">
+			<p>工人信息</p>
+			<div class="info-list">
+				<div class="info-item">
+					<span class="info-tit">联系人：</span>
+					<span class="info-text">{{orderDetail.worker.nickName}}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-tit">联系电话：</span>
+					<span class="info-text">{{orderDetail.worker.phone}}</span>
+				</div>
 			</div>
 		</div>
+		<div class="serveMesage">
+			<p>订单信息</p>
+			<div class="info-list">
+				<div class="info-item">
+					<span class="info-tit">订单号码：</span>
+					<span class="info-text">{{orderDetail.orderNo}}</span>
+				</div>
+				<div class="info-item">
+					<span class="info-tit">下单时间：</span>
+					<span class="info-text">{{orderDetail.orderTime}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="send" v-show="operation.length>0">
+			<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in operation" @click="operateOrder(obj,orderDetail.orderNo)">
+				<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
+				<span v-if="obj.operationType == 2 "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
+			</div>
+		</div>
+		<pj-modal 
+			@closeModal="show = false"
+			@cancel_modal="cancel_modal" 
+			@confirm_modal="confirm_modal"
+			:show="show">
+			
+		</pj-modal>
 	</div>
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
+import pjModal from '@/components/common/pinjiaModal'
 export default {
+	components: {
+		pjModal
+	},
 	data() {
 		return {
-			title: '订单详情',
-			msg: [],
-			name:true,
-			actualPrice: 0,
-			couponPrice: 0,
-			orderStatus: 0,
-			totalPrice:0,
-			serviceMount:0,
-			orderTime:0,
-			orderNo:0,
-			serviceTitle:'',
-			serviceImage: '',
-			operation:'',
-			positionMsg: [],
+			orderDetail: {},
+			orderFlow: [{
+				info: ''
+			}],
+			operation: [],
+			orderNo: undefined,
+			
+			show: false,
+			currOrder: {}
 		}
 	},
 	created() {
-		let type = this.$route.params.id
-		this.$api.serveOrderDetail(
-			{ params: { orderNo: type } },
-			(res) => {
-				console.log(res.result)
-				let result = res.result
-				if (res.err_code == '0') {
-					this.msg = [{
-						leftMsg: '联系人:',
-						rightMsg: result.linkMan
-					}, {
-						leftMsg: '服务时间:',
-						rightMsg: result.serviceTime
-					}, {
-						leftMsg: '联系电话:',
-						rightMsg: result.linkPhone
-					}, {
-						leftMsg: '服务地址:',
-						rightMsg: result.serviceAddr
-					}]
-
-					this.positionMsg = [{
-						theLeft: '订单号码',
-						theRight: result.orderNo
-					}, {
-						theLeft: '下单时间',
-						theRight: result.orderTime
-					}]
-
-					// 订单当前状态
-					this.orderStatus = result.orderStatus;
-					// 实付金额
-					this.actualPrice = result.actualPrice;
-					// 优惠卷
-					this.couponPrice = result.couponPrice;
-					//服务图片
-					this.serviceImage = result.serviceImage;
-					//服务数量
-					this.serviceMount=result.serviceMount;
-					//总价
-					this.totalPrice=result.totalPrice;
-					//服务标题
-					this.serviceTitle=result.serviceTitle;
-					// 订单编号
-					this.orderNo=result.orderNo;
-					//下单时间
-					this.orderTime=result.orderTime;
-					//按钮状态
-					if(result.operation == null){
-						result.operation=[]
-					}
-					this.operation=result.operation.reverse();				
-			
-					
-					this.$storage.set('currOrderFlow', res.result.orderFlow)
-				}
-				
-			},
-		)
+		this.orderNo = this.$route.params.id
+		this.initData()
 	},
 	methods: {
-		goBack(){
-			// this.$api.updateOrderStatus(
-			// 	{ 
-			// 		flag:flag,
-			// 		orderNo:this.prderNo,
-			// 		type:1
-			// 	},
-			// 	(res)=>{
-			// 		console.log(res)
-			// 	}
-			// )
-
-			// console.log(this.$route)	
+		initData() {
+			this.$api.serveOrderDetail(
+				{ 
+					params: { 
+						orderNo: this.orderNo 
+					} 
+				},  (res) => {
+					if(res.result.operation == null){
+						res.result.operation=[]
+					}
+					this.operation=res.result.operation.reverse();				
+					this.orderDetail = res.result
+					this.orderFlow = res.result.orderFlow
+					this.$storage.set('currOrderFlow', res.result.orderFlow)
+				}
+			)
 		},
-		operateOrder(obj) {
-		if(obj.operationType=='1'){
-		this.$api.updateOrderStatus({
-			flag: obj.flag,
-			orderNo: this.orderNo,
-			type: obj.type
-		}, (res) => {
-			console.log(res)
-		// 	Toast({
-		// 	message: '请输入昵称',
-		// 	position: 'bottom'
-		// })
-		})
-		}else if(obj.operationType=='2'){
-			window.location.href="tel:"+obj.linkPhone
-		}else if(obj.operationType=='4'){		
-			this.$router.push({path: '/orderDetail/'+orderNo})
-		}else if(obj.operationType=='5'){	
+		operateOrder(obj,orderNo) {
+			if(obj.operationType=='1'){
+				this.$api.updateOrderStatus({
+					flag: obj.flag,
+					orderNo: orderNo,
+					type: obj.type
+				}, (res) => {
+					Toast({
+					  message: '操作成功',
+					  position: 'middle',
+					  iconClass: 'toast-icon icon-success',
+					  duration: 1000
+					})
+					if(obj.flag == -1) {
+						setTimeout(() => {
+							this.$router.go(-1)
+						},500)
+					}else {
+						setTimeout(() => {
+							this.initData()
+						},500)
+					}
+                    
+				})
+			}else if(obj.operationType=='4'){		
+				this.$router.push('/paySubmit/'+ orderNo)
+			}else if(obj.operationType=='5'){	
+				this.show = true
+				this.currOrder = {
+					flag: obj.flag,
+					type: obj.type,
+					orderNo: orderNo
+				}
+			}
+				
+
+		},
+		cancel_modal() {
+			console.log('取消')
+		},
+		confirm_modal(star, advice) {
 			this.$api.updateOrderStatus({
-			flag: obj.flag,
-			orderNo: this.orderNo,
-			type: obj.type
-		}, (res) => {
-
-		})
-
+				evaluateContent: advice,
+				starLevel: star,
+				flag: this.currOrder.flag,
+				orderNo: this.currOrder.orderNo,
+				type: this.currOrder.type
+			}, (res) => {
+				Toast({
+				  message: '评价成功',
+				  position: 'middle',
+				  iconClass: 'toast-icon icon-success',
+				  duration: 1000
+				})
+                setTimeout(() => {
+					this.initData()
+				},500)
+			})
 		}
-
-	}
 	}
 }
 </script>
@@ -235,38 +227,7 @@ export default {
 	height: 100%;
 	padding: 0px;
 	margin: 0px;
-}
-
-.headPart {
-	width: 100%;
-	height: 0.92rem;
-	background: #2d91f4;
-	overflow: hidden;
-}
-
-.headCont {
-	width: 7rem;
-	height: 0.32rem;
-	margin: 0.25rem;
-	/*border: 1px solid red;*/
-}
-
-.headCont a {
-	display: block;
-}
-
-.headCont span {
-	color: #FFFFFF;
-	width: 0.32rem;
-	height: 0.32rem;
-	background: url("../../static/return.png");
-	background-size: 100% 100%;
-}
-
-.headCont p {
-	height: 0.32rem;
-	color: #FFFFFF;
-	font-size: 0.32rem;
+	padding-bottom: 0.3rem;
 }
 
 
@@ -296,9 +257,9 @@ export default {
 }
 
 .putItem {
-	width: 1.5rem;
+	width: 3.5rem;
 	height: 0.4rem;
-	font-size: 0.26rem;
+	font-size: 0.28rem;
 	line-height: 0.4rem;
 	text-align: left;
 	color: #222222;
@@ -306,9 +267,9 @@ export default {
 }
 
 .timePart {
-	width: 2rem;
+	width: 2.5rem;
 	height: 0.4rem;
-	font-size: 0.2rem;
+	font-size: 0.26rem;
 	text-align: right;
 	line-height: 0.4rem;
 	color: #c9c9c9;
@@ -316,17 +277,17 @@ export default {
 
 .bottomPart {
 	width: 7rem;
-	height: 0.24rem;
 	margin-top: 0.2rem;
-	font-size: 0.24rem;
+	font-size: 0.26rem;
+	overflow: hidden;
 }
 
 .textLeft {
-	width: 3.5rem;
-	height: 0.24rem;
+	width: 4.5rem;
 	color: #c9c9c9;
 	text-align: left;
 	margin-left: 0.6rem;
+	overflow: hidden;
 }
 
 .bottomPart img {
@@ -339,7 +300,6 @@ export default {
 
 .textRight {
 	width: 1.5rem;
-	height: 0.24rem;
 	color: #89d395;
 	text-align: right;
 }
@@ -348,7 +308,11 @@ export default {
 	float: right;
 	display: block;
 }
-
+.num{
+	display: flex;
+	justify-content: space-between;
+	color: #FF5400;
+}
 
 
 
@@ -361,6 +325,7 @@ export default {
 	padding: 0 .25rem;
 	background: #FFFFFF;
 	overflow: hidden;
+	margin-top: 0.2rem;
 }
 
 .cont {
@@ -376,8 +341,7 @@ export default {
 /*左边部分*/
 
 .serveLeft {
-	display: inline-block;
-	float: left;
+	display: flex;
 }
 
 
@@ -398,23 +362,21 @@ export default {
 }
 
 .serveTitle {
-	width: 3rem;
+	flex: 1;
 	height: 1.4rem;
 	margin: .2rem 0 0 .25rem;
 	text-align: left;
 }
 
 .serveTitle div {
-	width: 3rem;
 	height: 0.45rem;
-	font-size: 0.24rem;
+	font-size: 0.26rem;
 	line-height: 0.45rem;
 	color: #4e4e4e;
-	margin-bottom: 0.1rem;
+	margin-bottom: 0.2rem;
 }
 
 .serveTitle p {
-	width: 3rem;
 	height: 0.5rem;
 	font-size: 0.2rem;
 	line-height: 0.5rem;
@@ -422,12 +384,12 @@ export default {
 }
 
 .serveTitle span {
-	width: 3rem;
-	height: 0.26rem;
 	font-size: 0.26rem;
 	color: #ff5400;
 }
-
+.numbers{
+	color: #666 !important;
+}
 
 
 
@@ -459,13 +421,15 @@ export default {
 	display: inline-block;
 	padding-top: 0.2rem;
 	border-top: 0.01rem solid #f2f2f2;
+	padding-bottom: 0.2rem;
 }
 
 .messageList {
 	width: 6.9rem;
-	height: 0.24rem;
+	/*height: 0.24rem;*/
 	padding: 0 0.05rem 0.12rem;
 	color: #999999;
+	overflow: hidden;
 }
 
 .messageList div {
@@ -514,16 +478,15 @@ export default {
 
 .serveMesage {
 	width: 7.5rem;
-	height: 0.7rem;
+	text-align: left;
+	color: #666;
+	
 }
-
-.serveMesage span {
-	float: left;
-	margin-left: 0.3rem;
-	font-size: 0.24rem;
+.serveMesage>p{
+	height: 0.7rem;
+	color: #333;
 	line-height: 0.7rem;
-	display: block;
-	color: #222222;
+	padding: 0 0.25rem;
 }
 
 
@@ -578,22 +541,53 @@ export default {
 .send {
 	width: 7.25rem;
 	overflow: hidden;
-	height: 0.86rem;
+	padding: 0.16rem 0.25rem 0.16rem 0;
+	color: #2d92f4;
+	background: #fff;
+	margin-top: 0.2rem;
 }
 
 .send div{
-	margin-top: 0.15rem;
 	float: right;
 	margin-left: 0.2rem;
-	font-size: 0.24rem;
-	line-height: 0.42rem;
+	font-size: 0.26rem;
+	height: 0.56rem;
+	line-height: 0.58rem;
 	border-radius: 0.28rem;
 	border: .01rem solid #8ac4f9;
-	padding: 0 0.2rem;
+	color:#2173d6;
+	padding: 0 0.24rem;
+}
+.send div span, .send div a{
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .send .send-color{
 	color: #888;
-	border: .01rem solid #999;
+	border: .01rem solid #666;
+}
+.info-list{
+	padding: 0 0.25rem;
+	background: #fff;
+}
+.info-item{
+	color: #999;
+	display: flex;
+	padding: 0.2rem 0;
+	border-bottom: 1px solid #F5F5F9;
+	font-size: 0.24rem;
+}
+.info-item>span{
+	vertical-align: middle;
+	line-height: 0.32rem;
+}
+.info-item>span.info-tit{
+	width: 1.3rem;
+}
+.info-item>span.info-text{
+	color: #333;
+	flex: 1;
 }
 </style>

@@ -49,13 +49,23 @@ import { Toast } from 'mint-ui'
 				}
 			},
 			pendingWorker() {
+				
 				this.$api.updateOrderStatus({
 					flag: 2,
 					orderNo: this.orderNo,
 					type: 2,
 					workerId: this.pagination.content[this.selectIndex].userId
 				}, (res) => {
-					this.$router.go(-1)
+					Toast({
+					  message: '派单成功',
+					  position: 'middle',
+					  iconClass: 'toast-icon icon-success',
+					  duration: 1000
+					})
+                    setTimeout(() => {
+						this.$router.go(-1)
+						this.$router.replace('/distribute/' + '2')
+					},500)
 				})
 			}
 

@@ -19,6 +19,7 @@ import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
 import confirmModal from '@/components/common/confirmModal'
 
+
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
