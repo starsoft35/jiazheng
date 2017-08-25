@@ -45,9 +45,8 @@ setupWebViewJavascriptBridge(function(bridge) {
     })
 
     // 跳转消息页面
-    bridge.registerHandler('uploadLocation', (data, responseCallback) => {
-        let param = JSON.parse(data)
-        if (param.type === 1) {
+    bridge.registerHandler('viewMessagePage', (data, responseCallback) => {
+        if (data == '1') {
             // 跳转用户信息
             router.push('/message')
         } else {
