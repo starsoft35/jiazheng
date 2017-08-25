@@ -1,6 +1,8 @@
 import router from '@/router'
 import common from '@/api/common'
 import storage from '@/api/storage'
+import querystring from 'querystring'
+import axios from 'axios'
 
 function setupWebViewJavascriptBridge(callback) {
     if (window.WebViewJavascriptBridge) {
@@ -58,23 +60,20 @@ setupWebViewJavascriptBridge(function(bridge) {
     // 绑定推送编号
     bridge.registerHandler('bindRegistrationId', (data, responseCallback) => {
         let token = storage.get('token')
-        alert('aaaa')
         if (!token) {
             return responseCallback(0)
         }
         axios.post(process.env.API_HOST + '/user/updateInfo?access_token=' + token.accessToken, querystring.stringify({
-            registrationId: data,
-        })).then(function(response) {
+            registrationId: data
+        })).then(response => {
             responseCallback(1)
         }).catch(error => {
             responseCallback(0)
         })
-
     })
 
     // 上传地理位置
     bridge.registerHandler('uploadLocation', (data, responseCallback) => {
-        alert(data)
         let param = JSON.parse(data)
 
         // 判定是否为工人
@@ -90,7 +89,7 @@ setupWebViewJavascriptBridge(function(bridge) {
         axios.post(process.env.API_HOST + '/location/add?access_token=' + token.accessToken, querystring.stringify({
             latitude: param.latitude,
             longitude: param.longitude
-        })).then(function(response) {
+        })).then(response => {
             responseCallback(1)
         }).catch(error => {
             responseCallback(0)
