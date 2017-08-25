@@ -1,4 +1,5 @@
 import router from '@/router'
+import common from '@/api/common'
 import storage from '@/api/storage'
 
 function setupWebViewJavascriptBridge(callback) {
@@ -22,12 +23,15 @@ function setupWebViewJavascriptBridge(callback) {
 
 setupWebViewJavascriptBridge(function(bridge) {
     //初始化
-    bridge.init(function(message, responseCallback) {
-        var data = {
-            'Javascript Responds': 'Wee!'
-        };
-        responseCallback(data);
-    })
+    if (common.isAndroid()) {
+        bridge.init(function(message, responseCallback) {
+            var data = {
+                'Javascript Responds': 'Wee!'
+            };
+            responseCallback(data);
+        })
+    }
+
 
     // 获取登录凭证
     bridge.registerHandler('getAccessToken', (data, responseCallback) => {
@@ -39,7 +43,7 @@ setupWebViewJavascriptBridge(function(bridge) {
     })
 
     // 跳转消息页面
-    bridge.registerHandler('uploadLocation', data => {
+    bridge.registerHandler('uploadLocation', (data, responseCallback) => {
         let param = JSON.parse(data)
         if (param.type === 1) {
             // 跳转用户信息
@@ -48,32 +52,48 @@ setupWebViewJavascriptBridge(function(bridge) {
             // 跳转工人信息
             router.push('/workerMessage')
         }
+        responseCallback()
     })
 
     // 绑定推送编号
     bridge.registerHandler('bindRegistrationId', (data, responseCallback) => {
-        responseCallback(false)
+        let token = storage.get('token')
+        alert('aaaa')
+        if (!token) {
+            return responseCallback(0)
+        }
+        axios.post(process.env.API_HOST + '/user/updateInfo?access_token=' + token.accessToken, querystring.stringify({
+            registrationId: data,
+        })).then(function(response) {
+            responseCallback(1)
+        }).catch(error => {
+            responseCallback(0)
+        })
+
     })
 
     // 上传地理位置
-    bridge.registerHandler('uploadLocation', data => {
+    bridge.registerHandler('uploadLocation', (data, responseCallback) => {
+        alert(data)
         let param = JSON.parse(data)
 
         // 判定是否为工人
         if (storage.get('role') != 2) {
-            return
+            return responseCallback(0)
         }
 
         // 上传位置
         let token = storage.get('token')
         if (!token) {
-            return
+            return responseCallback(0)
         }
         axios.post(process.env.API_HOST + '/location/add?access_token=' + token.accessToken, querystring.stringify({
             latitude: param.latitude,
             longitude: param.longitude
         })).then(function(response) {
-
+            responseCallback(1)
+        }).catch(error => {
+            responseCallback(0)
         })
     })
 })
@@ -141,9 +161,7 @@ export default {
     choosePhoto() {
         return new Promise((resolve, reject) => {
             setupWebViewJavascriptBridge(bridge => {
-                alert('开始选择图片')
                 bridge.callHandler('choosePhoto', null, response => {
-                    alert('选择图片回调')
                     resolve(response)
                 })
             })

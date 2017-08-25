@@ -53,7 +53,7 @@
                     captcha: self.captcha,
                     avatar: oauthInfo.avatar,
                     nickname: oauthInfo.nickname,
-                    openid: oauthInfo.unionid,
+                    unionid: oauthInfo.unionid,
                     registerToken: self.registerToken
                 }, function(response) {
                     let accessToken = response.result.accessToken

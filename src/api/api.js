@@ -128,19 +128,19 @@ export default {
     },
 
     // 微信登录
-    wechatLogin(openid, callback, error) {
-        http.post(false, '/user/wechatThirdLoginCheck', {
-            open_id: openid
+    wechatLogin(unionid, callback, error) {
+        http.post(false, '/user/wechatLoginCheck', {
+            union_id: unionid
         }, callback, false, error)
     },
 
     // 微信注册
     wechatRegister(params, callback) {
-        http.post(false, '/user/wechatThirdLogin', {
+        http.post(false, '/user/wechatLogin', {
             captcha: params.captcha,
             head_image: params.avatar,
             nick_name: params.nickname,
-            open_id: params.openid,
+            union_id: params.unionid,
             register_token: params.registerToken
         }, callback, '登录成功')
     },
