@@ -33,9 +33,9 @@ setupWebViewJavascriptBridge(function(bridge) {
     bridge.registerHandler('getAccessToken', (data, responseCallback) => {
         let token = storage.get('token')
         if (token) {
-            return token.accessToken
+            return responseCallback(token.accessToken)
         }
-        return false
+        return responseCallback(false)
     })
 
     // 跳转消息页面
