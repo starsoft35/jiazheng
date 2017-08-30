@@ -223,8 +223,8 @@
         margin: .5rem .5rem;
         height: .6rem;
         padding: .12rem;
-        font-size: .28rem;
-        background: #2d92f4;
+        font-size: .3rem;
+        background: #00c800;
         color: #FFF;
         border-radius: .6rem;
         line-height: .6rem;
@@ -233,7 +233,7 @@
         opacity: .6
     }
     .button.green {
-        background-color: #22AC38;
+        background-color: #04a3e2;
     }
     .amount {
         border: 0;

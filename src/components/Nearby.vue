@@ -19,7 +19,7 @@
 					<div class="content">
 						<div class="name">{{item.title}}</div>
 						<div class="description" >{{item.description}}</div>
-						<div class="price">¥ {{item.price}}</div>
+						<div class="price">{{item.price}}</div>
 					</div>
 				</div>
 			</div>
@@ -217,7 +217,7 @@
 		float: left;
 	}
 	.service .content {
-		margin-left: 1.82rem;
+		margin-left: 1.7rem;
 		color: #666;
 		font-size: .26rem;
 	}

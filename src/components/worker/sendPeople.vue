@@ -64,7 +64,7 @@ import { Toast } from 'mint-ui'
 					})
                     setTimeout(() => {
 						this.$router.go(-1)
-						this.$router.replace('/distribute/' + '2')
+						this.$router.replace('/distribute/' + '1')
 					},500)
 				})
 			}
@@ -120,7 +120,7 @@ import { Toast } from 'mint-ui'
 		width: 7.5rem;
 		height: 0.88rem;
 		background: #FFFFFF;
-		border-bottom: 0.02rem #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 		overflow: hidden;
 	}
 	.contBox{

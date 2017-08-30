@@ -39,7 +39,7 @@
 									<img :src="item.serviceImage" />
 									<div class="thingName">
 										<div v-text="item.serviceTitle"></div>
-										<span v-if="item.orderType.value == 1">&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+										<span v-if="item.orderType.value == 1">&yen;{{item.unitPrice}}</span>
 									</div>
 									<span class="counts">x{{item.serviceMount}}</span>
 								</a>
@@ -48,7 +48,7 @@
 					</div>
 					<!--合计-->
 					<div class="totalMoney" v-if="item.orderType.value == 1">
-						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
+						<span class="totalRight">&yen; <i>{{item.totalPrice}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
 					<!--<div class="send" v-show="item.operation.length>0">
@@ -321,11 +321,11 @@
 		color: #2173d6;
 		line-height: 0.56rem;
 		border-radius: 0.28rem;
-		border: .01rem solid #8ac4f9;
+		border: 1px solid #8ac4f9;
 		padding: 0 0.2rem;
 	}
 	#qu{
 		color: #222222;
-		border: .01rem solid #cccccc;
+		border: 1px solid #cccccc;
 	}
 </style>

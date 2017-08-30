@@ -48,7 +48,7 @@
 									<img :src="item.serviceImage" />
 									<div class="thingName">
 										<div v-text="item.serviceTitle"></div>
-										<span>&yen;{{parseInt(item.unitPrice).toFixed(2)}}</span>
+										<span>&yen;{{item.unitPrice}}</span>
 									</div>
 									<span class="counts">x{{item.serviceMount}}</span>
 								</a>
@@ -57,7 +57,7 @@
 					</div>
 					<!--合计-->
 					<div class="totalMoney">
-						<span class="totalRight">&yen; <i>{{parseInt(item.totalPrice).toFixed(2)}}</i></span>
+						<span class="totalRight">&yen; <i>{{item.totalPrice}}</i></span>
 						<span class="tolalLeft">合计:</span>
 					</div>
 					<div class="send" v-show="item.operation.length>0">
@@ -237,7 +237,7 @@ import { Toast } from 'mint-ui'
 		top: 0.92rem;
 		width: 7.5rem;
 		height: 0.78rem;
-		border-bottom: 0.02rem solid #f2f2f2;
+		/*border-bottom: 2px solid #f2f2f2;*/
 		background: #FFFFFF;
 		display: flex;
 		-webkit-box-orient: horizontal;
@@ -256,7 +256,7 @@ import { Toast } from 'mint-ui'
 	}
 	.routerLink.active {
 		color: #2173d6;
-		border-bottom: 0.02rem solid #2173d6;
+		border-bottom: 2px solid #2173d6;
 	}
 	.contBox {
 		width: 7.5rem;
@@ -272,7 +272,7 @@ import { Toast } from 'mint-ui'
 		width: 7rem;
 		height: 0.78rem;
 		padding: 0 .25rem;
-		border-bottom: .02rem solid #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 		display: block;
 	}
 	
@@ -411,7 +411,7 @@ import { Toast } from 'mint-ui'
 		width: 7rem;
 		height: 0.78rem;
 		padding: 0 0.25rem;
-		border-bottom: .02rem solid #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 	}
 	
 	.totalMoney span {
@@ -469,12 +469,12 @@ import { Toast } from 'mint-ui'
 		color: #2173d6;
 		line-height: 0.56rem;
 		border-radius: 0.28rem;
-		border: .01rem solid #8ac4f9;
+		border: 1px solid #8ac4f9;
 		padding: 0 0.2rem;
 		margin-left: 0.2rem;
 	}
 	#qu{
 		color: #222222;
-		border: .01rem solid #cccccc;
+		border: 1px solid #cccccc;
 	}
 </style>

@@ -140,8 +140,9 @@
             toggleRole() {
                 let self = this
                 this.$api.toggleRole(function(response) {
-                    if (response.result.role == 2) {
-                        self.$router.push('/worker/ucenter')
+                    if (response.result.role == 2 || response.result.role == 3) {
+                        self.$router.replace('/worker/ucenter')
+                        self.$storage.set('currRole', response.result.role)
                     }
                 });
             }

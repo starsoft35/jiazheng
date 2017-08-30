@@ -18,6 +18,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
 import confirmModal from '@/components/common/confirmModal'
+import $ from 'jquery'
 
 
 Vue.config.productionTip = false
@@ -40,6 +41,7 @@ Vue.prototype.$common = common
 Vue.prototype.$weixin = weixin
 Vue.prototype.$bridge = bridge
 Vue.prototype.$isEmptyObject = isEmptyObject
+Vue.prototype.$jquery = $
 
 new Vue({
     el: '#app',

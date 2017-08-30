@@ -5,7 +5,7 @@
 				<!--地点按钮-->
 				<div class="top-position">
 					<a href="#positionChose">
-						<span>{{currCity.name}}</span>
+						<span>{{currCity.name.slice(0,2)}}</span>
 						<img src="../../static/1@3x.png"/>
 					</a>
 				</div>
@@ -123,10 +123,17 @@
 			}
 		},
 		created() {
+			let self = this
 			let currCity = this.$storage.get('currCity')
 			let openCitys = this.$storage.get('openCitys')
 			if(currCity) {
 				this.currCity = currCity
+			}else {
+				this.$bridge.getGPS().then((res) => {
+					let addr = JSON.parse(res)
+					self.currCity.latitude = addr.lat
+					self.currCity.longitude = addr.lng
+				})
 			}
 			this.$api.homeData({
 	        	params:{
@@ -140,6 +147,9 @@
 		    	this.firstMenu = this.menuList[0]
 		    	this.hotServices = res.result.services.result.list
 		    	this.currCity.name = res.result.currentCity
+		    	if(!currCity) {
+		    		this.$storage.set('currCity', this.currCity)
+		    	}
 		    	if(!openCitys) {
 					this.$storage.set('openCitys', res.result.openCitys)
 				}
@@ -184,9 +194,9 @@
 		top: 0;
 	}
 	.top-position span{
-		width: 0.5rem;
+		width: 0.58rem;
 		height: 0.9rem;
-		font-size: 0.25rem;
+		font-size: 0.24rem;
 		color: #FFFFFF;
 		line-height: 0.9rem;
 		position: absolute;
@@ -382,8 +392,9 @@
 	.serveCont div{
 		width: 1.2rem;
 		height:0.29rem;
-		font-size:0.25rem ;
+		font-size:0.28rem ;
 		float: right;
+		line-height: 1;
 		color: #222222;
 	}
 	/*热门服务菜单*/

@@ -33,6 +33,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="remark" v-if="orderDetail.remark">
+				<span style="width: 1rem;">备注：</span>
+				<span class="remark-text">{{orderDetail.remark}}</span>
+			</div>
 			<!--订单金额信息-->
 			<div class="moneyMesage">
 				<div class="messageList">
@@ -420,7 +424,7 @@ export default {
 	width: 7rem;
 	display: inline-block;
 	padding-top: 0.2rem;
-	border-top: 0.01rem solid #f2f2f2;
+	border-top: 1px solid #f2f2f2;
 	padding-bottom: 0.2rem;
 }
 
@@ -509,7 +513,7 @@ export default {
 	width: 7rem;
 	line-height: 0.86rem;
 	display: inline-block;
-	border-top: 0.01rem solid #f2f2f2;
+	border-top: 1px solid #f2f2f2;
 }
 
 .contList div {
@@ -554,7 +558,7 @@ export default {
 	height: 0.56rem;
 	line-height: 0.58rem;
 	border-radius: 0.28rem;
-	border: .01rem solid #8ac4f9;
+	border: 1px solid #8ac4f9;
 	color:#2173d6;
 	padding: 0 0.24rem;
 }
@@ -566,7 +570,7 @@ export default {
 
 .send .send-color{
 	color: #888;
-	border: .01rem solid #666;
+	border: 1px solid #666;
 }
 .info-list{
 	padding: 0 0.25rem;
@@ -588,6 +592,17 @@ export default {
 }
 .info-item>span.info-text{
 	color: #333;
+	flex: 1;
+}
+.remark{
+	text-align: left;
+	/*border-bottom: 1px solid #eee;*/
+	display: flex;
+	color: #666;
+	font-size: 0.24rem;
+	padding: 0.15rem 0;
+}
+.remark-text{
 	flex: 1;
 }
 </style>

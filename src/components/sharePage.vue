@@ -23,7 +23,7 @@
 			<div class="bg-content" @click="showCode = false"></div>
 			<div class="qr-code-box">
 				<qrcode 
-					value="https://www.baidu.com/" 
+					:value="showUrl" 
 					:options="{ size: 170 }">
 				</qrcode>
 				<p style="padding: 0.2rem; color: #fff;">（ 扫码邀请好友 ）</p>
@@ -44,12 +44,14 @@ import Qrcode from 'vue-qrcode'
 		data() {
 			return {
 				userShareList: [],
-				showCode: false
+				showCode: false,
+				showUrl: ''
 			}
 		},
 		created() {
 			this.$api.userMyShared(null,(res) => {
 		    	this.userShareList = res.result.list
+		    	this.showUrl = window.location.host + '/#/shareJoin/' + res.result.inviterId
 		    })
 		},
 		methods: {

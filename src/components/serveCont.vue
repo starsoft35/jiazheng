@@ -11,7 +11,7 @@
 							<div class="thingName">
 								<div>{{item.title}}</div>
 								<p>{{item.abstractContent}}</p>
-								<span>{{item.price}}</span>
+								<span>&yen;{{item.price}}</span>
 							</div>
 						</router-link>
 					</li>
@@ -151,7 +151,7 @@
 	.thingName p{
 		width: 100%;
 		height: 0.45rem;
-		font-size:0.2rem ;
+		font-size:0.24rem ;
 		line-height: 0.45rem;
 		color: #aaa;
 	}

@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <Header title="快捷登录" hidden-bg="true"></Header>
+        <Header title="快捷登录"></Header>
 
         <div class="container">
             <div class="row">
@@ -19,7 +19,7 @@
 
         <div class="btn-login" :class="{disable: !isAgree}" @click="mobileLogin">登录</div>
 
-        <div class="quick-login">
+        <div class="quick-login" v-show="showBottom">
             <div class="title">第三方快捷登录</div>
             <div class="channel-container">
                 <div class="channel">
@@ -32,7 +32,7 @@
 
 <script>
     import { Toast } from 'mint-ui'
-
+	import $ from 'jquery'
     export default {
         data() {
             return {
@@ -45,11 +45,22 @@
                     captcha: '',
                     registerToken: '',
                     registrationId: '1111'   
-                }
+                },
+                
+                showBottom: true
             }
         },
         created () {
             let self = this
+            var winHeight = $(window).height();   
+			$(window).resize(function(){
+			    var thisHeight=$(this).height();
+			    if(winHeight - thisHeight >40){
+			        self.showBottom = false
+			    }else{
+			        self.showBottom = true
+			    }
+			});
             if (this.$route.query.oauth === '1') {
                 let info = this.$storage.get('oauthInfo')
                 this.$api.wechatLogin(info.unionid, function(response) {

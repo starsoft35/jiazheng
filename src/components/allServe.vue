@@ -139,7 +139,7 @@
 	.serveTitle{
 		width: 100%;
 		height: 0.97rem;
-		font-size: 0.24rem;
+		font-size: 0.28rem;
 		color: #222222;
 		text-align: left;
 		line-height: 0.97rem;
@@ -157,9 +157,10 @@
 		background: #fafafa;
 	}
 	.serve_list a{
+		display: block;
 		width: 100%;
 		height: 100%;
-		font-size: 0.2rem;
+		font-size: 0.26rem;
 		line-height: 0.6rem;
 		text-align: center;
 		color: #7a7a7a;

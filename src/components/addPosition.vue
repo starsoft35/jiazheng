@@ -212,7 +212,7 @@
 	
 	.open2 {
 		top: 0.02rem;
-		right: 0.01rem;
+		right: 1px;
 	}
 	
 	.close1 {

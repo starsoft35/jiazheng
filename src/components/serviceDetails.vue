@@ -9,7 +9,7 @@
 		<div class="serve_title">
 			<div>{{serviceData.title}}</div>
 			<p>{{serviceData.content}}</p>
-			<span>&yen;{{parseInt(serviceData.price).toFixed(2)}}/小时</span>
+			<span>&yen;{{serviceData.price}}/小时</span>
 		</div>
 		<!--图文介绍-->
 		<div class="textIntro clear">
@@ -250,7 +250,7 @@
 		width: 7rem;
 		height: 0.8rem;
 		padding: 0 0.26rem;
-		border-bottom: 0.02rem solid #ebebeb;
+		border-bottom: 1px solid #ebebeb;
 	}
 	
 	.ping span {
@@ -316,7 +316,7 @@
 	.clientImg span {
 		height: 0.48rem;
 		float: left;
-		font-size: 0.2px;
+		font-size: 0.28rem;
 		color: #222222;
 		line-height: 0.48rem;
 		margin-left: 0.2rem;
@@ -351,16 +351,14 @@
 	
 	.client>span {
 		width: 3rem;
-		height: 0.16rem;
-		font-size: 0.16rem;
+		font-size: 0.24rem;
 		color: #999999;
 	}
 	
 	.client p {
 		width: 7rem;
-		height: 0.25rem;
 		margin: 0.25rem 0;
-		font-size: 0.25rem;
+		font-size: 0.26rem;
 		color: #222222;
 	}
 	/*服务内容*/
@@ -382,16 +380,15 @@
 	
 	.serveTitle span {
 		width: 2.3rem;
-		height: 0.1rem;
+		height: 0.18rem;
 		border-bottom: 1px solid #e5e5e5;
 	}
 	
 	.serveTitle div {
 		position: absolute;
 		width: 7rem;
-		height: 0.22rem;
 		text-align: center;
-		font-size: 0.22rem;
+		font-size: 0.28rem;
 		color: #222222;
 	}
 	/*服务内容 订购须知*/
@@ -402,6 +399,7 @@
 		display: inline-block;
 		margin: 0.2rem 0;
 		color: #bbb;
+		font-size: 0.26rem;
 	}
 	
 	.textBox p {

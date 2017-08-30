@@ -366,7 +366,7 @@
 	}
 	
 	.borderBottom {
-		border-bottom: 2px solid #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 	}
 	
 	.serveTime a {

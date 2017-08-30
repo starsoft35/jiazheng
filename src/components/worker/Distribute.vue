@@ -2,7 +2,7 @@
 	<div id="box">
 		<Header title="派单" back="hidden"></Header>
 			
-		<div>
+		<div v-show="workerRole == 3">
 			<ul class="navBox">
 				<li v-for="(item, index) in menus" @click="changeMenu(index)">
 					<div class="routerLink" :class="{active: item.actived}">{{item.name}}</div>
@@ -46,7 +46,7 @@
 									<img :src="contBox.sImage" />
 									<div class="thingName">
 										<div v-text="contBox.sTitle"></div>
-										<span>&yen;{{parseInt(contBox.price).toFixed(2)}}</span>
+										<span>&yen;{{contBox.price}}</span>
 									</div>
 									<span class="counts">x{{contBox.mount}}</span>
 								</a>
@@ -55,7 +55,7 @@
 					</div>
 					<!--合计-->
 					<div class="totalMoney">
-						<span class="totalRight">&yen;{{parseInt(contBox.total).toFixed(2)}}</span>
+						<span class="totalRight">&yen;{{contBox.total}}</span>
 						<span class="tolalLeft">合计:</span>
 					</div>
 					<!--派单-->
@@ -67,6 +67,10 @@
 				
 		</Pagination>
 		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无派单</div>
+		<div class="none-data-tip" v-show="workerRole == 2">
+			<img class="none-data-img" src="../../../static/43@2x.png" />
+			<p>暂无派单功能</p>
+		</div>
 
 		<!--底部导航-->
 		<workerPart actived="second"></workerPart>
@@ -104,7 +108,9 @@
 					
 				},
 				
-				pending_status: 0
+				pending_status: 0,
+				
+				workerRole: 3
 				
 			}
 		},
@@ -112,6 +118,10 @@
 			this.pending_status = this.$route.params.id
 		},
 		mounted() {
+			if(this.$storage.get('currRole') == 2) {
+				this.workerRole = 2
+				return
+			}
 			this.changeMenu(this.pending_status)
 		},
 
@@ -168,7 +178,7 @@
 		top: 0.92rem;
 		width: 7.5rem;
 		height: 0.78rem;
-		border-bottom: 0.02rem solid #f2f2f2;
+		/*border-bottom: 2px solid #f2f2f2;*/
 		background: #FFFFFF;
 		display: flex;
 		-webkit-box-orient: horizontal;
@@ -187,7 +197,7 @@
 	}
 	.routerLink.active {
 		color: #2173d6;
-		border-bottom: 0.02rem solid #2173d6;
+		border-bottom: 2px solid #2173d6;
 	}
 
 	.contBox {
@@ -360,7 +370,7 @@
 		width: 7rem;
 		height: 0.78rem;
 		padding: 0 0.25rem;
-		border-bottom: .02rem solid #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 	}
 	
 	.totalMoney span {
@@ -418,5 +428,8 @@
 		top: 0;
 		background: url(../../../static/worker01.png) no-repeat center;
 		background-size: auto 100%; 
+	}
+	.none-pending{
+		
 	}
 </style>

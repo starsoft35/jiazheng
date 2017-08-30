@@ -27,8 +27,8 @@
 			</div>
 			<!--调用上部分样式-->
 			<ul class="histroyBox">
-				<li class="histroyCont" v-for="value in histroyList" >
-					<a @click="searchHistory(value)">{{value}}</a>
+				<li class="histroyCont" v-for="value in histroyList" @click="searchHistory(value)" >
+					<a>{{value}}</a>
 				</li>
 			</ul>
 		</div>
@@ -145,8 +145,6 @@ import { Toast } from 'mint-ui'
 		        	params:{
 					    cityName: this.currCity.name,
 					    keyword: this.serviceWord,
-					    page: this.page,
-					    page_size: this.page_size
 					}
 			    }
 				document.activeElement.blur();
@@ -261,7 +259,7 @@ import { Toast } from 'mint-ui'
 		/*取消按钮*/
 		.returnFirst{
 			display: block;
-			font-size: 0.22rem;
+			font-size: 0.26rem;
 			color: #2173d6;
 			line-height:0.5rem;
 		}
@@ -287,7 +285,7 @@ import { Toast } from 'mint-ui'
 		}
 		.searchBox a{
 			display:block;
-			font-size: 0.2rem;
+			font-size: 0.24rem;
 			line-height: 0.5rem;
 			margin:0 30px;
 			color: #222222;
@@ -327,7 +325,7 @@ import { Toast } from 'mint-ui'
 		}
 		.histroyBox a{
 			display:block;
-			font-size: 0.2rem;
+			font-size: 0.26rem;
 			line-height: 0.5rem;
 			margin:0 30px;
 			color: #222222;

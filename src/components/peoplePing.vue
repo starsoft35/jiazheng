@@ -188,7 +188,7 @@
 	.clientImg span{
 		height:0.48rem ;
 		float: left;
-		font-size: 0.2px;
+		font-size: 0.28rem;
 		color: #222222;
 		line-height: 0.48rem;
 		margin-left: 0.2rem;
@@ -220,13 +220,13 @@
 	.client>span{
 		width: 3rem;
 		height: 0.2rem;
-		font-size: 0.2rem;
+		font-size: 0.24rem;
 		color: #999999;
 	}
 	.client p{
 		width: 7rem;
 		margin: 0.25rem 0;
-		font-size: 0.25rem;
+		font-size: 0.26rem;
 		color: #222222;
 	}
 </style>

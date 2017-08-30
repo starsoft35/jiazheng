@@ -245,12 +245,12 @@
 		color: #2173d6;
 		line-height: 0.56rem;
 		border-radius: 0.28rem;
-		border: .01rem solid #8ac4f9;
+		border: 1px solid #8ac4f9;
 		padding: 0 0.2rem;
 		margin-left: 0.2rem;
 	}
 	#qu{
 		color: #222222;
-		border: .01rem solid #cccccc;
+		border: 1px solid #cccccc;
 	}
 </style>

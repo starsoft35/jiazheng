@@ -105,9 +105,15 @@
         color: #444;
     }
     .headCont p{
-        height: 0.32rem;
+    	position: absolute;
+    	width: 100%;
+    	height: 100%;
         color: #FFFFFF;
         font-size: 0.32rem;
+        left: 0;
+        top: 0;
+        line-height: 0.92rem;
+        z-index: -1;
     }
     .operation {
         float: right;

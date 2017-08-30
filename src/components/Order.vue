@@ -7,7 +7,7 @@
             	暂无订单消息
         </div>
 
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceOrder/list" ref="pagination" >
+		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/list" ref="pagination" >
 			<div style="margin-bottom: 0.4rem;" v-show="pagination.content.length > 0">
 				<div class="orderBox"  v-for="(orderBox,index) in pagination.content"  >
 					<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
@@ -15,7 +15,9 @@
 							<span class="topLeft fl">{{orderBox.orderTime}}</span>
 							<span class="topRight fr">{{orderBox.orderStatus}}</span>
 						</div>
-						<div class="order-addr">地址：{{orderBox.serviceAddr}}</div>
+						<div class="order-addr">
+							<span style="width: 1rem;">地址：</span>
+							{{orderBox.serviceAddr}}</div>
 						<div class="cont">
 							<!--左边图片-->
 							<div class="serveLeft">
@@ -27,10 +29,15 @@
 									<p class="num">&yen;{{orderBox.unitPrice}}/小时
 										<span class="numbers">x{{orderBox.serviceMount}}</span>
 									</p>
+									<div class="remark" v-if="orderBox.remark">
+										<span style="width: 1rem;">备注：</span>
+										<span class="remark-text">{{orderBox.remark}}</span>
+									</div>
 								</div>
 							</div>
 							
 						</div>
+						
 						<div class="middlePart ">
 							<span>&yen;{{orderBox.totalPrice}}</span>
 							<span>合计:</span>
@@ -77,6 +84,9 @@
 				
 				currOrder: {}
 			}
+		},
+		mounted() {
+			this.$refs.pagination.refresh()
 		},
 		methods: {
 			render(res) {
@@ -218,6 +228,7 @@
 		text-align: left;
 		color: #666;
 		border-top: 1px solid #eee;
+		display: flex;
 	}
 	/*服务图片*/
 	
@@ -279,7 +290,7 @@
 		width: 7.06rem;
 		height: 0.8rem;
 		padding: 0 .22rem;
-		border-bottom: 0.01rem solid #f2f2f2
+		border-bottom: 1px solid #f2f2f2
 	}
 	.middlePart span {
 		float: right;
@@ -351,7 +362,7 @@
 		height: 0.56rem;
 		line-height: 0.58rem;
 		border-radius: 0.28rem;
-		border: .01rem solid #8ac4f9;
+		border: 1px solid #8ac4f9;
 		color:#2173d6;
 		padding: 0 0.24rem;
 	}
@@ -363,6 +374,20 @@
 
 	.send .send-color{
 		color: #888;
-		border: .01rem solid #666;
+		border: 1px solid #666;
 	}
+	.remark{
+		text-align: left;
+		/*border-bottom: 1px solid #eee;*/
+		display: flex;
+		color: #666;
+		font-size: 0.24rem;
+	}
+	.remark-text{
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
 </style>

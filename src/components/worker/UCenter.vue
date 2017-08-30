@@ -9,14 +9,14 @@
 					<img :src="avatar" alt="">
 				</div>
 				<div class="info">
-					<div class="name">张某某</div>
-					<div class="mobile">18501701760</div>
+					<div class="name">{{nickname}}</div>
+					<div class="mobile">{{mobile}}</div>
 				</div>
             </div>
         </div>
 
 		<div class="menu-container">
-            <a href="tel:400-800-1236" class="item">
+            <a :href="'tel:'+ hotline" class="item">
                 <div class="arrow"></div>
                 <div class="label">{{hotline}}</div>
                 <div class="title">联系客服</div>
@@ -91,6 +91,7 @@
                 this.$api.toggleRole(function(response) {
                     if (response.result.role == 1) {
                         self.$router.push('/ucenter')
+                        self.$storage.set('currRole', 1)
                     }
                 });
             }

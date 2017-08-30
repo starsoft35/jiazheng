@@ -42,7 +42,7 @@
 					<div class="serveTitle fl">
 						<div>{{appointmentData.title}}</div>
 						<p>{{appointmentData.content}}</p>
-						<span>&yen;{{parseInt(appointmentData.price).toFixed(2)}}/小时</span>
+						<span>&yen;{{appointmentData.price}}/小时</span>
 					</div>
 				</div>
 				<!--右边选择数量-->
@@ -68,15 +68,15 @@
 		<div class="footPart" v-if="appointmentData.type.value == 1">
 			<div class="partPrice">
 				<div class="fl">服务金额</div>
-				<span class="fr">&yen;{{parseInt(parseInt(appointmentData.price) * score).toFixed(2)}}</span>
+				<span class="fr">&yen;{{(parseFloat(appointmentData.price) * score).toFixed(2)}}</span>
 			</div>
 			<div class="partPrice">
 				<div class="fl">优惠金额</div>
-				<span class="fr">- &yen;{{parseInt(currCoupon.price).toFixed(2)}}</span>
+				<span class="fr">- &yen;{{currCoupon.price}}</span>
 			</div>
 			<div class="pay">
 				<div class="fl">实付金额</div>
-				<span class="fr">&yen;{{parseInt(parseInt(appointmentData.price) * score - currCoupon.price).toFixed(2)}}</span>
+				<span class="fr">&yen;{{((parseFloat(appointmentData.price) * score) - currCoupon.price).toFixed(2)}}</span>
 			</div>
 		</div>
 		<!--提交预约-->
@@ -148,7 +148,7 @@
 //			this.initData()		
 		},
 		beforeRouteEnter (to, from, next) {
-	    	if(/orders/g.test(from.fullPath) || /paySubmit/g.test(from.fullPath) || /coupons/g.test(from.fullPath)) {
+	    	if(/orders/g.test(from.fullPath) || /paySubmit/g.test(from.fullPath) || /coupons/g.test(from.fullPath) || /addresses/g.test(from.fullPath)) {
 	    		next()
 	    	}else {
 	    		next(vm=>{
@@ -175,7 +175,7 @@
 				if(this.$storage.get('currCoupon')) {
 					this.currCoupon = this.$storage.get('currCoupon')
 					this.useCouponStatus = true
-					this.$storage.remove('currCoupon')
+					
 				}
 				this.appointmentData = this.$storage.get('appointmentData')
 				this.$api.serveConfirmOrder(null, (res) => {
@@ -228,9 +228,10 @@
 					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
-					
+					this.$storage.remove('currCoupon')
+					this.$storage.remove('appointmentData')
 					if(this.appointmentData.type.value == 1) {
-						this.$router.push('/paySubmit/' + res.result.orderSn)
+						this.$router.replace('/paySubmit/' + res.result.orderSn)
 					}else {
 						Toast({
 						  message: '预约成功',
@@ -239,9 +240,8 @@
 						  duration: 800
 						})  
 						setTimeout(() => {
-							this.$router.push('/orders')
-						},500)
-						
+							this.$router.replace('/orders')
+						},500)					
 					}
 				})
 			}
@@ -432,7 +432,7 @@
 	.serveTitle div{
 		width: 3rem;
 		height: 0.45rem;
-		font-size:0.24rem ;
+		font-size:0.26rem ;
 		line-height:0.45rem ;
 		color:#4e4e4e ;
 		margin-bottom: 0.1rem;
@@ -441,7 +441,7 @@
 	.serveTitle p{
 		width:3rem ;
 		height:0.5rem ;
-		font-size: 0.2rem;	
+		font-size: 0.24rem;	
 		line-height:0.5rem ;
 		color: #adadad;
 	}

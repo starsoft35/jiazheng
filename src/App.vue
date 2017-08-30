@@ -67,10 +67,13 @@
     	height: 100%;
     }
     .picker-slot{
-    	font-size: 0.3rem;
+    	font-size: 0.26rem !important; 
+    }
+    .picker-item.picker-selected{
+    	color: #000 !important; 
     }
     .picker-item{
-    	color: #999;
+    	color: #999 !important; 
     }
     
     /*服务时间弹框*/
@@ -115,9 +118,11 @@
 		height: 1rem;
 		display: flex;
 		border-bottom: 1px solid #eee;
+		background: none !important; 
 	}
 	.payWay .mint-cell-wrapper{
 		font-size: 0.28rem;
+		background: none !important; 
 	}
 	.payWay .mint-radio-core{
 		width: 0.4rem;
@@ -179,5 +184,8 @@
 		left: 0;
 		top: 0;
 		z-index: -2;
+	}
+	.mint-loadmore-text{
+		color: #666 !important;
 	}
 </style >

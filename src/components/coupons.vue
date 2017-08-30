@@ -68,7 +68,6 @@
 	.navBox{
 		width: 7.5rem;
 		height: 0.78rem;
-		border-bottom: 0.02rem solid #f2f2f2;
 		background: #FFFFFF;
 		display: flex;
 		-webkit-box-orient: horizontal;
@@ -85,7 +84,7 @@
 	}
 	.router-link-active {
 		color: #2173d6;
-		border-bottom: 0.02rem solid #2173d6;
+		border-bottom: 2px solid #2173d6;
 	}
 	/*子页面*/
 </style>

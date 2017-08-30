@@ -320,7 +320,7 @@ import { Toast } from 'mint-ui'
 		display: block;
 		height:0.88rem ;
 		padding: 0 0.25rem;
-		border-bottom:2px solid #f2f2f2 ;
+		border-bottom:1px solid #f2f2f2 ;
 		line-height: 0.88rem;
 	}
 	/*支付列表*/

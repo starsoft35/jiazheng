@@ -1,6 +1,7 @@
 <template>
     <div class="bing-mobile">
-        <Header title="手机号绑定" hidden-bg="true"></Header>
+        <!--<Header title="手机号绑定" hidden-bg="true"></Header>-->
+        <Header title="手机号绑定"></Header>
 
         <div class="container">
             <div class="row">
