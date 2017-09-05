@@ -119,8 +119,8 @@ import { Toast } from 'mint-ui'
 				menuList: [],
 				firstMenu: {},
 				currCity: {
-					latitude: 31.30000,
-					longitude: 120.58000,
+					latitude: 0,
+					longitude: 0,
 					name: ''
 				},
 				
@@ -191,25 +191,29 @@ import { Toast } from 'mint-ui'
 			},
 			getLocation() {
 				let self = this
-				console.log('1')
 				if (this.$common.isWeixin()) {
 				    var map = new AMap.Map('container')
-				    map.plugin('AMap.CitySearch', function () {
-					    setTimeout(function() {
-					    	var citysearch = new AMap.CitySearch();
-					        //自动获取用户IP，返回当前城市
-					        citysearch.getLocalCity(function(status, result) {
-					            if (status === 'complete' && result.info === 'OK') {
-					                if (result && result.city && result.bounds) {
-					                    self.currCity.name = result.city
-					                    self.initData()
-					                }
-					            }
-					        })
-					    },0)
-					});
-					   
-				    
+				    map.plugin('AMap.Geolocation', function() {
+				        var geolocation = new AMap.Geolocation({
+				            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+				            timeout: 12000,          //超过10秒后停止定位，默认：无穷大
+				        });
+				        map.addControl(geolocation);
+				        geolocation.getCurrentPosition();
+				        AMap.event.addListener(geolocation, 'complete', function(data) {
+				        	self.currCity.name = data.addressComponent.city
+				        	self.initData()
+				        });//返回定位信息
+				        AMap.event.addListener(geolocation, 'error', function(data) {
+				        	Toast({
+							  message: '定位失败，请选择城市',
+							  position: 'bottom',
+							  duration: 3000
+							})
+				        	self.initData()
+				        	
+				        });      //返回定位出错信息
+				    });
                     return
                 }
 				this.$bridge.getGPS().then((res) => {
