@@ -8,7 +8,7 @@
         </div>
         <div class="blank"></div>
 
-        <Pagination :render="render" :param="pagination" :need-token="true" uri="/memberBill/list">
+        <Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/memberBill/list" ref="pagination">
             <div class="record-container" >
                 <div class="record" v-for="(item, index) in pagination.content">
                     <div class="amount">{{item.amount}}</div>
@@ -37,6 +37,11 @@
                 return parseFloat(this.balance).toFixed(2)
             }
         },
+        mounted() {
+			setTimeout(() => {
+				this.$refs.pagination.refresh()
+			},0)
+		},
         methods: {
             render(response) {
                 response.result.balance && (this.balance = response.result.balance)
@@ -69,6 +74,7 @@
         width: 100%;
         position: fixed;
         z-index: 100;
+        overflow: hidden;
     }
     .head .title {
         text-align: left;
@@ -76,8 +82,10 @@
         margin-bottom: .3rem;
     }
     .head .balance {
-        font-size: 1rem;
+        font-size: 0.8rem;
         text-align: left;
+        padding-right: 1.9rem;
+        overflow: hidden;
     }
     .head .button {
         font-size: .3rem;
@@ -86,7 +94,7 @@
         color: #FFF;
         border-radius: .58rem;
         float: right;
-        margin: .3rem 0 0;
+        margin: .2rem 0 0;
     }
 
     .record-container {

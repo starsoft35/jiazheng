@@ -4,7 +4,8 @@
 		<Pagination :render="render" :param="pagination" :need-token="true" uri="/location/getList">
 			<div class="worker-list" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
 				<div class="worker-item" v-for="(item,index) in pagination.content" :key="index">
-					<span class="name">{{item.workerName}}</span>
+					<span class="name" v-if="item.workerName">{{item.workerName}}</span>
+					<span class="name" v-if="!item.workerName">新工人</span>
 					<span class="phone">{{item.workerPhone}}</span>
 					<span class="address" @click="goAmap"></span>
 				</div>
@@ -22,7 +23,7 @@
 				pagination: {
                     content: [],
                     page: 1, 
-                    pageSize: 10
+                    pageSize: 20
                 },
 			}
 		},

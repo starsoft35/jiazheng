@@ -51,7 +51,13 @@
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>
             </router-link>
-            <a :href="getHotline" class="item">
+            <a v-if="isWeixin != 'yes'" @click="callPhone(hotline)" class="item">
+                <div class="arrow"></div>
+                <img src="../../static/52@3x.png" alt="package">
+                <div class="label">{{hotline}}</div>
+                <div class="title">联系客服</div>
+            </a>
+            <a v-if="isWeixin == 'yes'" :href="'tel:' + hotline" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
                 <div class="label">{{hotline}}</div>
@@ -80,6 +86,7 @@
     export default {
         data: function() {
             return {
+            	isWeixin: this.$storage.get('isWeixinTerm'),
                 roles: [],
                 messageCount: 0, // 消息数量
                 nickname: '',   // 头像
@@ -87,7 +94,7 @@
                 avatar: '../../static/moren@3x.png',     // 头像
                 balance: 0.00,  // 余额
                 coupons: 0,     // 优惠券数量
-                hotline: ''     // 热线电话
+                hotline: '',     // 热线电话
             }
         },
         computed: {
@@ -145,6 +152,9 @@
                         self.$storage.set('currRole', response.result.role)
                     }
                 });
+            },
+            callPhone(hotline) {
+            	this.$bridge.callPhone(hotline)
             }
         }
     }

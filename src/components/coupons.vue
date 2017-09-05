@@ -2,14 +2,18 @@
 	<div id="box">
 		<!--顶部-->
 		<Header title="使用优惠卷"></Header>
-		<ul class="navBox">
-			<li>
-				<router-link class="routerLink" :to="'/coupons/couponsLeft/' + status" replace>可用优惠劵</router-link>
-			</li>
-			<li>
-				<router-link class="routerLink" to="/coupons/couponsRight" replace>不可用优惠券</router-link>
-			</li>
-		</ul>
+		<div>
+			<ul class="navBox">
+				<li>
+					<router-link class="routerLink" :to="'/coupons/couponsLeft/' + status" replace>可用优惠劵</router-link>
+				</li>
+				<li>
+					<router-link class="routerLink" to="/coupons/couponsRight" replace>不可用优惠券</router-link>
+				</li>
+			</ul>
+			<div style="height: 0.8rem;"></div>
+		</div>
+			
 		<div class="cont">
 			<router-view></router-view>
 		</div>
@@ -67,11 +71,16 @@
 	/*优惠券选择*/
 	.navBox{
 		width: 7.5rem;
-		height: 0.78rem;
+		height: 0.8rem;
 		background: #FFFFFF;
 		display: flex;
 		-webkit-box-orient: horizontal;
 		display: -webkit-box;
+		box-sizing: border-box;
+		position: fixed;
+		left: 0;
+		top: 0.92rem;
+		z-index: 50;
 	}
 	.navBox li{
 		-webkit-box-flex: 1;

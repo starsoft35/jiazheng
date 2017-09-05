@@ -18,6 +18,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Pagination from '@/components/common/Pagination'
 import confirmModal from '@/components/common/confirmModal'
+import loadingPart from '@/components/common/loadingPart'
 import $ from 'jquery'
 
 
@@ -30,6 +31,7 @@ Vue.component('workerPart', WorkerMenu)
 Vue.component('WorkerMenu', WorkerMenu)
 Vue.component('Pagination', Pagination)
 Vue.component('confirmModal', confirmModal)
+Vue.component('loadingPart', loadingPart)
 
 Vue.use(MintUI)
 
@@ -42,7 +44,9 @@ Vue.prototype.$weixin = weixin
 Vue.prototype.$bridge = bridge
 Vue.prototype.$isEmptyObject = isEmptyObject
 Vue.prototype.$jquery = $
-
+if(common.isWeixin()){
+	storage.set('isWeixinTerm', 'yes')
+}
 new Vue({
     el: '#app',
     router,

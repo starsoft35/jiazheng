@@ -11,10 +11,15 @@
 			<div style="height: 0.8rem;"></div>
 		</div>
 		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/pend"  ref="pagination">
-			<div style="margin-bottom: 1.3rem; padding-top: 0px;" v-show="pagination.content.length > 1">
+			<div style="margin-bottom: 1.3rem; padding-top: 0px;" v-show="pagination.content.length > 0">
 				<div class="contBox" v-for="(contBox,index) in pagination.content">
 					<!--姓名 电话-->
-					<a :href="'tel:' + contBox.linkPhone" class="contact">
+					<a v-if="isWeixin != 'yes'" @click="callPhone(contBox.linkPhone)" class="contact">
+						<span>{{contBox.linkName}}</span>
+						<span>{{contBox.linkPhone}}</span>
+						<div></div>
+					</a>
+					<a v-if="isWeixin == 'yes'" :href="'tel:' + contBox.linkPhone" class="contact">
 						<span>{{contBox.linkName}}</span>
 						<span>{{contBox.linkPhone}}</span>
 						<div></div>
@@ -32,8 +37,8 @@
 					<!--服务地址-->
 					<div class="cont" style="padding-bottom: 0.25rem;">
 						<span class="contLeft">服务地址:</span>
-						<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddr}}</span>
-						<a class="map-lnik" href="#">
+						<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddress.address}}</span>
+						<a class="map-lnik" @click="goAmap(contBox.serviceAddress)">
 							<span>去这里</span>
 						</a>
 					</div>
@@ -62,6 +67,9 @@
 					<div class="send" v-if="type == 1">
 						<div @click="orderMenu(contBox.orderNo)">派单</div>
 					</div>
+					<div class="send" v-if="type == 2 && contBox.canCancel == 1">
+						<div @click="orderMenu(contBox.orderNo)">重新派单</div>
+					</div>
 				</div>
 			</div>
 				
@@ -81,7 +89,7 @@
 	export default {
 		data(){
 			return {
-
+				isWeixin: this.$storage.get('isWeixinTerm'),
 				menus: [
 					{
 						name: '待派单',
@@ -115,19 +123,35 @@
 			}
 		},
 		created() {
-			this.pending_status = this.$route.params.id
+//			this.pending_status = this.$route.params.id
 		},
 		mounted() {
-			if(this.$storage.get('currRole') == 2) {
-				this.workerRole = 2
-				return
-			}
-			this.changeMenu(this.pending_status)
+//			if(this.$storage.get('currRole') == 2) {
+//				this.workerRole = 2
+//				return
+//			}
+//			this.changeMenu(this.pending_status)
 		},
-
+		beforeRouteEnter (to, from, next) {
+	    	if(/amap/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			if(vm.$storage.get('currRole') == 2) {
+						vm.workerRole = 2
+						return
+					}
+	    			vm.pending_status = vm.$route.params.id
+	    			vm.workerRole = 3
+	    			vm.changeMenu(vm.pending_status)
+			        
+	        	})
+	    	}	
+		},
 		
 		methods: {
 			changeMenu(index) {
+				this.pending_status = index
 				this.type = Number(index) + 1
 				this.pagination = {
                     content: [],
@@ -160,7 +184,15 @@
 				for(var i in response.result.list){
 					this.pagination.content.push(response.result.list[i])
 				}
-			}
+			},
+			callPhone(phone) {
+				this.$bridge.callPhone(phone)
+			},
+			goAmap(address) {
+            	this.$storage.set('currAddr', address)
+            	this.$router.push('/amap')
+
+            }
 		}
 	}
 </script>

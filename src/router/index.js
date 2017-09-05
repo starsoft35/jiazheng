@@ -4,6 +4,7 @@ import token from '../api/accessToken'
 import storage from '../api/storage'
 
 import first from '@/components/first'
+import sellerEnter from '@/components/sellerEnter'
 import second from '@/components/second'
 //搜索路由导入
 import search from '@/components/search'
@@ -16,6 +17,9 @@ import positionChose from '@/components/positionChose'
 import serveCont from '@/components/serveCont'
 //商品或者服务的详细介绍
 import serviceDetails from '@/components/serviceDetails'
+
+//活动详情
+import activityDetails from '@/components/activityDetails'
 
 //图文介绍
 import serveIntro from '@/components/serviceIntro'
@@ -43,6 +47,8 @@ import paySubmitTwo from '@/components/paySubmitTwo'
 import oneClick from '@/components/oneClick'
 //分享
 import sharePage from '@/components/sharePage'
+//分享邀请进入
+import shareEnter from '@/components/shareEnter'
 //服务类型
 import serveType from '@/components/serveType'
 // 订单
@@ -63,8 +69,10 @@ import workerMessage from '@/components/worker/workerMessage'
 import WorkerUCenter from '@/components/worker/UCenter'
 //我的
 import Location from '@/components/location'
-//地图
+//地图工人位置
 import amapPage from '@/components/amapPage'
+//地图导航
+import amap from '@/components/amap'
 
 
 
@@ -86,6 +94,8 @@ import AddressList from '@/components/AddressList'
 import Address from '@/components/Address'
 // 登录页面
 import Login from '@/components/Login'
+// 用户协议
+import agreeMent from '@/components/agreeMent'
 // 绑定手机号码
 import BindMobile from '@/components/BindMobile'
 // 地址搜索
@@ -102,7 +112,13 @@ const router = new Router({
             component: first
         }, {
             path: '/first',
-            component: first
+            component: first,
+            meta: {
+                requireAuth: true
+            }
+        }, {
+            path: '/sellerEnter',
+            component: sellerEnter
         }, {
             path: '/second',
             component: second
@@ -117,6 +133,9 @@ const router = new Router({
         {
             path: '/allserve/:id',
             component: allserve,
+            meta: {
+                keepAlive: true
+            }
 
         }, {
             //城市选择
@@ -130,6 +149,10 @@ const router = new Router({
             //服务的详细介绍
             path: '/serviceDetails/:id',
             component: serviceDetails
+        }, {
+            //活动详情
+            path: '/activityDetails/:id',
+            component: activityDetails
         }, {
             //服务的详细介绍
             path: '/serveIntro',
@@ -176,7 +199,10 @@ const router = new Router({
         }, {
             //订单支付
             path: '/paySubmit/:id',
-            component: paySubmit
+            component: paySubmit,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //订单支付
             path: '/paySubmitTwo',
@@ -192,6 +218,10 @@ const router = new Router({
             //分享
             path: '/sharePage',
             component: sharePage
+        }, {
+            //分享
+            path: '/shareEnter/:id',
+            component: shareEnter
         }, {
             //服务类型
             path: '/serveType',
@@ -210,12 +240,18 @@ const router = new Router({
         }, {
             //工人端首页
             path: '/orderPart',
-            component: orderPart
+            component: orderPart,
+            meta: {
+                keepAlive: true
+            }
             
         }, {
             //工人端派单
             path: '/distribute/:id',
-            component: Distribute
+            component: Distribute,
+            meta: {
+                keepAlive: true
+            }
         }, {
             //派单
             path: '/sendPeople/:id',
@@ -229,13 +265,17 @@ const router = new Router({
             path: '/worker/ucenter',
             component: WorkerUCenter,
         }, {
-            //地图
+            //地图工人位置
             path: '/amapPage',
             component: amapPage,
         }, {
             //工人位置
             path: '/location',
             component: Location,
+        }, {
+            //地图导航
+            path: '/amap',
+            component: amap,
         },
 
 
@@ -307,7 +347,14 @@ const router = new Router({
         }, {
             // 手机登录
             path: '/login',
-            component: Login
+            component: Login,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            // 用户协议
+            path: '/agreeMent',
+            component: agreeMent
         }, {
             // 绑定手机号码
             path: '/bind/mobile',
@@ -320,8 +367,7 @@ const router = new Router({
             path: '/addr/search',
             component: AddressSearch,
             meta: {
-                requireAuth: true,
-                keepAlive: true
+                requireAuth: true
             }
         }, {
             // 微信OAuth

@@ -134,8 +134,14 @@
 		created() {
 //			this.initData()	
 		},
+		activated() {
+			this.$api.serveConfirmOrder(null, (res) => {
+		    	this.defaultAddr = res.result.defaultAddr
+		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+		    })
+		},
 		beforeRouteEnter (to, from, next) {
-	    	if(/orders/g.test(from.fullPath)) {
+	    	if(/orders/g.test(from.fullPath) || /addresses/g.test(from.fullPath)) {
 	    		next()
 	    	}else {
 	    		next(vm=>{

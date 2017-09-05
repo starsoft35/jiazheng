@@ -9,7 +9,7 @@
 	    			<div class="modal-message" v-html="message" v-if="message"></div>
 	    			<div class="modal-input" v-if="has_input">
 	    				<span>&yen;</span>
-	    				<input ref="Input" class="input" v-model="serviceMoney" type="tel" placeholder="请输入服务费用"/>
+	    				<input ref="Input" @input="editPrice" class="input" v-model="serviceMoney" type="tel" placeholder="请输入服务费用"/>
 	    			</div>
 	    		</div>
 	    		<div class="modal-footer">
@@ -57,6 +57,17 @@ export default {
 		}
 	},
     methods: {
+    	editPrice(e) {
+    		if(!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(this.serviceMoney)) {
+    			this.serviceMoney = this.serviceMoney.replace(/[^\d.]+/g,'')
+    			this.serviceMoney = this.serviceMoney.replace(/^\./g, "")
+    			this.serviceMoney = this.serviceMoney.replace(/\.{2,}/g, ".")
+    			this.serviceMoney = this.serviceMoney.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".")
+    			this.serviceMoney = this.serviceMoney.replace(/([0-9]+\.[0-9]{2})[0-9]*/, "$1")
+    		}
+			
+		
+    	},
     	cancel() {
     		this.$emit('closeModal')
     		this.serviceMoney = ''

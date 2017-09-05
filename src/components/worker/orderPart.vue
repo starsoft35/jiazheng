@@ -3,18 +3,26 @@
 		<!--顶部-->
 		<Header title="订单" back="hidden"></Header>
 		<div>
-			<ul class="navBox">
-				<li v-for="(item, index) in orderStatus" :key="index" @click="changeMenu(index)">
-					<a class="routerLink" :class="{active: item.active}">{{item.text}}</a>
-				</li>
-			</ul>
-			<div style="height: 0.8rem;"></div>
+			<div>
+				<ul class="navBox">
+					<li v-for="(item, index) in orderStatus" :key="index" @click="changeMenu(index)">
+						<a class="routerLink" :class="{active: item.active}">{{item.text}}</a>
+					</li>
+				</ul>
+				<div style="height: 0.8rem;"></div>
+			</div>
 		</div>
-		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/listForWorker" ref="pagination">
-			<div style="margin-bottom: 1.5rem;" v-show="pagination.content.length>0">
+		<Pagination :render="render" :autoFill="false" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/listForWorker" ref="pagination">
+			<div class="order-content" v-show="pagination.content.length>0">
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
 					<!--姓名 电话-->
-					<a :href="'tel:'+ item.userPhone " class="peopleName">
+					<a v-if="isWeixin != 'yes'" @click="callPhone(item.userPhone)" class="peopleName">
+						<span>{{item.userName}}</span>
+						<span>{{item.userPhone}}</span>
+						<div></div>
+					</a>
+					
+					<a v-if="isWeixin == 'yes'" :href="'tel:' + item.userPhone" class="peopleName">
 						<span>{{item.userName}}</span>
 						<span>{{item.userPhone}}</span>
 						<div></div>
@@ -34,7 +42,7 @@
 						<div class="cont">
 							<span class="contLeft">服务地址：</span>
 							<span class="contRight position">{{item.serviceAddress.address}}</span>
-							<a class="map-lnik" href="#">
+							<a class="map-lnik" @click="goAmap(item.serviceAddress)">
 								<span>去这里</span>
 							</a>
 						</div>
@@ -61,7 +69,7 @@
 						<span class="tolalLeft">合计:</span>
 					</div>
 					<div class="send" v-show="item.operation.length>0">
-						<div v-for="(obj, key) in item.operation" @click="operateOrder(obj,key, item.orderNo, item.operation)">{{obj.event}}</div>
+						<div v-for="(obj, key) in item.operation" :class="obj.operationType == 6 ? 'noOperate' : ''" @click="operateOrder(obj,key, item.orderNo, item.operation)">{{obj.event}}</div>
 					</div>
 				</div>
 				<!--<div class="kong"></div>-->
@@ -86,6 +94,7 @@ import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
+				isWeixin: this.$storage.get('isWeixinTerm'),
 				show: false,
 				currOperate: {},
                 currOrderNo: undefined,
@@ -123,7 +132,20 @@ import { Toast } from 'mint-ui'
 			}
 		},
 		mounted() {
-			this.changeMenu(this.order_status)
+//			this.changeMenu(this.order_status)
+		},
+		beforeRouteEnter (to, from, next) {
+	    	if(/amap/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			vm.show = false
+					vm.currOperate = {}
+	                vm.currOrderNo = undefined
+	    			vm.changeMenu(vm.order_status)
+			        
+	        	})
+	    	}	
 		},
 		methods: {
 			// 切换菜单
@@ -181,6 +203,8 @@ import { Toast } from 'mint-ui'
             		this.currOperate = obj
             		this.currOrderNo = orderNo
             		this.show = true
+            	}else if(obj.operationType == 6) {
+            		console.log('不操作')
             	}else {
             		this.$api.updateOrderStatus({
 						flag: obj.flag,
@@ -198,6 +222,13 @@ import { Toast } from 'mint-ui'
 						},500)
 					})
             	}
+            },
+            callPhone(phone) {
+            	this.$bridge.callPhone(phone)
+            },
+            goAmap(address) {
+            	this.$storage.set('currAddr', address)
+            	this.$router.push('/amap')
             }
 		}
 	}
@@ -205,10 +236,12 @@ import { Toast } from 'mint-ui'
 
 <style scoped>
 	#box {
+		position: absolute;
 		width: 100%;
 		height: 100%;
-		padding: 0px;
-		margin: 0px;
+		left: 0;
+		top: 0;
+		bottom: 0;
 	}
 	.headPart{
 		width: 100%;
@@ -240,12 +273,12 @@ import { Toast } from 'mint-ui'
 		/*border-bottom: 2px solid #f2f2f2;*/
 		background: #FFFFFF;
 		display: flex;
-		-webkit-box-orient: horizontal;
-		display: -webkit-box;
 		z-index: 50;
 	}
 	.navBox li{
-		-webkit-box-flex: 1;
+		flex: 1;
+		position: relative;
+		z-index: 140;
 	}
 	.routerLink{
 		font-size: 0.28rem;
@@ -265,6 +298,9 @@ import { Toast } from 'mint-ui'
 		position: relative;
 		margin-top: 0.2rem;
 		overflow: hidden;
+	}
+	.order-content{
+		margin-bottom: 1.3rem;
 	}
 	/*姓名电话*/
 	

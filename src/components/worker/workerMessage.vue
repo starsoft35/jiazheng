@@ -7,7 +7,7 @@
             暂无消息
         </div>
 
-        <Pagination :render="render" :param="pagination" :need-token="true" uri="/notice/list">
+        <Pagination :render="render" :param="pagination" :need-token="true" uri="/notice/list" ref="pagination" :autoload="false">
             <div v-for="item in pagination.content">
                 <div class="date">{{item.date}}</div>
                 <div class="message">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </Pagination>
-
+		<div style="height: 1rem;"></div>
 		<WorkerMenu actived="third"></WorkerMenu>
     </div>
 </template>
@@ -33,6 +33,9 @@
                 }
             }
         },
+        mounted() {
+			this.$refs.pagination.refresh()
+		},
         methods: {
             render(response) {
                 for (var i in response.result.list) {

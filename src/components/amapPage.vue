@@ -1,6 +1,9 @@
 <template>
 
-	<div id="allmap"></div>
+	<div >
+		<Header title="工人位置"></Header>
+		<div id="allmap"></div>
+	</div>
 
 </template>
 <script>
@@ -36,11 +39,17 @@
 						if(!item.headImage) {
 							item.headImage = '../../static/avatar-default.png'
 						}
-						var marke  = new AMap.Marker({
+						if(!item.workerName) {
+							item.workerName = '新工人'
+						}
+						if(item.longitude != null) {
+							var marke  = new AMap.Marker({
 										position: [item.longitude, item.latitude],
 										content: '<div class="worker-point"><img src="'+item.headImage+'" />'+item.workerName.slice(0,2)+'</div>',
 										map: map
 									});
+						}
+						
 					})
 					 map.setFitView()
 			    	
@@ -74,7 +83,10 @@
 <style scoped>
 	#allmap {
 		width: 100%;
-		height: 100vh;
+		position: absolute;
+		left: 0;
+		top: 0.92rem;
+		bottom: 0;
 	}
 	
 </style>

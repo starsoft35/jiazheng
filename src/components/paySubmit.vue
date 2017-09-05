@@ -78,21 +78,50 @@ import { Toast } from 'mint-ui'
 			}
 		},
 		created() {
-			this.orderSn = this.$route.params.id
-			if(this.$storage.get('currCoupon')) {
-				this.currCoupon = this.$storage.get('currCoupon')
-				this.useCouponStatus = true
-				this.$storage.remove('currCoupon')
-			}
-			this.$api.orderPayReady({
-	        	params:{
-				    orderNo: this.orderSn
-				}
-		    },(res) => {
-		    	this.payData = res.result
-		    	this.orderType = res.result.orderType
-		    	this.options[0].label = '余额支付：' + res.result.balance
-		    })
+		},
+		beforeRouteEnter (to, from, next) {
+	    	if(/coupons/g.test(from.fullPath)) {
+	    		next(vm=>{
+	    			vm.useCouponStatus = false
+	    			vm.currCoupon = {
+				        	price: 0
+				        }
+	    			vm.orderSn = vm.$route.params.id			
+					vm.$api.orderPayReady({
+			        	params:{
+						    orderNo: vm.orderSn
+						}
+				    },(res) => {
+				    	vm.payData = res.result
+				    	vm.orderType = res.result.orderType
+				    	vm.options[0].label = '余额支付：' + res.result.balance
+				    	if(vm.orderType.value != 1) {
+				    		if(vm.$storage.get('currCoupon')) {
+								vm.currCoupon = vm.$storage.get('currCoupon')
+								vm.useCouponStatus = true
+							}
+				    	}
+				    })
+	    		})
+	    	}else {
+	    		next(vm=>{
+	    			vm.$storage.remove('currCoupon')
+	    			vm.useCouponStatus = false
+	    			vm.currCoupon = {
+				        	price: 0
+				        }
+	    			vm.orderSn = vm.$route.params.id			
+					vm.$api.orderPayReady({
+			        	params:{
+						    orderNo: vm.orderSn
+						}
+				    },(res) => {
+				    	vm.payData = res.result
+				    	vm.orderType = res.result.orderType
+				    	vm.options[0].label = '余额支付：' + res.result.balance
+				    })
+	        	})
+	    	}
 		},
 		methods: {
 			confirmPay() {
@@ -101,7 +130,8 @@ import { Toast } from 'mint-ui'
 				if(this.payWayId == '1') {
 					//余额支付
 					this.$api.balancePay({
-						orderSn: this.orderSn
+						orderSn: this.orderSn,
+						couponId: this.currCoupon.id
 					}, (res) => {
 						Toast({
 						  message: '支付成功',
@@ -122,8 +152,21 @@ import { Toast } from 'mint-ui'
 					this.$api.mobilePay({
 						orderSn: this.orderSn,
 						pay_type: 3,
+						couponId: this.currCoupon.id,
 						source: this.$common.getPlatformType(),
 					}, (res) => {
+						if(res.result.CouponPaySuccess == 1) {
+							Toast({
+							  message: '支付成功',
+							  position: 'middle',
+							  iconClass: 'toast-icon icon-success',
+							  duration: 1000
+							})
+							setTimeout(() => {
+								self.$router.replace('/orders')
+							},500)
+							return
+						}
 						let wechat = res.result.wechat
                         if (self.$common.isWeixin()) {
                             // 微信公众号支付
@@ -193,8 +236,21 @@ import { Toast } from 'mint-ui'
 					this.$api.mobilePay({
 						orderSn: this.orderSn,
 						pay_type: 2,
+						couponId: this.currCoupon.id,
 						source: this.$common.getPlatformType(),
 					}, (res) => {
+						if(res.result.CouponPaySuccess == 1) {
+							Toast({
+							  message: '支付成功',
+							  position: 'middle',
+							  iconClass: 'toast-icon icon-success',
+							  duration: 1000
+							})
+							setTimeout(() => {
+								self.$router.replace('/orders')
+							},500)
+							return
+						}
 						self.$bridge.alipay(res.result.alipay).then(ret => {
                             if (ret === '0') {
                                 Toast({

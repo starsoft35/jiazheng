@@ -29,6 +29,7 @@
 		   -webkit-touch-callout: none;
 		   -webkit-appearance: none; 
 	} */
+
 	html, body {
         position: relative;
         height: 100%;
@@ -187,5 +188,9 @@
 	}
 	.mint-loadmore-text{
 		color: #666 !important;
+	}
+	input::-webkit-search-decoration,
+	input::-webkit-search-cancel-button {
+			display: none;
 	}
 </style >

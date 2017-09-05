@@ -4,7 +4,9 @@
 		<div class="head_part">
 			<div class="search fl">
 				<img src="../../static/search-icon.png"/>
-			    <input type="text" ref="Input" @input="backSearch" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
+				<form action="#" onsubmit="return false">
+			    	<input type="search" ref="Input" @input="backSearch" class="input-box" v-model.trim="serviceWord" @keyup.enter="searchService" placeholder=" 搜索你要的商品"/>
+				</form>
 			</div>
 			<a class="returnFirst fr" @click="back">取消</a>
 		</div>
@@ -46,7 +48,7 @@
 				</li>
 			</ul>-->
 			<Pagination :render="render" :param="pagination" :topDistance="30" :need-token="true" uri="/service/search">
-	            <ul class="thingCont" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
+	            <ul class="thingCont" style="margin-bottom: 0.3rem;" v-if="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
 							<img :src="item.listImage"/>
@@ -222,13 +224,19 @@ import { Toast } from 'mint-ui'
 		width: 7.5rem;
 		padding: 0px;
 		margin: 0px;
+		position: relative;
+		padding-top: 1rem;
 		}
 		/*顶部搜索栏*/
 		.head_part{
 			width: 7rem;
 			height: 0.5rem;
-			padding:0.25rem 0;
-			margin: 0 auto;
+			padding:0.25rem;
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 50;
+			background: #F5F5F9;
 			
 		}
 		.search{

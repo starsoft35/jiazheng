@@ -104,7 +104,8 @@
 		<div class="send" v-show="operation.length>0">
 			<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in operation" @click="operateOrder(obj,orderDetail.orderNo)">
 				<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
-				<span v-if="obj.operationType == 2 "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
+				<span v-if="obj.operationType == 2 && isWeixin != 'yes' "><a style="color: #258ef3;" @click="callPhone(obj.workerPhone)" >{{obj.linkWorker}}</a></span>
+				<span v-if="obj.operationType == 2 && isWeixin == 'yes' "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
 			</div>
 		</div>
 		<pj-modal 
@@ -126,6 +127,7 @@ export default {
 	},
 	data() {
 		return {
+			isWeixin: this.$storage.get('isWeixinTerm'),
 			orderDetail: {},
 			orderFlow: [{
 				info: ''
@@ -217,6 +219,9 @@ export default {
 					this.initData()
 				},500)
 			})
+		},
+		callPhone(phone) {
+			this.$bridge.callPhone(phone)
 		}
 	}
 }

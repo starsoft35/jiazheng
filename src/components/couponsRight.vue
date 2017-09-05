@@ -1,6 +1,6 @@
 <template>
 	<div id="box">
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
+		<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
 			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length > 0">
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
 					<div class="LeftPart">
@@ -44,11 +44,17 @@
 		created() {
 
 		},
+		
+		mounted() {
+			setTimeout(() => {
+				this.$refs.pagination.refresh()
+			},0)
+		},
 		methods: {
             render(res) {
                 res.result.list.forEach((item) => {
                 	this.pagination.content.push({
-                        price: parseInt(item.price),
+                        price: Number(item.price),
                         id: item.id,
                         content: item.content,
                         timeLimit: item.timeLimit

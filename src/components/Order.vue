@@ -48,7 +48,8 @@
 					<div class="send" v-show="orderBox.operation.length>0">
 						<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">
 							<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
-							<span v-if="obj.operationType == 2 "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
+							<span v-if="obj.operationType == 2 && isWeixin != 'yes' "><a style="color: #258ef3;" @click="callPhone(obj.workerPhone)" >{{obj.linkWorker}}</a></span>
+							<span v-if="obj.operationType == 2 && isWeixin == 'yes' "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
 						</div>
 					</div>
 				</div>
@@ -74,6 +75,7 @@
 		},
 		data() {
 			return {
+				isWeixin: this.$storage.get('isWeixinTerm'),
 				show: false,
 				pagination: {
                     content: [],
@@ -85,8 +87,14 @@
 				currOrder: {}
 			}
 		},
+		created() {
+			this.pagination.content = []
+		},
 		mounted() {
-			this.$refs.pagination.refresh()
+//			this.$refs.pagination.refresh()
+			setTimeout(() => {
+				this.$refs.pagination.refresh()
+			},0)
 		},
 		methods: {
 			render(res) {
@@ -162,7 +170,9 @@
 					},500)
 				})
 			},
-
+			callPhone(phone) {
+				this.$bridge.callPhone(phone)
+			}
 		},
 	}
 </script>

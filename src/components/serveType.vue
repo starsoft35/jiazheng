@@ -1,24 +1,8 @@
 <template>
 	<div id="box">
-		<!--顶部-->
-		<div class="headPart">
-			<div class="headCont">
-				<a href="#">
-					<span class="fl" onclick="window.history.go(-1)"></span>
-				</a>
-				<p v-text="title"></p>
-			</div>
-		</div>
-		<!--服务列表-->
-		<div class="serveList">
-			<div class="serveBox" v-for="(serveBox,index) in msg">
-				<div class="serveTitle fl" v-text="serveBox.serveTitle"></div>
-				<div class="serveBtn fr">
-					<img :src="serveBox.imgSrc" />
-				</div>
-			</div>
-		</div>
+		<div @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">长按</div>
 	</div>
+		
 </template>
 
 <script type="text/javascript">
@@ -46,16 +30,75 @@
 						serveTitle:'保洁服务',
 						imgSrc:'@../../static/36@2x.png'
 					}
-				]
+				],
+				timeout: 0
 			}
-		}
+		},
+		methods: {
+			touchstart(e) {
+				console.log('1')
+				this.timeout = setTimeout(() => {
+					alert('2222')
+				},2000)
+			 	e.preventDefault()
+			},
+			touchmove() {
+				console.log('2')
+	            clearTimeout(this.timeout)
+			    this.timeout = 0
+			},
+			touchend(){
+				console.log('3')
+		   		clearTimeout(this.timeout)
+				if(this.timeout!=0){ 
+				    alert("你这是点击，不是长按")
+				} 
+				return false 
+			}
+		},
+		mounted() {
+//			var map = new AMap.Map("box", {
+//		        resizeEnable: true,
+//		        zoom:11
+//		    });
+//		    var oldMarker = new AMap.Marker({
+//	            map: map,
+//	            position: [120.60, 31.60]
+//	        });
+//		    var clickEventListener = map.on('click', function(e) {
+//		    	map.remove(oldMarker);
+//		        map.setZoomAndCenter(11, [e.lnglat.getLng(), e.lnglat.getLat()]);
+//		        oldMarker = new AMap.Marker({
+//		            map: map,
+//		            position: [e.lnglat.getLng(), e.lnglat.getLat()]
+//		        });
+//		    });
+//			let self = this
+//			this.$bridge.getGPS().then((res) => {
+//				let addr = JSON.parse(res)
+//				self.startAddr.latitude = addr.latitude
+//				self.startAddr.longitude = addr.longitude
+//				let button = document.getElementById('panel');
+//				AMap.service('AMap.Driving',function(){//回调函数
+//				    var map = new AMap.Map("allmap", {
+//				        resizeEnable: true,
+//				    }); 
+//				    var driving = new AMap.Driving({
+//				        map: map,
+//				        panel: "panel"
+//				    })
+//				    driving.search(new AMap.LngLat(self.startAddr.longitude, self.startAddr.latitude), new AMap.LngLat(self.addr.longitude, self.addr.latitude));
+//				    map.setFitView()
+//				})  
+//			})	
+		},
 	}
 </script>
 
 <style scoped>
 	#box {
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 		padding: 0px;
 		margin: 0px;
 	}

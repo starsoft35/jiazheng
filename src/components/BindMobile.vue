@@ -10,7 +10,7 @@
                 </label>
             </div>
             <div class="row">
-                <div class="captcha-btn" :class="{disable: !enableSend}" @click="sendCaptcha">获取验证码</div>
+                <div class="captcha-btn" :class="{disable: !enableSend}" @click="sendCaptcha">{{captchaLabel}}</div>
                 <label>
                     <input type="number" name="captcha" v-model="captcha" placeholder="验证码">    
                 </label>
@@ -64,9 +64,10 @@
                         accessToken.expire_time)
 
                     self.$storage.set('role', response.result.role)
+                    let history_url = self.$storage.get('history_url')
                     let redirectURI = '/ucenter'
-                    if (self.$storage.get('history_url')) {
-                        redirectURI = self.$storage.get('history_url')
+                    if (history_url &&　history_url != '/login') {
+                    	redirectURI = self.$storage.get('history_url')
                         self.$storage.remove('history_url')
                     }
                     self.$router.replace(redirectURI)
@@ -102,7 +103,7 @@
                     }, 1000)
                 }
                 this.$api.sendRegisterCaptcha(this.mobile, function(response) {
-                    self.captcha = response.result.code
+                    process.env.AUTO_INPUT_CAPTHA && (self.captcha = response.result.code)
                     self.registerToken = response.result.register_token
                     self.enableSend = false
                     countdown()
@@ -173,7 +174,7 @@
         padding: .22rem 0 .22rem .1rem;
         font-size: .28rem;
         box-sizing: border-box;
-        width: 4rem;
+        width: 3.5rem;
     }
     .btn-bind {
         background: #258ef3;

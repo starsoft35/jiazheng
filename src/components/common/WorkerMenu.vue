@@ -1,25 +1,25 @@
 <template>
     <ul class="nav_bottm">
         <li :class="{'active':first.active}">
-            <router-link to='/orderPart'>
+            <router-link to='/orderPart' replace>
                 <img :src="first.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
         </li>
         <li :class="{'active':second.active}">
-            <router-link to='/distribute/0'>
+            <router-link to='/distribute/0' replace>
                 <img :src="second.icon" alt="派单"/>
                 <div>派单</div>
             </router-link>
         </li>
         <li :class="{'active':third.active}">
-            <router-link to='/workerMessage'>
+            <router-link to='/workerMessage' replace>
                 <img :src="third.icon" alt="消息"/>
                 <div>消息</div>
             </router-link>
         </li>
         <li :class="{'active':four.active}">
-            <router-link to='/worker/ucenter'>
+            <router-link to='/worker/ucenter' replace>
                 <img :src="four.icon" alt="我的"/>
                 <div>我的</div>
             </router-link>
@@ -86,6 +86,8 @@
         height: 1rem;
         background: #FFFFFF;
         border-top: 1px solid #eee;
+        box-sizing: border-box;
+        z-index: 40;
     }
     .nav_bottm li{
         width: 25%;

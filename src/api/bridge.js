@@ -132,6 +132,15 @@ export default {
             })
         })
     },
+    
+    // 打电话
+    callPhone(params) {
+        return new Promise((resovle, reject) => {
+            setupWebViewJavascriptBridge(bridge => {
+                bridge.callHandler('callPhone', params, null)
+            })
+        })
+    },
 
     // 微信OAuth认证
     wechatOAuth() {
@@ -160,6 +169,16 @@ export default {
         return new Promise((resolve, reject) => {
             setupWebViewJavascriptBridge(bridge => {
                 bridge.callHandler('choosePhoto', null, response => {
+                    resolve(response)
+                })
+            })
+        })
+    },
+    
+    openGaoDeMap(params) {
+    	return new Promise((resolve, reject) => {
+            setupWebViewJavascriptBridge(bridge => {
+                bridge.callHandler('openGaoDeMap', JSON.stringify(params), response => {
                     resolve(response)
                 })
             })

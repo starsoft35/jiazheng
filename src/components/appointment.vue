@@ -76,7 +76,7 @@
 			</div>
 			<div class="pay">
 				<div class="fl">实付金额</div>
-				<span class="fr">&yen;{{((parseFloat(appointmentData.price) * score) - currCoupon.price).toFixed(2)}}</span>
+				<span class="fr">&yen;{{(((parseFloat(appointmentData.price) * score) - currCoupon.price).toFixed(2)) > 0 ? ((parseFloat(appointmentData.price) * score) - currCoupon.price).toFixed(2) : '0.00'}}</span>
 			</div>
 		</div>
 		<!--提交预约-->
@@ -140,19 +140,42 @@
 		        
 		        appointmentData: {
 		        	type: {}
-		        }
+		        },
+		        serviceId: undefined
 				
 			}
 		},
 		created() {
-//			this.initData()		
+//			this.serviceId = this.$route.params.id
+		},
+		activated() {
+			this.serviceId = this.$route.params.id
+//			this.$api.serveConfirmOrder(null, (res) => {
+//		    	this.defaultAddr = res.result.defaultAddr
+//		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+//		    })
 		},
 		beforeRouteEnter (to, from, next) {
 	    	if(/orders/g.test(from.fullPath) || /paySubmit/g.test(from.fullPath) || /coupons/g.test(from.fullPath) || /addresses/g.test(from.fullPath)) {
-	    		next()
+	    		next(vm=>{
+	    			vm.useCouponStatus = false
+	    			vm.currCoupon = {
+				        	price: 0
+				        }
+	    			if(vm.$storage.get('currCoupon')) {
+						vm.currCoupon = vm.$storage.get('currCoupon')
+						vm.useCouponStatus = true
+					}
+	    			vm.$api.serveConfirmOrder(null, (res) => {
+				    	vm.defaultAddr = res.result.defaultAddr
+				    	vm.hasDefaultAddr = vm.$isEmptyObject(res.result.defaultAddr)
+				    })
+	    		})
 	    	}else {
 	    		next(vm=>{
+	    			vm.$storage.remove('currCoupon')
 	    			vm.score = 1
+	    			vm.showTime = false
 	    			vm.dateSlots[0].values = []
 	    			vm.dateSlots[2].values = []
 	    			vm.serveDataChange =  []
@@ -162,6 +185,10 @@
 					vm.appointmentData = {
 			        	type: {}
 			        }
+					
+					vm.currCoupon = {
+				        	price: 0
+				        }
 			        vm.initData()
 			        
 	        	})
@@ -171,12 +198,6 @@
 		},
 		methods:{
 			initData() {
-				this.serviceId = this.$route.params.id
-				if(this.$storage.get('currCoupon')) {
-					this.currCoupon = this.$storage.get('currCoupon')
-					this.useCouponStatus = true
-					
-				}
 				this.appointmentData = this.$storage.get('appointmentData')
 				this.$api.serveConfirmOrder(null, (res) => {
 			    	this.defaultAddr = res.result.defaultAddr
@@ -208,14 +229,23 @@
 				this.score--;
 			},
 			serviceAddOrder() {
-				if(this.serveDataSelect.length !== 2) {
+				if(!this.hasDefaultAddr) {
 					Toast({
-	                    message: '请选择服务时间',
+	                    message: '请选择服务地址',
 	                    position: 'bottom',
 	                    duration: 1000
 	                })
 					return
 				}
+				if(this.serveDataSelect.length !== 2) {
+					Toast({
+	                    message: '请选择服务时间',
+	                    position: 'bottom',
+	                    duration: 2000
+	                })
+					return
+				}
+				
 				this.$api.serveAddOrder({
 					addressId: this.defaultAddr.id,
 					contactName: this.defaultAddr.name,
@@ -576,7 +606,7 @@
 		height: 0.8rem;
 		background: #2f94f4;
 		border-radius: 0.5rem;
-		margin: 2.6rem 0.3rem 0.28rem;
+		margin: 0.7rem 0.3rem 0.28rem;
 	}
 	.bottomBtn a{
 		display: block;

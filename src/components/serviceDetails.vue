@@ -8,7 +8,7 @@
 		<!--服务名称以及价格-->
 		<div class="serve_title">
 			<div>{{serviceData.title}}</div>
-			<p>{{serviceData.content}}</p>
+			<p>{{serviceData.abstract}}</p>
 			<span>&yen;{{serviceData.price}}/小时</span>
 		</div>
 		<!--图文介绍-->
@@ -60,7 +60,7 @@
 				<span class="fr"></span>
 			</div>
 			<!--服务内容文字介绍-->
-			<div class="textBox" v-html="serviceData.abstract" ></div>
+			<div class="textBox" v-html="serviceData.content" ></div>
 		</div>
 		<!--订购须知-->
 		<div class="serveCont">

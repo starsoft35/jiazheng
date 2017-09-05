@@ -1,6 +1,9 @@
 <template>
 	<div id="box">
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/userCoupon/list">
+		<div class="unUse" v-show = "pagination.content.length>0 && couponStatus == 'use'" @click="unUse">
+			不使用优惠卷
+		</div>
+		<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
 			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
 					<div class="LeftPart">
@@ -38,17 +41,23 @@
                     loadEnd: false
                 },
                 currCoupon: {},
-                loadEnd: false
+                loadEnd: false,
+                couponStatus: ''
 			}
 		},
 		created() {
-
+			this.couponStatus = this.$route.params.status
+		},
+		mounted() {
+			setTimeout(() => {
+				this.$refs.pagination.refresh()
+			},0)
 		},
 		methods: {
             render(res) {
                 res.result.list.forEach((item) => {
                 	this.pagination.content.push({
-                        price: parseInt(item.price),
+                        price: Number(item.price),
                         id: item.id,
                         content: item.content,
                         timeLimit: item.timeLimit
@@ -63,6 +72,10 @@
             	this.currCoupon.price = item.price
             	this.$storage.set('currCoupon', this.currCoupon)
             	this.$router.go(-1)
+            },
+            unUse() {
+            	this.$storage.remove('currCoupon')
+            	this.$router.go(-1)
             }
         }
 	}
@@ -74,6 +87,16 @@
 		height: 100%;
 		padding: 0px;
 		margin: 0px;
+	}
+	.unUse{
+		width: 6.7rem;
+		height: 0.7rem;
+		line-height: 0.7rem;
+		text-align: center;
+		color: #222;
+		border: 1px solid #999;
+		margin: 0.5rem auto 0.2rem;
+		border-radius: 0.16rem;
 	}
 	.contBox{
 		width:6.6rem;

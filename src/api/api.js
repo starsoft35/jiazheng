@@ -171,6 +171,17 @@ export default {
     serviceDetail(params, callback) {
         http.get(true, '/service/detail', callback, params)
     },
+    
+    //活动详情
+    activityDetail(params, callback) {
+        http.get(true, '/activity/detail', callback, params)
+    },
+    
+    
+    // 领取优惠卷
+    getCpupon(params, callback) {
+        http.post(true, '/userCoupon/getPoint', params, callback)
+    },
 
     //二级服务评价列表
     evaluateList(params, callback) {
@@ -220,6 +231,11 @@ export default {
     //分享的新人列表
     userMyShared(params, callback) {
         http.get(true, '/user/myShared', callback, params)
+    },
+    
+    //分享新人
+    addShareUser(params, callback) {
+        http.post(false, '/user/share', params, callback)
     },
 
     //工人模块订单

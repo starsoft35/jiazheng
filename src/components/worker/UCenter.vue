@@ -16,7 +16,12 @@
         </div>
 
 		<div class="menu-container">
-            <a :href="'tel:'+ hotline" class="item">
+            <a v-if="isWeixin != 'yes'" @click="callPhone(hotline)" class="item">
+                <div class="arrow"></div>
+                <div class="label">{{hotline}}</div>
+                <div class="title">联系客服</div>
+            </a>
+            <a v-if="isWeixin == 'yes'" :href="'tel:' + hotline" class="item">
                 <div class="arrow"></div>
                 <div class="label">{{hotline}}</div>
                 <div class="title">联系客服</div>
@@ -27,7 +32,7 @@
             </router-link>
         </div>
 
-        <div class="menu-container">
+        <div class="menu-container" v-show="isManage">
             <router-link to="/location" class="item">
                 <div class="arrow"></div>
                 <div class="title">工人位置</div>
@@ -50,14 +55,19 @@
 	export default {
 		data(){
 			return {
+				isWeixin: this.$storage.get('isWeixinTerm'),
                 nickname: '',
                 mobile: '',
                 avatar: '../../../static/moren@3x.png',
-				hotline: '18501701760'
+				hotline: '18501701760',
+				isManage: false
 			}
         },
         created() {
             var self = this
+            if(this.$storage.get('currRole') == 3) {
+				this.isManage = true
+			}
             this.$api.findUserInfo(function (response) {
                 if (response.result.headImage) {
                     self.avatar = response.result.headImage    
@@ -94,6 +104,9 @@
                         self.$storage.set('currRole', 1)
                     }
                 });
+            },
+            callPhone(hotline) {
+            	this.$bridge.callPhone(hotline)
             }
         }
 	}

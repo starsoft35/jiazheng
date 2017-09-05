@@ -3,7 +3,9 @@
         <Header title="服务搜索"></Header>
 
         <div class="search-bar">
-            <input class="search" v-model="search" maxlength="20" placeholder="请输入地址名称" type="text"  @keyup.enter="doSearch">
+        	<form action="#" onsubmit="return false">
+           		<input class="search" v-model="search" maxlength="20" placeholder="请输入地址名称" type="search"  @keyup.enter="doSearch">
+            </form>
             <div class="close" @click="clearSearch">&times;</div>
         </div>
 
@@ -30,6 +32,7 @@ export default {
     methods: {
         clearSearch() {
             this.search = ''
+            this.content = []
         },
         doSearch() {
             if (this.search) {
@@ -100,6 +103,8 @@ export default {
     background-size: .3rem;
     background-color: #FFF;
     color: #666;
+    appearance: none;
+    -webkit-appearance: none;
 }
 .search-bar .close {
     background-color: #777;
@@ -114,5 +119,6 @@ export default {
     right: .36rem;
     top: .26rem;
 }
+.input::-ms-clear { display: none; }
 </style>
 

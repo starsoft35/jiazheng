@@ -5,14 +5,16 @@
 		<div class="sharePage-content">
 			<img src="../../static/sa@3x.png" class="fullAuto"  />
 			<p class="share-tip">新人注册即可获取优惠</p>
-			<p class="share-btn">分享新人领50元优惠</p>
+			<p class="share-btn" @click="share">分享新人领取优惠</p>
 			<div class="shareUserList">
 				<div class="shareUser-tit"></div>
 				<div class="shareUser">
 					<div class="shareUser-item" v-for="(item, index) in userShareList">
-						<img :src="item.headImage"  />
+						<img :src="item.headImage" v-if="item.headImage != null"  />
+						<img src="../../static/avatar-default.png" v-if="item.headImage == null" />
 						<div class="shareUser-info">
-							<p class="nickName">{{item.nickName}}</p>
+							<p class="nickName" v-if="item.nickName != null">{{item.nickName}}</p>
+							<p class="nickName" v-if="item.nickName == null">新用户</p>
 							<p class="timer">{{item.shareTime}}</p>
 						</div>
 					</div>
@@ -51,12 +53,23 @@ import Qrcode from 'vue-qrcode'
 		created() {
 			this.$api.userMyShared(null,(res) => {
 		    	this.userShareList = res.result.list
-		    	this.showUrl = window.location.host + '/#/shareJoin/' + res.result.inviterId
+		    	this.showUrl = 'http://' + window.location.host + '/#/shareEnter/' + res.result.inviterId
 		    })
 		},
 		methods: {
 			showMyCode() {
 				this.showCode = !this.showCode
+			},
+			share() {
+				let self = this
+				this.$bridge.share({
+                    link: self.showUrl,
+                    title: '全城家政大放价',
+                    desc: '现金优惠券大礼包',
+                    icon: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png'
+                }).then(ret => {
+                    
+                })
 			}
 		}
 	}

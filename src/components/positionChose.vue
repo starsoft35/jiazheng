@@ -113,6 +113,7 @@
 		font-size: 0.28rem;
 		line-height:0.7rem;
 		color:#222222 ;
+		overflow: hidden;
 		
 	}
 </style>

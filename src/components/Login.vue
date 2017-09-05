@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <Header title="快捷登录"></Header>
+        <Header title="快捷登录" back="hidden"></Header>
 
         <div class="container">
             <div class="row">
@@ -15,7 +15,10 @@
                 </label>
             </div>
         </div>
-        <div class="rule" :class="{active: isAgree}" @click="toggleAgreementStatus">我以阅读并同意“全城家政使用条款”</div>
+        <div class="rule" :class="{active: isAgree}" >
+        	<span class="agree" :class="{active: isAgree}" @click="toggleAgreementStatus"></span>
+        	<span class="agree-text" @click="goAgreement">我以阅读并同意“全城家政使用条款”</span>
+        </div>
 
         <div class="btn-login" :class="{disable: !isAgree}" @click="mobileLogin">登录</div>
 
@@ -47,11 +50,15 @@
                     registrationId: '1111'   
                 },
                 
-                showBottom: true
+                showBottom: true,
+                seconds: 0
             }
         },
         created () {
-            let self = this
+            
+        },
+        activated() {
+			let self = this
             var winHeight = $(window).height();   
 			$(window).resize(function(){
 			    var thisHeight=$(this).height();
@@ -71,7 +78,30 @@
                     }
                 })
             }
-        },
+		},
+        beforeRouteEnter (to, from, next) {
+	    	if(/agreement/g.test(from.fullPath)) {
+	    		next()
+	    	}else {
+	    		next(vm=>{
+	    			vm.isAgree = false
+	                vm.isMobile = false
+	                vm.enableSend = false
+	                vm.captchaLabel = '获取验证码'
+	                vm.login = {
+	                    mobile: '',
+	                    captcha: '',
+	                    registerToken: '',
+	                    registrationId: '1111'   
+	                }
+	                
+	                vm.showBottom = true
+			        
+	        	})
+	    	}
+	    	
+	    	
+		},
         methods: {
             // 微信登录
             wechatLogin() {
@@ -121,17 +151,18 @@
                 }
 
                 let self = this
-                let seconds = 60
+                this.seconds = 60
                 function countdown() {
                     setTimeout(function() {
-                        seconds--
-                        if (seconds > 0) {
-                            self.captchaLabel = '重新获取('+ seconds +')'
+                        self.seconds--
+                        console.log(self.seconds)
+                        if (self.seconds > 0) {
+                            self.captchaLabel = '重新获取('+ self.seconds +')'
                         } else {
                             self.captchaLabel = '获取验证码'
                             self.enableSend = true
                         }
-                        if (seconds >= 1) {
+                        if (self.seconds >= 1) {
                             countdown()
                         }
                     }, 1000)
@@ -141,7 +172,7 @@
                 this.$api.sendRegisterCaptcha(this.login.mobile, function (response) {
                     self.login.registerToken = response.result.register_token
                     self.enableSend = false
-                    self.login.captcha = response.result.code
+                    process.env.AUTO_INPUT_CAPTHA && (self.login.captcha = response.result.code)
                     countdown()
                 })
             },
@@ -179,12 +210,16 @@
                 self.$token.refreshToken(accessToken.access_token, accessToken.refresh_token, accessToken.expire_time)
 
                 self.$storage.set('role', result.role)
+                self.$storage.set('currRole', result.role)
 
                 let redirectURI = '/ucenter'
-                if (this.$storage.get('history_url')) {
+                if (this.$storage.get('history_url') && this.$storage.get('history_url') != '/login') {
                     redirectURI = this.$storage.get('history_url')
                 }
                 this.$router.replace(redirectURI)
+            },
+            goAgreement() {
+            	this.$router.push('agreement')
             }
         },
         watch: {
@@ -226,11 +261,12 @@
         float: right;
         text-align: center;
         border-left: 1px solid #258ef3;
-        padding: .1rem .2rem;
+        padding: .1rem 0;
         width: 1.6rem;
         height: .32rem;
         margin: .12rem 0;
         line-height: .32rem;
+        width: 2.2rem;
     }
     .container .row .captcha-btn.active {
         color: #666;
@@ -246,22 +282,32 @@
         padding: .22rem 0 .22rem .1rem;
         font-size: .28rem;
         box-sizing: border-box;
-        width: 3.8rem;
+        width: 3rem;
     }
     .rule {
         box-sizing: border-box;
-        width: 6rem;
-        margin: .5rem auto 1rem;
+        width: 6.4rem;
+        margin: .3rem auto 0.8rem;
         color: #666;
         font-size: .28rem;
         text-align: left;
-        background: url("../../static/36@3x.png") no-repeat left center;
-        background-size: .32rem;
-        padding-left: .45rem;
+        
+        padding-left: .7rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        position: relative;
     }
-    .rule.active {
-        background: url("../../static/35@3x.png") no-repeat left center;
+    .rule .agree{
+    	width: 0.7rem;
+    	height: 0.78rem;
+    	position: absolute;
+    	left: 0;
+    	top: 0;
+    	background: url("../../static/36@3x.png") no-repeat 0.2rem center;
         background-size: .32rem;
+    }
+    .rule .agree.active{
+        background-image: url("../../static/35@3x.png");
     }
     .btn-login {
         background: #258ef3;

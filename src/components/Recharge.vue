@@ -61,7 +61,7 @@
                        return
                     }
                 }
-                this.buttonDisable = true
+//              this.buttonDisable = true
 
 
                 if (payType === 3) {

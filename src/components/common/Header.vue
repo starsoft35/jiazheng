@@ -3,10 +3,10 @@
     <div class="headPart"  :class="{nonebg: !showBg}">
         <div class="headCont">
             <div class="operation" @click="operationAction" v-if="operation">{{operation}}</div>
-            <div @click="goBack" v-if="!hiddenBack">
+            <div @click="goBack" class="back" v-if="!hiddenBack">
                 <span class="fl"></span>
             </div>
-            <p>{{title}}</p>
+            <p class="right">{{title}}</p>
         </div>
     </div>
     <div class="menu-blank" style="height: 0.92rem;"></div>
@@ -73,29 +73,42 @@
     .headPart{
         width: 100%;
         height: 0.92rem;
-        background: url("../../../static/banner.png") repeat-y top center;
+        background: #2d92f4;
         background-size: 100%;
         overflow: hidden;
         position: fixed;
         z-index: 40;
+        left: 0;
+        top: 0;
     }
     .headPart.nonebg {
         background: none;
     }
     .headCont{
-        width: 7rem;
-        height: 0.32rem;
-        margin: 0.25rem;
+    	position: absolute;
+    	left: 0;
+    	top: 0;
+        width: 100%;
+        height: 100%;
     }
-    .headCont div{
-        display: block;
+    .headCont div.back{
+    	position: absolute;
+    	width: 0.92rem;
+    	height: 0.92rem;
+        left: 0;
+        top:0;
+        z-index: 60;
     }
-    .headCont span{
+    .headCont div.back span{
         color: #FFFFFF;
         width: 0.32rem;
         height: 0.32rem;
         background: url("../../../static/return.png");
         background-size: 100% 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
     .headPart.nonebg .headCont span {
         background: url("../../../static/left_arrow.png");
@@ -116,8 +129,14 @@
         z-index: -1;
     }
     .operation {
-        float: right;
-        color: #FFF;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 0.92rem;
+        line-height: 0.92rem;
+        z-index: 60;
+        color: #fff;
+        padding: 0 0.2rem;
     }
     .menu-blank {
         height: .92rem;

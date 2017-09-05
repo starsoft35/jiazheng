@@ -34,11 +34,7 @@
 <script type="text/javascript">
 	export default {
 		data(){
-			return {
-				author:"我是一",
-				liColor:'red',
-				nowIndex:0,
-				
+			return {				
 				menuId: undefined,
 				menuList: [],
 				currMenu: {},
@@ -64,7 +60,34 @@
 		    	})
 		    })
 		},
+		beforeRouteEnter (to, from, next) {
+	    	if(/first/g.test(from.fullPath)) {
+	    		next(vm=>{
+	    			vm.initData()
+	    		})
+	    	}else {
+	    		next()
+	    	}
+	    	
+	    	
+		},
 		methods: {
+			initData() {
+				this.menuId = this.$route.params.id
+				this.$api.serviceMenuList({
+		        	params:{
+					    menuId: this.menuId,
+					}
+			    },(res) => {
+			    	this.menuList = res.result
+			    	res.result.forEach((item, index) => {
+			    		if(item.isDefault == 1) {
+			    			this.currMenu = item
+			    			this.currIndex = index
+			    		}
+			    	})
+			    })
+			},
 			selectMenu(index) {
 				this.currIndex = index
 				this.currMenu = this.menuList[index]

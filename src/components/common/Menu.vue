@@ -3,25 +3,25 @@
     <div class="menu-blank"></div>
     <ul class="nav_bottm">
         <li :class="{'active':first.active}">
-            <router-link to='/first'>
+            <router-link to='/first' replace>
                 <img :src="first.icon" alt="首页"/>
                 <div>首页</div>
             </router-link>
         </li>
         <li :class="{'active':second.active}">
-            <router-link to='/nearby'>
+            <router-link to='/nearby' replace>
                 <img :src="second.icon" alt="附近"/>
                 <div>附近</div>
             </router-link>
         </li>
         <li :class="{'active':third.active}">
-            <router-link to='/orders'>
+            <router-link to='/orders' replace>
                 <img :src="third.icon" alt="订单"/>
                 <div>订单</div>
             </router-link>
         </li>
         <li :class="{'active':four.active}">
-            <router-link to='/ucenter'>
+            <router-link to='/ucenter' replace>
                 <img :src="four.icon" alt="我的"/>
                 <div>我的</div>
             </router-link>
@@ -99,6 +99,7 @@
         height: 1rem;
         background: #FFFFFF;
         border-top: 1px solid #eee;
+        z-index: 40;
     }
     .nav_bottm li{
         width: 25%;

@@ -5,7 +5,7 @@
 				<!--地点按钮-->
 				<div class="top-position">
 					<a href="#positionChose">
-						<span>{{currCity.name.slice(0,2)}}</span>
+						<span>{{currCity.name.length>2 ? currCity.name.slice(0,2) + '...' : currCity.name}}</span>
 						<img src="../../static/1@3x.png"/>
 					</a>
 				</div>
@@ -19,7 +19,7 @@
 				</div>
 				<!--右边-->
 				<div class="join">
-					<a href="#second">
+					<a href="#sellerEnter">
 						<img src="../../static/2@3x.png"/>
 					</a>
 				</div>
@@ -31,7 +31,7 @@
 		<div class="banner">
 			<mt-swipe :auto="0">
 				<mt-swipe-item v-for="(item, index) in homeData.banners" :key="index">
-					<a :href="item.link" class="fullEle">
+					<a @click="bannerLink(item)" class="fullEle">
 						<img class="fullEle" :src="item.pic" />
 					</a>
 				</mt-swipe-item>
@@ -93,7 +93,7 @@
 		<ul class="serveOption">
 			<li class="serveList" v-for="(item,index) in hotServices" :key="index">
 				<div class="meng">
-					<a :href="item.link">
+					<a :href="'#/serviceDetails/' + item.link">
 						<img :src="item.pic" class="fullEle"  />
 						<div>{{item.name}}</div>
 						<!--<span v-text="serveList.cont"></span>-->
@@ -103,11 +103,14 @@
 			</li>
 		</ul>
 		<div style="height: 0.5rem;"></div>
+		<div id="container" style="display: none;"></div>
+		<loading-part :loadingStatus="loadingStatus"></loading-part>
 		<Menu actived="first"></Menu>
 	</div>
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data() {
 			return {
@@ -116,46 +119,141 @@
 				menuList: [],
 				firstMenu: {},
 				currCity: {
-					latitude: 31.298886,
-					longitude: 120.585316,
+					latitude: 31.30000,
+					longitude: 120.58000,
 					name: ''
-				}
+				},
+				
+				roles: [],
+				loadingStatus: false
 			}
 		},
 		created() {
-			let self = this
-			let currCity = this.$storage.get('currCity')
-			let openCitys = this.$storage.get('openCitys')
-			if(currCity) {
-				this.currCity = currCity
-			}else {
-				this.$bridge.getGPS().then((res) => {
-					let addr = JSON.parse(res)
-					self.currCity.latitude = addr.lat
-					self.currCity.longitude = addr.lng
-				})
-			}
-			this.$api.homeData({
-	        	params:{
-				    cityName: this.currCity.name,
-				    latitude: this.currCity.latitude,
-				    longitude: this.currCity.longitude
-				}
-		    },(res) => {
-		    	this.homeData = res.result
-		    	this.menuList = res.result.menus
-		    	this.firstMenu = this.menuList[0]
-		    	this.hotServices = res.result.services.result.list
-		    	this.currCity.name = res.result.currentCity
-		    	if(!currCity) {
-		    		this.$storage.set('currCity', this.currCity)
-		    	}
-		    	if(!openCitys) {
+
+		},
+		methods: {
+			initData() {
+				this.$api.homeData({
+		        	params:{
+					    cityName: this.currCity.name,
+					    latitude: this.currCity.latitude,
+					    longitude: this.currCity.longitude
+					}
+			    },(res) => {
+			    	console.log(res)
+			    	this.loadingStatus = false
+			    	this.currCity.name = res.result.currentCity
+			    	if(!this.$storage.get('currCity')) {
+			    		this.$storage.set('currCity', this.currCity)
+			    	}
 					this.$storage.set('openCitys', res.result.openCitys)
+					if(res.result.menus && res.result.services) {
+						this.homeData = res.result
+				    	this.menuList = res.result.menus
+				    	this.firstMenu = this.menuList[0]
+				    	this.hotServices = res.result.services.result.list
+					}else {
+						Toast({
+						  message: '当前城市暂未开通服务， 请选择其他城市',
+						  position: 'bottom',
+						  duration: 3000
+						})
+						setTimeout(() => {
+							this.$router.push('/positionChose')
+						}, 800)
+					}
+			    	
+			    	
+//			    	this.currCity.name = this.currCity.name.length>2 ? this.currCity.name.slice(0,2) + '...' : this.currCity.name
+			    	
+			    	
+			    })
+			},
+			firstEnter() {
+				this.loadingStatus = true
+				let self = this
+				this.$api.findUserInfo(function (response) {
+					self.roles = response.result.roles
+	                if (self.roles.length > 1) {
+	                    for (let i in self.roles) {
+	                        if (self.roles[i].isCurrent == 1 && self.roles[i].roleName == '工人版') {
+	                            self.$api.toggleRole(function(response) {
+					                
+					            })
+	                        }
+	                    }
+	                }
+	           })
+				setTimeout(() => {
+					self.getLocation()	
+				},1000)
+				
+			},
+			getLocation() {
+				let self = this
+				console.log('1')
+				if (this.$common.isWeixin()) {
+				    var map = new AMap.Map('container')
+				    map.plugin('AMap.CitySearch', function () {
+					    setTimeout(function() {
+					    	var citysearch = new AMap.CitySearch();
+					        //自动获取用户IP，返回当前城市
+					        citysearch.getLocalCity(function(status, result) {
+					            if (status === 'complete' && result.info === 'OK') {
+					                if (result && result.city && result.bounds) {
+					                    self.currCity.name = result.city
+					                    self.initData()
+					                }
+					            }
+					        })
+					    },0)
+					});
+					   
+				    
+                    return
+                }
+				this.$bridge.getGPS().then((res) => {
+					let timer = null
+					let addr = JSON.parse(res)
+					if(addr.latitude == '-1.0' && addr.longitude == '-1.0') {
+						timer = setTimeout(() => {
+							clearTimeout(timer)
+							self.getLocation()
+						}, 1000)
+					}else {
+						self.currCity.latitude = addr.latitude
+						self.currCity.longitude = addr.longitude
+						clearTimeout(timer)
+						self.initData()
+					}
+				})
+			},
+			bannerLink(item) {
+				if(item.type == 1) {
+					this.$router.push('/serviceDetails/' + item.link)
+				}else if(item.type == 2) {
+					this.$router.push('/serveCont/' + item.link)
+				}else {
+					this.$router.push('/activityDetails/' + item.link)
 				}
-		    	
-		    })
-		}
+			}
+		},
+		beforeRouteEnter (to, from, next) {
+	    	if(from.fullPath == '/' || /login/g.test(from.fullPath) || /bind/g.test(from.fullPath)) {
+	    		next(vm => {
+	    			vm.firstEnter()
+	    		})
+	    	}else {
+	    		next(vm=>{
+	    			if(vm.$storage.get('currCity')) {
+	    				vm.currCity = vm.$storage.get('currCity')
+	    			}
+	    			vm.initData()
+	        	})
+	    	}
+	    	
+	    	
+		},
 	}
 </script>
 
@@ -194,7 +292,7 @@
 		top: 0;
 	}
 	.top-position span{
-		width: 0.58rem;
+		width: 0.75rem;
 		height: 0.9rem;
 		font-size: 0.24rem;
 		color: #FFFFFF;
@@ -203,12 +301,14 @@
 		left: 0.25rem;
 		top: 0rem;
 		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.top-position img{
 		width:0.18rem ;
 		height: 0.15rem;
 		position: absolute;
-		right:0.23rem ;
+		right:0.1rem ;
 		top:0.35rem ;
 	}
 	/*搜索栏*/
@@ -410,8 +510,6 @@
 	.meng{
 		width: 100%;
 		height: 100%;
-		background: #000000;
-		opacity: 0.4;
 	}
 	.serveList a{
 		display: block;
@@ -420,10 +518,16 @@
 	}
 	.meng div{
 		position: absolute;
-		left:0.33rem ;
-		bottom:0.7rem ;
-		font-size: 0.28rem;
+		left:50% ;
+		top:50% ;
+		font-size: 0.34rem;
 		color: #f7f7f8;
+		z-index: 10;
+		padding: 0.1rem 0.2rem;
+		background: rgba(0,0,0,0.6);
+		transform: translate(-50%, -50%);
+		border-radius: 0.1rem;
+		/*line-height: 2rem;*/
 		
 	}
 	.serveList span{
