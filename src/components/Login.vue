@@ -114,7 +114,7 @@
                         return
                     }
                     self.$api.wechatLogin(info.unionid, function(response) {
-                        self.loginSuccess(response.result.accessToken)
+                        self.loginSuccess(response.result)
                     }, function(response) {
                         if (response.err_code == 2) {
                             self.$router.push('/bind/mobile')
