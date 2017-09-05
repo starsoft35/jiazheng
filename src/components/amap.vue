@@ -29,6 +29,48 @@ import { Toast } from 'mint-ui'
 			},
 			mounted() {
 				let self = this
+				if (this.$common.isWeixin()) {
+					var map = new AMap.Map('allmap', {
+					        resizeEnable: true,
+					    })
+				    map.plugin('AMap.Geolocation', function() {
+				        var geolocation = new AMap.Geolocation({
+				            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+				            timeout: 20000,          //超过10秒后停止定位，默认：无穷大
+				        });
+				        map.addControl(geolocation);
+				        geolocation.getCurrentPosition();
+				        AMap.event.addListener(geolocation, 'complete', function(data) {
+				        	self.startAddr.latitude = data.position.getLat()
+							self.startAddr.longitude = data.position.getLng()
+							let button = document.getElementById('panel');
+							AMap.service('AMap.Driving',function(){//回调函数
+							    var driving = new AMap.Driving({
+							        map: map,
+							        panel: "panel"
+							    })
+							    driving.search(new AMap.LngLat(self.startAddr.longitude, self.startAddr.latitude), new AMap.LngLat(self.addr.longitude, self.addr.latitude),function(status,result){
+				                    button.onclick = function(){
+				                        driving.searchOnAMAP({
+				                            origin:result.origin,
+				                            destination:result.destination
+				                        });
+				                    } 
+				                });
+							    map.setFitView()
+							})  
+				        });//返回定位信息
+				        AMap.event.addListener(geolocation, 'error', function(data) {
+				        	Toast({
+							  message: '定位失败',
+							  position: 'bottom',
+							  duration: 2000
+							})
+				        	
+				        });      //返回定位出错信息
+				    });
+                    return
+				}
 				this.$bridge.getGPS().then((res) => {
 					let addr = JSON.parse(res)
 					self.startAddr.latitude = addr.latitude
