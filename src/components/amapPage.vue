@@ -35,7 +35,7 @@ import { Toast } from 'mint-ui'
 				}
 				if(item.longitude) {
 					new AMap.Marker({
-						position: [120.9262020000, 31.4050520000],
+						position: [item.longitude, item.latitude],
 						content: '<div class="worker-point"><img src="'+item.headImage+'" />'+item.workerName.slice(0,2)+'</div>',
 						map: map
 					});
