@@ -10,7 +10,7 @@
 							<img :src="item.listImage"/>
 							<div class="thingName">
 								<div>{{item.title}}</div>
-								<p>{{item.abstractContent}}</p>
+								<p v-html="item.abstractContent"></p>
 								<span>&yen;{{item.price}}</span>
 							</div>
 						</router-link>
@@ -110,12 +110,25 @@
 		
 	}
 	.thingList li{
-		width: 7.1rem;
-		height: 1.4rem;
+		width: 100%;
+		height: 1.8rem;
 		padding: 0.2rem;
 		border-bottom: 1px solid #f2f2f2;
 		position: relative;
 		background: #FFFFFF;
+		padding-right: 0.5rem;
+		box-sizing: border-box;
+	}
+	.thingList li:after{
+		content: '';
+		position: absolute;
+		width: 0.3rem;
+		height: 0.3rem;
+		top: 50%;
+		margin-top: -0.15rem;
+		right: 0.2rem;
+		background: url(../../static/34@3x.png) no-repeat center;
+		background-size: auto 100%; 
 	}
 	.thingList a{
 		width: 100%;
@@ -129,10 +142,12 @@
 		height:1.40rem ;
 		position: absolute;
 		left:0rem ;
+		box-sizing: border-box;
+		border: 1px solid #eee;
 	}
 	/*右边内容*/
 	.thingName{
-		width: 5.5rem;
+		width: 5rem;
 		height: 1.4rem;
 		position: absolute;
 		left: 1.7rem;
@@ -148,12 +163,15 @@
 		margin-bottom: 0.15rem;
 	}
 	/*介绍*/
-	.thingName p{
+	.thingName>p{
 		width: 100%;
 		height: 0.45rem;
 		font-size:0.24rem ;
 		line-height: 0.45rem;
 		color: #aaa;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	/*价格*/
 	.thingName span{

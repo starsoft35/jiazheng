@@ -193,4 +193,10 @@
 	input::-webkit-search-cancel-button {
 			display: none;
 	}
+	.textBox img{
+		display: block;
+		width: 100%;
+		height: auto;
+		margin: 0.3rem 0;
+	}
 </style >

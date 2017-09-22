@@ -7,7 +7,7 @@
 					<span class="name" v-if="item.workerName">{{item.workerName}}</span>
 					<span class="name" v-if="!item.workerName">新工人</span>
 					<span class="phone">{{item.workerPhone}}</span>
-					<span class="address" @click="goAmap"></span>
+					<span class="address" @click="goAmap(item)"></span>
 				</div>
 			</div>
         </Pagination>
@@ -33,7 +33,8 @@
                 	this.pagination.content.push(item)
                 })
             },
-            goAmap() {
+            goAmap(item) {
+            	this.$storage.set('workerLocation', item)
             	this.$router.push('/amapPage')
             }
 		}

@@ -18,7 +18,7 @@
             <div class="row" @click="toAddressSearch">
                 <label>
                     <div class="arrow"></div>
-                    <input type="text" name="address" readonly v-model="address" placeholder="请输入您的小区或大厦、街道名称">
+                    <input type="text" name="address" readonly v-model="adressName" placeholder="请输入您的小区或大厦、街道名称">
                     服务地址
                 </label>
             </div>
@@ -46,6 +46,7 @@
                 consigee: '',
                 mobile: '',
                 address: '',
+                adressName: '',
                 street: '',
                 longitude: '',
                 latitude: '',
@@ -77,6 +78,7 @@
                     self.longitude = response.result.Longitude
                     self.latitude = response.result.Latitude
                     self.isDefault = response.result.isDefault
+                    self.adressName = response.result.location
                 })
             }
             let searchResult = this.$storage.get('search_result')
@@ -84,6 +86,7 @@
                 this.address = searchResult.address
                 this.longitude = searchResult.longitude
                 this.latitude = searchResult.latitude
+                this.adressName = searchResult.title
             }
         },
         methods: {
@@ -134,6 +137,7 @@
                 this.consigee = ''
                 this.mobile = ''
                 this.address = ''
+                this.adressName = ''
                 this.street = ''
                 this.longitude = ''
                 this.latitude = ''

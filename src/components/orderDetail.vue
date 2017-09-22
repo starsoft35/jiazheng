@@ -27,8 +27,8 @@
 					</div>
 					<div class="serveTitle fl">
 						<div>{{orderDetail.serviceTitle}}</div>
-						<span class="num">&yen;{{orderDetail.unitPrice}}/小时
-							<span class="numbers" style="padding-right: 0.2rem;">x{{orderDetail.serviceMount}}</span>
+						<span class="num">&yen;{{orderDetail.unitPrice}}
+							<span class="numbers" v-if="orderDetail.priceType == 1" style="padding-right: 0.2rem;">x{{orderDetail.serviceMount}}</span>
 						</span>
 					</div>
 				</div>

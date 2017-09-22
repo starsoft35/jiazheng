@@ -8,8 +8,8 @@
 		<!--服务名称以及价格-->
 		<div class="serve_title">
 			<div>{{serviceData.title}}</div>
-			<p>{{serviceData.abstract}}</p>
-			<span>&yen;{{serviceData.price}}/小时</span>
+			<p v-html="serviceData.abstract"></p>
+			<span>&yen;{{serviceData.price}}</span>
 		</div>
 		<!--图文介绍-->
 		<div class="textIntro clear">
@@ -104,8 +104,8 @@
 			    		title: res.result.serviceData.title,
 			    		price: res.result.serviceData.price,
 			    		picture: res.result.serviceData.picture,
-			    		content: res.result.serviceData.content,
-			    		type: res.result.serviceData.orderType
+			    		type: res.result.serviceData.orderType,
+			    		priceType: res.result.serviceData.priceType
 			    	}
 			    	this.appointmentData = data
 			    	this.serviceData = res.result.serviceData
@@ -178,7 +178,6 @@
 	
 	.serve_title {
 		width: 7rem;
-		height: 1.63rem;
 		padding: 0 0.25rem;
 		background: #FFFFFF;
 		text-align: left;
@@ -194,9 +193,9 @@
 	
 	.serve_title p {
 		width: 100%;
-		height: 0.25rem;
 		font-size: 0.25rem;
 		color: #999999;
+		line-height: 1.4;
 	}
 	
 	.serve_title span {
@@ -400,7 +399,9 @@
 		margin: 0.2rem 0;
 		color: #bbb;
 		font-size: 0.26rem;
+		line-height: 1.5;
 	}
+	
 	
 	.textBox p {
 		width: 7rem;

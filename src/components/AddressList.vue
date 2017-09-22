@@ -10,6 +10,7 @@
                     <div class="info" @click="selectAddr(index)">
                         <div class="mobile">{{item.mobile}}</div>
                         <div class="consigee">联系人：{{item.consigee}}</div>
+                        <div class="location">{{item.location}} &nbsp; {{item.detailAddr}}</div>
                         <div class="street">{{item.address}}</div>
                     </div>
                     <div class="operation">
@@ -108,7 +109,9 @@
                         mobile: response.result.list[i].mobile,
                         address: response.result.list[i].address,
                         consigee: response.result.list[i].consignee,
-                        isDefault: parseInt(response.result.list[i].isDefault) === 1
+                        isDefault: parseInt(response.result.list[i].isDefault) === 1,
+                        location: response.result.list[i].location,
+                        detailAddr: response.result.list[i].detailAddr
                     })
                 }
             }
@@ -134,8 +137,16 @@
     .item .mobile {
         float: right;
     }
+    .item .location{
+    	padding-top: 0.2rem;
+    	color: #333;
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    }
     .item .street {
-        margin-top: .22rem;
+        margin-top: .1rem;
+        color: #999;
     }
     .item .operation {
         border-top: 1px solid #EEE;

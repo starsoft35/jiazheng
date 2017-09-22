@@ -51,7 +51,8 @@
 		<div class="kong"></div>
 		<!--按钮-->
 		<div class="bottomBtn">
-			<span @click="addOneButtonOrder">提交预约</span>
+			<span @click="addOneButtonOrder" v-show="!disabledBtn">提交预约</span>
+			<span class="disable" v-show="disabledBtn">提交预约</span>
 		</div>
 		<mt-popup v-model="showTime" class="service-time" position="bottom">
 			<div class="showTime-content">
@@ -128,23 +129,34 @@
 		        serviceChange: {},
 		        serviceSelect: {},
 		        
-		        remark: ''
+		        remark: '',
+		        dateObj: [],
+		        
+		        disabledBtn: false
 			}
 		},
 		created() {
 //			this.initData()	
 		},
 		activated() {
-			this.$api.serveConfirmOrder(null, (res) => {
-		    	this.defaultAddr = res.result.defaultAddr
-		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
-		    })
+			this.disabledBtn = false
+//			this.$api.serveConfirmOrder(null, (res) => {
+//		    	this.defaultAddr = res.result.defaultAddr
+//		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
+//		    })
 		},
 		beforeRouteEnter (to, from, next) {
 	    	if(/orders/g.test(from.fullPath) || /addresses/g.test(from.fullPath)) {
-	    		next()
+	    		next(vm=>{
+	    			vm.$api.serveConfirmOrder(null, (res) => {
+				    	vm.defaultAddr = res.result.defaultAddr
+				    	vm.hasDefaultAddr = vm.$isEmptyObject(res.result.defaultAddr)
+				    })
+	    		})
 	    	}else {
 	    		next(vm=>{
+	    			vm.showTime = false
+	    			vm.showService = false
 	    			vm.dateSlots[0].values = []
 	    			vm.dateSlots[2].values = []
 	    			vm.serviceSlots[0].values = []
@@ -165,37 +177,53 @@
 				this.$api.serveConfirmOrder(null, (res) => {
 			    	this.defaultAddr = res.result.defaultAddr
 			    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
-			    	res.result.intervals.forEach((item) => {
-			    		item.name = item.interval
-			    		this.dateSlots[2].values.push(item)
+			    	res.result.nextTenDays.forEach((item, index) => {
+			    		item.index = index
 			    	})
+			    	this.dateObj = res.result.nextTenDays
 			    	this.dateSlots[0].values = res.result.nextTenDays
 			    	
 			    })
 				this.$api.serviceMenuList({
 		        	params:{
-					    menuId: 1,
+					    menuId: null,
 					}
 			    },(res) => {
 			    	this.serviceSlots[0].values = res.result
 			    })
 			},
 			onDataChange(picker, values) {
-				this.serveDataChange = values
+				let self = this
+				let index = 0
+				if(values[0]) {
+					index = values[0].index
+					picker.setSlotValues(1, self.dateObj[index].intervals)
+					this.serveDataChange = values
+				}
+//				this.serveDataChange = values
 			},
 			serveDataConfirm() {
-				this.serveDataSelect = this.serveDataChange
+				this.serveDataSelect = this.serveDataChange.concat()
 				this.serveData = this.serveDataSelect[0].name.slice(0,6) + ' ' + this.serveDataSelect[1].name
 				this.showTime = false
 			},
 			onServiceChange(picker, values) {
 				this.serviceChange = values[0]
+				console.log(values)
 			},
 			serviceConfirm() {
 				this.serviceSelect = this.serviceChange
 				this.showService = false
 			},
 			addOneButtonOrder() {
+				if(!this.hasDefaultAddr) {
+					Toast({
+	                    message: '请选择服务地址',
+	                    position: 'bottom',
+	                    duration: 1000
+	                })
+					return
+				}
 				if(!this.serviceSelect.name) {
 					Toast({
 	                    message: '请选择服务类型',
@@ -212,6 +240,7 @@
 	                })
 					return
 				}
+				this.disabledBtn = true
 				this.$api.addOneButtonOrder({
 					addressId: this.defaultAddr.id,
 					contactName: this.defaultAddr.name,
@@ -224,6 +253,7 @@
 					timeInterval: this.serveDataSelect[1].name,
 					timeIntervalId: this.serveDataSelect[1].id
 				}, (res) => {
+					
 					Toast({
 					  message: '预约成功',
 					  position: 'middle',
@@ -231,7 +261,7 @@
 					  duration: 800
 					})  
 					setTimeout(() => {
-						this.$router.push('/orders')
+						this.$router.replace('/orders')
 					},500)
 				})
 			}
@@ -442,6 +472,7 @@
 		position: fixed;
 		left: 0;
 		bottom: 0;
+		overflow: hidden;
 	}
 	.bottomBtn span{
 		display: block;
@@ -450,5 +481,9 @@
 		font-size: 0.3rem;
 		line-height: 0.8rem;
 		color: #FFFFFF;
+	}
+	.bottomBtn span.disable{
+		background: #ddd;
+		color: #aaa;
 	}
 </style>

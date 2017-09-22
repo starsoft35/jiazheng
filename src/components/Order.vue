@@ -17,7 +17,8 @@
 						</div>
 						<div class="order-addr">
 							<span style="width: 1rem;">地址：</span>
-							{{orderBox.serviceAddr}}</div>
+							<span style="flex: 1;">{{orderBox.serviceAddr}}</span>
+						</div>
 						<div class="cont">
 							<!--左边图片-->
 							<div class="serveLeft">
@@ -26,8 +27,8 @@
 								</div>
 								<div class="serveTitle fl">
 									<div>{{orderBox.serviceTitle}}</div>
-									<p class="num">&yen;{{orderBox.unitPrice}}/小时
-										<span class="numbers">x{{orderBox.serviceMount}}</span>
+									<p class="num">&yen;{{orderBox.unitPrice}}
+										<span class="numbers" v-if="orderBox.priceType == 1">x{{orderBox.serviceMount}}</span>
 									</p>
 									<div class="remark" v-if="orderBox.remark">
 										<span style="width: 1rem;">备注：</span>

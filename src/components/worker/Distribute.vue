@@ -9,68 +9,138 @@
 				</li>
 			</ul>
 			<div style="height: 0.8rem;"></div>
+			<div class="pended-status" v-show="type == 2">
+				<span v-for="(item, index) in pendedMenus" :class="{active: item.actived}" @click="changePended(index)">{{item.name}}</span>
+			</div>
+			<div style="height: 1rem;" v-show="type == 2"></div>
 		</div>
-		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/pend"  ref="pagination">
+		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" :uri="currApiUrl"  ref="pagination">
 			<div style="margin-bottom: 1.3rem; padding-top: 0px;" v-show="pagination.content.length > 0">
-				<div class="contBox" v-for="(contBox,index) in pagination.content">
-					<!--姓名 电话-->
-					<a v-if="isWeixin != 'yes'" @click="callPhone(contBox.linkPhone)" class="contact">
-						<span>{{contBox.linkName}}</span>
-						<span>{{contBox.linkPhone}}</span>
-						<div></div>
-					</a>
-					<a v-if="isWeixin == 'yes'" :href="'tel:' + contBox.linkPhone" class="contact">
-						<span>{{contBox.linkName}}</span>
-						<span>{{contBox.linkPhone}}</span>
-						<div></div>
-					</a>
-					<!--订单号-->
-					<div class="cont">
-						<span class="contLeft">订单编号:</span>
-						<span class="contRight">{{contBox.orderNo}}</span>
-					</div>
-					<!--服务时间-->
-					<div class="cont">
-						<span class="contLeft">服务时间:</span>
-						<span class="contRight">{{contBox.serviceTime}}</span>
-					</div>
-					<!--服务地址-->
-					<div class="cont" style="padding-bottom: 0.25rem;">
-						<span class="contLeft">服务地址:</span>
-						<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddress.address}}</span>
-						<a class="map-lnik" @click="goAmap(contBox.serviceAddress)">
-							<span>去这里</span>
+				<div v-show="type == 1">
+					<div class="contBox" v-for="(contBox,index) in pagination.content">
+						<!--姓名 电话-->
+						<a v-if="isWeixin != 'yes'" @click="callPhone(contBox.linkPhone)" class="contact">
+							<span>{{contBox.linkName}}</span>
+							<span>{{contBox.linkPhone}}</span>
+							<div></div>
 						</a>
-					</div>
-					
-					<!--服务详情-->
-					<div class="thingList">
-						<ul class="thingCont">
-							<li class="things">
-								<a>
-									<img :src="contBox.sImage" />
-									<div class="thingName">
-										<div v-text="contBox.sTitle"></div>
-										<span>&yen;{{contBox.price}}</span>
-									</div>
-									<span class="counts">x{{contBox.mount}}</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-					<!--合计-->
-					<div class="totalMoney">
-						<span class="totalRight">&yen;{{contBox.total}}</span>
-						<span class="tolalLeft">合计:</span>
-					</div>
-					<!--派单-->
-					<div class="send" v-if="type == 1">
-						<div @click="orderMenu(contBox.orderNo)">派单</div>
-					</div>
-					<div class="send" v-if="type == 2 && contBox.canCancel == 1">
-						<div @click="orderMenu(contBox.orderNo)">重新派单</div>
+						<a v-if="isWeixin == 'yes'" :href="'tel:' + contBox.linkPhone" class="contact">
+							<span>{{contBox.linkName}}</span>
+							<span>{{contBox.linkPhone}}</span>
+							<div></div>
+						</a>
+						<!--订单号-->
+						<div class="cont">
+							<span class="contLeft">订单编号:</span>
+							<span class="contRight">{{contBox.orderNo}}</span>
+						</div>
+						<!--服务时间-->
+						<div class="cont">
+							<span class="contLeft">服务时间:</span>
+							<span class="contRight">{{contBox.serviceTime}}</span>
+						</div>
+						<!--服务地址-->
+						<div class="cont" style="padding-bottom: 0.25rem;">
+							<span class="contLeft">服务地址:</span>
+							<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddress.address}}</span>
+							<a class="map-lnik" @click="goAmap(contBox.serviceAddress)">
+								<span>去这里</span>
+							</a>
+						</div>
+						
+						<!--服务详情-->
+						<div class="thingList">
+							<ul class="thingCont">
+								<li class="things">
+									<a>
+										<img :src="contBox.sImage" />
+										<div class="thingName">
+											<div v-text="contBox.sTitle"></div>
+											<span>&yen;{{contBox.price}}</span>
+										</div>
+										<span class="counts" v-if="contBox.orderType == 1">x{{contBox.mount}}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<!--合计-->
+						<div class="totalMoney">
+							<span class="totalRight">&yen;{{contBox.total}}</span>
+							<span class="tolalLeft">合计:</span>
+						</div>
+						<!--派单-->
+						<div class="send" v-show="type == 1">
+							<div @click="orderMenu(contBox.orderNo)">派单</div>
+						</div>
 					</div>
 				</div>
+				<div v-show="type == 2">
+					<div class="contBox" v-for="(contBox,index) in pagination.content">
+						<!--姓名 电话-->
+						<a v-if="isWeixin != 'yes'" @click="callPhone(contBox.userPhone)" class="contact">
+							<span>{{contBox.userName}}</span>
+							<span>{{contBox.userPhone}}</span>
+							<div></div>
+						</a>
+						<a v-if="isWeixin == 'yes'" :href="'tel:' + contBox.userPhone" class="contact">
+							<span>{{contBox.userName}}</span>
+							<span>{{contBox.userPhone}}</span>
+							<div></div>
+						</a>
+						<!--订单号-->
+						<div class="cont">
+							<span class="contLeft">订单编号:</span>
+							<span class="contRight">{{contBox.orderNo}}</span>
+						</div>
+						<!--<div class="cont">
+							<span class="contLeft">订单状态:</span>
+							<span class="contRight">{{contBox.info}}</span>
+						</div>-->
+						<!--服务时间-->
+						<div class="cont">
+							<span class="contLeft">服务工人:</span>
+							<span class="contRight">{{contBox.workerName}}&nbsp; {{contBox.workerPhone}}</span>
+						</div>
+						<div class="cont">
+							<span class="contLeft">服务时间:</span>
+							<span class="contRight">{{contBox.serviceTime}}</span>
+						</div>
+						<!--服务地址-->
+						<div class="cont" style="padding-bottom: 0.25rem;">
+							<span class="contLeft">服务地址:</span>
+							<span class="contRight position" style="line-height: 1.4;">{{contBox.serviceAddress.address}}</span>
+							<a class="map-lnik" @click="goAmap(contBox.serviceAddress)">
+								<span>去这里</span>
+							</a>
+						</div>
+						
+						<!--服务详情-->
+						<div class="thingList">
+							<ul class="thingCont">
+								<li class="things">
+									<a>
+										<img :src="contBox.serviceImage" />
+										<div class="thingName">
+											<div v-text="contBox.serviceTitle"></div>
+											<span>&yen;{{contBox.unitPrice}}</span>
+										</div>
+										<span class="counts" v-if="contBox.orderType == 1">x{{contBox.serviceMount}}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<!--合计-->
+						<div class="totalMoney">
+							<span class="totalRight">&yen;{{contBox.totalPrice}}</span>
+							<span class="tolalLeft">合计:</span>
+						</div>
+						<!--派单-->
+						<div class="send" v-show="contBox.operation.length>0">
+							<div v-for="(obj, key) in contBox.operation"  @click="operateOrder(obj, contBox.orderNo)">{{obj.event}}</div>
+						</div>
+					</div>
+				</div>	
+					
 			</div>
 				
 		</Pagination>
@@ -86,6 +156,7 @@
 </template>
 
 <script type="text/javascript">
+import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
@@ -102,7 +173,29 @@
 						actived: false
 					}
 				],
-				type: 1,
+				pendedMenus: [
+					{
+						name: '待服务',
+						flag: 1,
+						actived: false
+					}, 
+					{
+						name: '服务中',
+						flag: 2,
+						actived: false
+					},
+					{
+						name: '已完成',
+						flag: 3,
+						actived: false
+					}, 
+					{
+						name: '已取消',
+						flag: 4,
+						actived: false
+					}
+				],
+				type: 10,
 				pagination: {
 					content: [],
 					page: 1,
@@ -118,7 +211,10 @@
 				
 				pending_status: 0,
 				
-				workerRole: 3
+				workerRole: 3,
+				
+				currApiUrl: '/serviceOrder/pend',
+				flag: 0
 				
 			}
 		},
@@ -143,6 +239,7 @@
 					}
 	    			vm.pending_status = vm.$route.params.id
 	    			vm.workerRole = 3
+	    			vm.flag = 1
 	    			vm.changeMenu(vm.pending_status)
 			        
 	        	})
@@ -151,19 +248,45 @@
 		
 		methods: {
 			changeMenu(index) {
+				if( index == (this.type - 1) ) {
+					return
+				}
 				this.pending_status = index
 				this.type = Number(index) + 1
-				this.pagination = {
-                    content: [],
-                    page: 1, 
-					pageSize: 6,
-					param: {
-						params: {
-							type: this.type
+				if(this.type == 1) {
+					this.currApiUrl = '/serviceOrder/pend'
+					this.pagination = {
+	                    content: [],
+	                    page: 1, 
+						pageSize: 6,
+						param: {
+							params: {
+								type: 1
+							}
+						}
+					}
+				}else {
+					this.currApiUrl = 'serviceOrder/pended'
+					if(this.flag == 0) {
+						this.flag = 1
+					}
+					this.pagination = {
+	                    content: [],
+	                    page: 1, 
+						pageSize: 6,
+						param: {
+							params: {
+								flag: this.flag
+							}
+						}
+					}
+					for (var i in this.pendedMenus) {
+						this.pendedMenus[i].actived = false
+						if (i == (this.flag -1)) {
+							this.pendedMenus[i].actived = true
 						}
 					}
 				}
-
 				for (var i in this.menus) {
 					this.menus[i].actived = false
 					if (i == index) {
@@ -171,17 +294,69 @@
 					}
 				}
 
+				
+
 				this.$refs.pagination.refresh()
+			},
+			changePended(index) {
+//				if( index == (this.flag - 1) ) {
+//					return
+//				}
+				this.currApiUrl = 'serviceOrder/pended'
+				this.flag = Number(index) + 1
+				this.pagination = {
+                    content: [],
+                    page: 1, 
+					pageSize: 6,
+					param: {
+						params: {
+							flag: this.flag
+						}
+					}
+				}
+				for (var i in this.pendedMenus) {
+					this.pendedMenus[i].actived = false
+					if (i == (this.flag -1)) {
+						this.pendedMenus[i].actived = true
+					}
+				}
+
+				this.$refs.pagination.refresh()
+
 			},
 			
 			//跳转工人页面
 			orderMenu(id) {
 				this.$router.push('/sendPeople/'+ id)
 			},
+			operateOrder(obj, orderNo) {
+            	if(obj.operationType == 7) {
+            		this.$router.push('/sendPeople/'+ orderNo)
+            	}else if(obj.operationType == 1) {
+            		this.$api.updateOrderStatus({
+						flag: obj.flag,
+						orderNo: orderNo,
+						type: obj.type
+					}, (res) => {
+						Toast({
+						  message: res.err_msg,
+						  position: 'middle',
+						  iconClass: 'toast-icon icon-success',
+						  duration: 1000
+						})
+		                setTimeout(() => {
+							this.changePended(this.flag - 1)
+						},500)
+					})
+            	}
+            },
 		
 
 			render(response) {
 				for(var i in response.result.list){
+					if(response.result.list[i].operation == null) {
+                		response.result.list[i].operation = []
+                	}
 					this.pagination.content.push(response.result.list[i])
 				}
 			},
@@ -209,7 +384,7 @@
 		left: 0;
 		top: 0.92rem;
 		width: 7.5rem;
-		height: 0.78rem;
+		height: 0.8rem;
 		/*border-bottom: 2px solid #f2f2f2;*/
 		background: #FFFFFF;
 		display: flex;
@@ -221,17 +396,43 @@
 		-webkit-box-flex: 1;
 	}
 	.routerLink{
+		height: 100%;
 		font-size: 0.26rem;
 		color:#666;
-		line-height:0.78rem ;
+		line-height:0.72rem ;
 		display: inline-block;
 		padding: 0 0.2rem;
+		box-sizing: border-box;
 	}
 	.routerLink.active {
 		color: #2173d6;
 		border-bottom: 2px solid #2173d6;
 	}
-
+	.pended-status{
+		position: fixed;
+		left: 0;
+		top: 1.7rem;
+		width: 7.5rem;
+		height: 0.8rem;
+		z-index: 50;
+		background: #fff;
+		border-top: 0.2rem solid #F5F5F9;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+	.pended-status>span{
+		background: #eee;
+		height: 0.5rem;
+		width: 1.5rem;
+		line-height: 0.5rem;
+		color: #999;
+		border-radius: 0.08rem;
+	}
+	.pended-status>span.active{
+		background: #258ef3;
+		color: #fff;
+	}
 	.contBox {
 		width: 7.5rem;
 		background: #FFFFFF;
@@ -430,7 +631,7 @@
 	
 	.send div {
 		float: right;
-		width: 1.28rem;
+		width: 1.4rem;
 		height: 0.48rem;
 		font-size: 0.26rem;
 		color: #258ef3;
@@ -438,6 +639,7 @@
 		border-radius: 0.3rem;
 		border: 1px solid #258ef3;
 		margin-top: 0.14rem;
+		margin-left: 0.2rem;
 	}
 	.map-lnik{
 		position: absolute;
@@ -460,8 +662,5 @@
 		top: 0;
 		background: url(../../../static/worker01.png) no-repeat center;
 		background-size: auto 100%; 
-	}
-	.none-pending{
-		
 	}
 </style>

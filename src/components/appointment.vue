@@ -17,7 +17,7 @@
 					<img class="imgRight fr" src="../../static/34@3x.png"/>
 				</a>
 			</div>
-			<router-link v-if="!hasDefaultAddr" to="/addresses/select" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加地址</router-link>
+			<router-link v-if="!hasDefaultAddr" to="/addresses/select" style="line-height: 1.8rem; font-size: 0.32rem; color: #2d92f4; padding: 0.5rem 1rem;">添加服务地址</router-link>
 			<!--底部彩条-->
 			<div class="imgBottom"></div>
 			
@@ -41,12 +41,12 @@
 					</div>
 					<div class="serveTitle fl">
 						<div>{{appointmentData.title}}</div>
-						<p>{{appointmentData.content}}</p>
-						<span>&yen;{{appointmentData.price}}/小时</span>
+						<!--<p v-html="appointmentData.content"></p>-->
+						<span>&yen;{{appointmentData.price}}</span>
 					</div>
 				</div>
 				<!--右边选择数量-->
-				<div class="serveRight fr" v-if="appointmentData.type.value == 1">
+				<div class="serveRight fr" v-if="appointmentData.type.value == 1 && appointmentData.priceType == 1">
 					<div class="serveBtn">
 						<div class="btnLeft fl" @click="reduce" >-</div>
 						<span>{{score}}</span>
@@ -81,8 +81,8 @@
 		</div>
 		<!--提交预约-->
 		<div class="bottomBtn">
-			<a @click="serviceAddOrder">提交预约</a>
-		
+			<a @click="serviceAddOrder" v-show="!disabledBtn">提交预约</a>
+			<a class="disable"  v-show="disabledBtn">提交预约</a>
 		</div>
 		<mt-popup v-model="showTime" class="service-time" position="bottom">
 			<div class="showTime-content">
@@ -126,7 +126,8 @@
 		            flex: 1,
 		            values: [],
 		            className: 'slot3',
-		            textAlign: 'center'
+		            textAlign: 'center',
+		            defaultIndex: 0
 		          }
 		        ],
 		        serveDataChange: [],
@@ -141,7 +142,11 @@
 		        appointmentData: {
 		        	type: {}
 		        },
-		        serviceId: undefined
+		        serviceId: undefined,
+		        
+		        dateObj: [],
+		        
+		        disabledBtn: false
 				
 			}
 		},
@@ -150,6 +155,7 @@
 		},
 		activated() {
 			this.serviceId = this.$route.params.id
+			this.disabledBtn = false
 //			this.$api.serveConfirmOrder(null, (res) => {
 //		    	this.defaultAddr = res.result.defaultAddr
 //		    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
@@ -202,19 +208,34 @@
 				this.$api.serveConfirmOrder(null, (res) => {
 			    	this.defaultAddr = res.result.defaultAddr
 			    	this.hasDefaultAddr = this.$isEmptyObject(res.result.defaultAddr)
-			    	res.result.intervals.forEach((item) => {
-			    		item.name = item.interval
-			    		this.dateSlots[2].values.push(item)
+//			    	this.dateObj[0] = new Array()
+//			    	res.result.intervals.forEach((item) => {
+//			    		item.name = item.interval
+//			    		if(item.valid == 1) {
+//			    			this.dateObj[0].push(item)
+//			    		}
+//			    	})
+			    	res.result.nextTenDays.forEach((item, index) => {
+			    		item.index = index
 			    	})
+			    	this.dateObj = res.result.nextTenDays
 			    	this.dateSlots[0].values = res.result.nextTenDays
-			    	
 			    })
 			},
 			onDataChange(picker, values) {
-				this.serveDataChange = values
+				console.log(values)
+				let self = this
+				let index = 0
+				if(values[0]) {
+					index = values[0].index
+					picker.setSlotValues(1, self.dateObj[index].intervals)
+					this.serveDataChange = values
+				}
+				
+				
 			},
 			serveDataConfirm() {
-				this.serveDataSelect = this.serveDataChange
+				this.serveDataSelect = this.serveDataChange.concat()
 				console.log(this.serveDataSelect)
 				this.serveData = this.serveDataSelect[0].name.slice(0,6) + ' ' + this.serveDataSelect[1].name
 				this.showTime = false
@@ -245,7 +266,7 @@
 	                })
 					return
 				}
-				
+				this.disabledBtn = true
 				this.$api.serveAddOrder({
 					addressId: this.defaultAddr.id,
 					contactName: this.defaultAddr.name,
@@ -474,6 +495,9 @@
 		font-size: 0.24rem;	
 		line-height:0.5rem ;
 		color: #adadad;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.serveTitle span{
 		width: 3rem;
@@ -607,6 +631,7 @@
 		background: #2f94f4;
 		border-radius: 0.5rem;
 		margin: 0.7rem 0.3rem 0.28rem;
+		overflow: hidden;
 	}
 	.bottomBtn a{
 		display: block;
@@ -615,6 +640,10 @@
 		font-size: 0.3rem;
 		line-height: 0.8rem;
 		color: #FFFFFF;
+	}
+	.bottomBtn a.disable{
+		background: #ddd;
+		color: #aaa;
 	}
 
 </style>

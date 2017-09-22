@@ -1,6 +1,9 @@
 <template>
 	<div id="box">
 		<div @touchstart="touchstart" @touchend="touchend" @touchmove="touchmove">长按</div>
+		
+		
+		<div class="input" @click="dd" contenteditable="value" placeholder="请输入文字"></div>
 	</div>
 		
 </template>
@@ -54,6 +57,9 @@
 				    alert("你这是点击，不是长按")
 				} 
 				return false 
+			},
+			dd() {
+				document.activeElement.blur()
 			}
 		},
 		mounted() {
@@ -96,6 +102,18 @@
 </script>
 
 <style scoped>
+.input{  
+            width:200px;  
+            height:24px;  
+            line-height:24px;  
+            font-size:14px;  
+            padding:5px 8px;  
+            border:1px solid #ddd;  
+            text-align: left;
+        }  
+.input:empty::before {  
+            content: attr(placeholder);  
+        }  
 	#box {
 		width: 100%;
 		height: 100vh;

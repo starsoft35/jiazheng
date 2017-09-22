@@ -16,7 +16,7 @@ export default {
 
         if (!token || !token.accessToken || !token.expired) {
             Toast({
-                message: '凭证已过期',
+                message: '请登录',
                 position: 'bottom'
             })
             storage.set('history_url', router.history.current.path)
@@ -32,7 +32,6 @@ export default {
             router.replace('/login')
             return false
         }
-
         return token.accessToken
     },
 

@@ -10,7 +10,7 @@
 					<div class="partRight">
 						<span>{{item.content}}</span>
 						<p>{{item.timeLimit}}</p>
-						<img class="rightImg" src="../../static/324234234@3x.png"/>
+						<img class="rightImg" src="../../static/shixiao@3x.png"/>
 					</div>
 				</div>
 			</div>

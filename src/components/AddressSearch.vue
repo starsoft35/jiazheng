@@ -4,7 +4,7 @@
 
         <div class="search-bar">
         	<form action="#" onsubmit="return false">
-           		<input class="search" v-model="search" maxlength="20" placeholder="请输入地址名称" type="search"  @keyup.enter="doSearch">
+           		<input class="search" v-model="search" maxlength="20" placeholder="请输入地址名称" type="search"  @input="doSearch">
             </form>
             <div class="close" @click="clearSearch">&times;</div>
         </div>

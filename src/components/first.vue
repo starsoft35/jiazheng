@@ -95,7 +95,7 @@
 				<div class="meng">
 					<a :href="'#/serviceDetails/' + item.link">
 						<img :src="item.pic" class="fullEle"  />
-						<div>{{item.name}}</div>
+						<!--<div>{{item.name}}</div>-->
 						<!--<span v-text="serveList.cont"></span>-->
 						
 					</a>
@@ -129,7 +129,6 @@ import { Toast } from 'mint-ui'
 			}
 		},
 		created() {
-
 		},
 		methods: {
 			initData() {
@@ -143,9 +142,7 @@ import { Toast } from 'mint-ui'
 			    	console.log(res)
 			    	this.loadingStatus = false
 			    	this.currCity.name = res.result.currentCity
-			    	if(!this.$storage.get('currCity')) {
-			    		this.$storage.set('currCity', this.currCity)
-			    	}
+			        this.$storage.set('currCity', this.currCity)
 					this.$storage.set('openCitys', res.result.openCitys)
 					if(res.result.menus && res.result.services) {
 						this.homeData = res.result
@@ -186,8 +183,13 @@ import { Toast } from 'mint-ui'
 	           })
 				setTimeout(() => {
 					self.getLocation()	
-				},1000)
-				
+				},2000)
+				setTimeout(() => {
+					if(self.loadingStatus) {
+						self.loadingStatus = false
+						self.initData()
+					}
+				},10000)
 			},
 			getLocation() {
 				let self = this
@@ -504,6 +506,7 @@ import { Toast } from 'mint-ui'
 	/*热门服务菜单*/
 	.serveOption{
 		width: 100%;
+		padding-top: 0.1rem;
 	}
 	.serveList{
 		width: 100%;

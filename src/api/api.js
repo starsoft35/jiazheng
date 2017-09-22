@@ -58,7 +58,8 @@ export default {
             isDefault: params.isDefault,
             latitude: params.latitude,
             longitude: params.longitude,
-            mobile: params.mobile
+            mobile: params.mobile,
+            location: params.adressName
         }, callback, params.id ? '更新成功' : '创建成功')
     },
 

@@ -58,7 +58,7 @@
 										<div v-text="item.serviceTitle"></div>
 										<span>&yen;{{item.unitPrice}}</span>
 									</div>
-									<span class="counts">x{{item.serviceMount}}</span>
+									<span class="counts" v-if="item.priceType == 1">x{{item.serviceMount}}</span>
 								</a>
 							</li>
 						</ul>

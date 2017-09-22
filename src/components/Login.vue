@@ -71,6 +71,7 @@
             if (this.$route.query.oauth === '1') {
                 let info = this.$storage.get('oauthInfo')
                 this.$api.wechatLogin(info.unionid, function(response) {
+                	console.log(response)
                     self.loginSuccess(response.result)
                 }, function(response) {
                     if (response.err_code == 2) {
@@ -114,6 +115,7 @@
                         return
                     }
                     self.$api.wechatLogin(info.unionid, function(response) {
+                    	console.log(response)
                         self.loginSuccess(response.result)
                     }, function(response) {
                         if (response.err_code == 2) {
@@ -215,6 +217,8 @@
                 let redirectURI = '/ucenter'
                 if (this.$storage.get('history_url') && this.$storage.get('history_url') != '/login') {
                     redirectURI = this.$storage.get('history_url')
+                }else if(this.$storage.get('history_url') && this.$storage.get('history_url') == '/login') {
+                	redirectURI = '/first'
                 }
                 this.$router.replace(redirectURI)
             },

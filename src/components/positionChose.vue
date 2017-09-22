@@ -2,7 +2,7 @@
 	<div id="box">
 		<div class="headPart">
 			<div class="headCont">
-				<a href="#first">
+				<a @click="back">
 					<span class="fl"></span>
 				</a>
 				<p>城市选择</p>
@@ -34,9 +34,13 @@
 			}
 		},
 		methods: {
+			back() {
+				this.$router.go(-1)
+			},
 			chooseCity(item) {
 				this.$storage.set('currCity', item)
 				this.$router.go(-1)
+				
 			}
 		}
 		

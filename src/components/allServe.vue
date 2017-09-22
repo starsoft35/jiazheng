@@ -45,23 +45,23 @@
 			
 		},
 		created() {
-			this.menuId = this.$route.params.id
-			this.$api.serviceMenuList({
-	        	params:{
-				    menuId: this.menuId,
-				}
-		    },(res) => {
-		    	this.menuList = res.result
-		    	res.result.forEach((item, index) => {
-		    		if(item.isDefault == 1) {
-		    			this.currMenu = item
-		    			this.currIndex = index
-		    		}
-		    	})
-		    })
+//			this.menuId = this.$route.params.id
+//			this.$api.serviceMenuList({
+//	        	params:{
+//				    menuId: this.menuId,
+//				}
+//		    },(res) => {
+//		    	this.menuList = res.result
+//		    	res.result.forEach((item, index) => {
+//		    		if(item.isDefault == 1) {
+//		    			this.currMenu = item
+//		    			this.currIndex = index
+//		    		}
+//		    	})
+//		    })
 		},
 		beforeRouteEnter (to, from, next) {
-	    	if(/first/g.test(from.fullPath)) {
+	    	if(/first/g.test(from.fullPath) || from.fullPath == '/') {
 	    		next(vm=>{
 	    			vm.initData()
 	    		})
@@ -119,6 +119,7 @@
 		width: 1.65rem;
 		border-right: 1px solid #e5e5e5;
 		padding-top: 0.1rem;
+		overflow-y: auto;
 	}
 	.boxLeft li{
 		width:1.65rem ;
@@ -178,6 +179,7 @@
 		height:0.6rem ;
 		margin-right: 0.1rem;
 		background: #fafafa;
+		margin-bottom: 0.2rem;
 	}
 	.serve_list a{
 		display: block;

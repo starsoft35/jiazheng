@@ -228,6 +228,9 @@
 		font-size: .26rem;
 		color: #999;
 		margin-top: .2rem;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
 	}
 	.content .price {
 		color: #FF5400;
