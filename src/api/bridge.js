@@ -76,9 +76,14 @@ setupWebViewJavascriptBridge(function(bridge) {
         let param = JSON.parse(data)
 
         // 判定是否为工人
-        if (storage.get('role') != 2) {
-            return responseCallback(0)
-        }
+        // if (storage.get('role') != 2) {
+        //     return responseCallback(0)
+        // }
+
+        // 判断经纬度合法
+        // if (!param.latitude || param.latitude == -1 || !param.longitude || param.longitude != -1) {
+        //     return responseCallback(0)
+        // }
 
         // 上传位置
         let token = storage.get('token')
