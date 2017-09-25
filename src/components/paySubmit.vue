@@ -152,6 +152,7 @@ import { Toast } from 'mint-ui'
 					this.$api.mobilePay({
 						orderSn: this.orderSn,
 						pay_type: 3,
+						openId: openid,
 						couponId: this.currCoupon.id,
 						source: this.$common.getPlatformType(),
 					}, (res) => {

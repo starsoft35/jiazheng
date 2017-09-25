@@ -14,7 +14,7 @@
 		<!--图文介绍-->
 		<div class="textIntro clear">
 			<router-link to="/serveIntro">
-				<span class="fl">图文介绍</span>
+				<span class="fl">服务价格</span>
 				<img class="fr" src="../../static/34@2x.png" />
 			</router-link>
 		</div>
