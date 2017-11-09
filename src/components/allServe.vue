@@ -16,7 +16,7 @@
 			<div class="boxRight">
 				<div id="serve_box">
 					<div class="serveImg">
-						<img :src="currMenu.banner"/>
+						<img :src="currMenu.picture"/>
 					</div>
 					<div class="serveTitle">{{currMenu.name}}</div>
 					<ul class="servePart">
@@ -84,6 +84,9 @@
 			    		if(item.isDefault == 1) {
 			    			this.currMenu = item
 			    			this.currIndex = index
+			    		}
+			    		if(!item.picture) {
+			    			item.picture = '../../static/sda23@3x.png'
 			    		}
 			    	})
 			    })

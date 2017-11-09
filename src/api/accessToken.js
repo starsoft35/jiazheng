@@ -17,7 +17,8 @@ export default {
         if (!token || !token.accessToken || !token.expired) {
             Toast({
                 message: '请登录',
-                position: 'bottom'
+                position: 'bottom',
+                duration: 1000
             })
             storage.set('history_url', router.history.current.path)
             router.replace('/login')
@@ -26,7 +27,8 @@ export default {
             // 已过期，置换accessToken
             Toast({
                 message: '凭证已过期',
-                position: 'bottom'
+                position: 'bottom',
+                duration: 1000
             })
             storage.set('history_url', router.history.current.path)
             router.replace('/login')

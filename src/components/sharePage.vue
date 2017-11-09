@@ -33,12 +33,16 @@
 				
 			
 		</div>
+		<div class="shareTip" v-show="show" @click="cancel">
+	    	<img src="../../static/share.png" />
+	    </div>
 		
 	</div>
 </template>
 
 <script type="text/javascript">
 import Qrcode from 'vue-qrcode'
+import wx from 'weixin-js-sdk'
 	export default {
 		components: {
 		  qrcode: Qrcode
@@ -47,30 +51,102 @@ import Qrcode from 'vue-qrcode'
 			return {
 				userShareList: [],
 				showCode: false,
-				showUrl: ''
+				showUrl: '',
+				show: false
 			}
 		},
 		created() {
 			this.$api.userMyShared(null,(res) => {
 		    	this.userShareList = res.result.list
 		    	this.showUrl = 'http://' + window.location.host + '/#/shareEnter/' + res.result.inviterId
+		    	if (this.$common.isWeixin()) {
+		    		this.wxShare(this.showUrl)
+		    	}
+		    	
 		    })
 		},
 		methods: {
+			wxShare(showUrl) {
+				let self = this
+				this.$api.shareSign({
+					params: {
+						url: window.location.href.split('#')[0]
+					}
+				}, (res) => {
+					wx.config({
+		                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		                appId: res.result.appId, // 必填，公众号的唯一标识
+		                timestamp: res.result.timestamp, // 必填，生成签名的时间戳
+		                nonceStr: res.result.nonceStr, // 必填，生成签名的随机串
+		                signature: res.result.signature, // 必填，签名，见附录1
+		                jsApiList: ['uploadImage', 'getLocation', 'chooseImage', 'previewImage', 'uploadImage', 'scanQRCode', 'chooseWXPay', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		            })
+					wx.ready(function (res) {
+		                wx.onMenuShareAppMessage({
+		                    title: '全城家政大放价', // 分享标题
+		                    desc: '现金优惠券大礼包', // 分享描述
+		                    link: showUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+		                    imgUrl: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png', // 分享图标
+		                    type: '', // 分享类型,music、video或link，不填默认为link
+		                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		                    trigger: function (res) {
+		                        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+		                    },
+		                    success: function (res) {
+		                        // alert('分享给朋友成功')
+		                    },
+		                    cancel: function (res) {
+		                        // alert('你没有分享给朋友')
+		                    },
+		                    fail: function (res) {
+		                        console.log(JSON.stringify(res))
+		                    }
+		                })
+		                wx.onMenuShareTimeline({
+		                    title: '全城家政大放价', // 分享标题
+		                    desc: '现金优惠券大礼包', // 分享描述
+		                    link: showUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+		                    imgUrl: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png', // 分享图标
+		                    type: '', // 分享类型,music、video或link，不填默认为link
+		                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		                    trigger: function (res) {
+		                        // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+		                    },
+		                    success: function (res) {
+		                        // alert('分享给朋友成功')
+		                    },
+		                    cancel: function (res) {
+		                        // alert('你没有分享给朋友')
+		                    },
+		                    fail: function (res) {
+		                        console.log(res)
+		                    }
+		                })
+		            })
+				})
+			},
 			showMyCode() {
 				this.showCode = !this.showCode
 			},
 			share() {
 				let self = this
-				this.$bridge.share({
-                    link: self.showUrl,
-                    title: '全城家政大放价',
-                    desc: '现金优惠券大礼包',
-                    icon: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png'
-                }).then(ret => {
-                    
-                })
-			}
+				if (self.$common.isWeixin()) {
+					this.show = true
+				}else {
+					this.$bridge.share({
+	                    link: self.showUrl,
+	                    title: '全城家政大放价',
+	                    desc: '现金优惠券大礼包',
+	                    icon: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png'
+	                }).then(ret => {
+	                    
+	                })
+				}
+					
+			},
+			cancel() {
+	    		this.show = false
+	    	}
 		}
 	}
 </script>
@@ -164,5 +240,19 @@ import Qrcode from 'vue-qrcode'
 		left: 50%;
 		transform: translateX(-50%);
 		top: 2rem;
+	}
+	.shareTip{
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0.4);
+		padding: 0 15px;
+		z-index: 100;
+	}
+	.shareTip img{
+		display: block;
+		width: 100%;
 	}
 </style>

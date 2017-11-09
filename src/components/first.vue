@@ -94,7 +94,7 @@
 			<li class="serveList" v-for="(item,index) in hotServices" :key="index">
 				<div class="meng">
 					<a :href="'#/serviceDetails/' + item.link">
-						<img :src="item.pic" class="fullEle"  />
+						<img :src="item.pic"  />
 						<!--<div>{{item.name}}</div>-->
 						<!--<span v-text="serveList.cont"></span>-->
 						
@@ -155,9 +155,7 @@ import { Toast } from 'mint-ui'
 						  position: 'bottom',
 						  duration: 3000
 						})
-						setTimeout(() => {
-							this.$router.push('/positionChose')
-						}, 800)
+						this.$router.push('/positionChose')
 					}
 			    	
 			    	
@@ -180,16 +178,14 @@ import { Toast } from 'mint-ui'
 	                        }
 	                    }
 	                }
-	           })
-				setTimeout(() => {
-					self.getLocation()	
-				},2000)
-				setTimeout(() => {
-					if(self.loadingStatus) {
-						self.loadingStatus = false
-						self.initData()
-					}
-				},10000)
+	            })
+				self.getLocation()	
+//				setTimeout(() => {
+//					if(self.loadingStatus) {
+//						self.loadingStatus = false
+//						self.initData()
+//					}
+//				},10000)
 			},
 			getLocation() {
 				let self = this
@@ -385,14 +381,16 @@ import { Toast } from 'mint-ui'
 	
 	/*中间样式导航 八个链接*/
 	.cont{
-		width: 7.2rem;
-		background: #FFFFFF;
-		height: 3.6rem;
-		margin:0.15rem auto 0;
+		width: 100%;
+		box-sizing: border-box;
+		height: 3.75rem;
+		padding:0.15rem 0.15rem 0;
 		display: block;
-		border-radius: 0.35rem;
+		
 	}
 	.nav {
+		background: #FFFFFF;
+		border-radius: 0.35rem;
 		width: 100%;
 		height: 100%;
 		margin: auto;
@@ -431,14 +429,13 @@ import { Toast } from 'mint-ui'
 	}
 	/*分享有礼与一键下单*/
 	.shareBox{
-		width: 100;
-		height: 2rem;
-		margin: 0.2rem 0;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.2rem 0;
 	}
 	.share{
-		width:7.2rem;
+		width:100%;
 		height: 2rem;
-		margin: 0 auto;
 	}
 	.shareCont{
 		width: 3.55rem;
@@ -510,32 +507,20 @@ import { Toast } from 'mint-ui'
 	}
 	.serveList{
 		width: 100%;
-		height:2.6rem ;
 		margin-bottom: 0.1rem;
 		position: relative;
 	}
 	.meng{
 		width: 100%;
-		height: 100%;
 	}
 	.serveList a{
 		display: block;
 		width: 100%;
-		height: 100%;
 	}
-	.meng div{
-		position: absolute;
-		left:50% ;
-		top:50% ;
-		font-size: 0.34rem;
-		color: #f7f7f8;
-		z-index: 10;
-		padding: 0.1rem 0.2rem;
-		background: rgba(0,0,0,0.6);
-		transform: translate(-50%, -50%);
-		border-radius: 0.1rem;
-		/*line-height: 2rem;*/
-		
+	.serveList a>img{
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 	.serveList span{
 		position: absolute;

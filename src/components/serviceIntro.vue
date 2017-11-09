@@ -1,6 +1,6 @@
 <template>
 	<section class="fullDiv">
-		<Header title="图文介绍"></Header>
+		<Header title="服务价格"></Header>
 		<section class="content-html">
 			<img :src="value" v-for="value in imgList"  />
 		</section>

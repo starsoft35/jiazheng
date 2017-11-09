@@ -234,6 +234,11 @@ export default {
         http.get(true, '/user/myShared', callback, params)
     },
     
+    //分享有礼签名
+    shareSign(params, callback) {
+    	  http.get(true, '/wechat/getjsapi/signpackage', callback, params )
+    },
+    
     //分享新人
     addShareUser(params, callback) {
         http.post(false, '/user/share', params, callback)

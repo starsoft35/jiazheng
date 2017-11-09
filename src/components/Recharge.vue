@@ -12,7 +12,7 @@
         </div>
         <div class="button-container">
             <div class="button" :class="{disable: buttonDisable}" @click="doPay(3)">微信支付</div>
-            <div class="button green" :class="{disable: buttonDisable}" @click="doPay(2)">支付宝支付</div>
+            <div v-show="!isWeixin" class="button green" :class="{disable: buttonDisable}" @click="doPay(2)">支付宝支付</div>
         </div>
     </div>
 </template>
@@ -22,6 +22,7 @@
     export default {
         data() {
             return {
+            	isWeixin: this.$storage.get('isWeixinTerm'),
                 amount: null,
                 templateId: null,
                 template: [],

@@ -78,10 +78,24 @@ import { Toast } from 'mint-ui'
 			}
 		},
 		created() {
+			console.log('1')
+			if (this.$common.isWeixin()) {
+				this.options = [
+				  {
+				    label: '余额支付',
+				    value: '1'
+				  },
+				  {
+				    label: '微信支付',
+				    value: '2'
+				  }
+				]
+			}
 		},
 		beforeRouteEnter (to, from, next) {
 	    	if(/coupons/g.test(from.fullPath)) {
 	    		next(vm=>{
+	    			
 	    			vm.useCouponStatus = false
 	    			vm.currCoupon = {
 				        	price: 0
@@ -105,6 +119,7 @@ import { Toast } from 'mint-ui'
 	    		})
 	    	}else {
 	    		next(vm=>{
+	    			vm.payWayId = '1'
 	    			vm.$storage.remove('currCoupon')
 	    			vm.useCouponStatus = false
 	    			vm.currCoupon = {
@@ -181,7 +196,7 @@ import { Toast } from 'mint-ui'
                                         'signType': wechat.signType,            //微信签名方式：     
                                         'paySign': wechat.paySign               //微信签名 
                                     },
-                                    function(res){     
+                                    function(res){   
                                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
                                             Toast({
 											  message: '支付成功',
