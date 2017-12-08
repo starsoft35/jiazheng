@@ -109,12 +109,13 @@ Vue.use(Router)
 const router = new Router({
     routes: [{
             path: '/',
-            component: first
+            redirect: '/first'
         }, {
             path: '/first',
             component: first,
             meta: {
-                requireAuth: true
+                requireAuth: true,
+                keepAlive: true
             }
         }, {
             path: '/sellerEnter',

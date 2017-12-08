@@ -64,14 +64,14 @@
 		<!--分享有礼与一键下单-->
 		<div class="shareBox">
 			<div class="share clear">
-				<div class="shareCont fl">
+				<div class="shareCont left">
 					<a href="#sharePage">
 						<span>分享有礼</span>
 						<p>分享获取优惠券</p>
 						<img src="../../static/11@3x.png" alt="分享有礼"/>
 					</a>
 				</div>
-				<div class="shareCont fr">
+				<div class="shareCont right">
 					<a href="#oneClick">
 						<span>一键下单</span>
 						<p>家电不知道怎么了</p>
@@ -180,12 +180,12 @@ import { Toast } from 'mint-ui'
 	                }
 	            })
 				self.getLocation()	
-//				setTimeout(() => {
-//					if(self.loadingStatus) {
-//						self.loadingStatus = false
-//						self.initData()
-//					}
-//				},10000)
+				setTimeout(() => {
+					if(self.loadingStatus) {
+						self.loadingStatus = false
+						self.initData()
+					}
+				},5000)
 			},
 			getLocation() {
 				let self = this
@@ -217,7 +217,7 @@ import { Toast } from 'mint-ui'
 				this.$bridge.getGPS().then((res) => {
 					let timer = null
 					let addr = JSON.parse(res)
-					if(addr.latitude == '-1.0' && addr.longitude == '-1.0') {
+					if(addr.latitude == -1 && addr.longitude == -1) {
 						timer = setTimeout(() => {
 							clearTimeout(timer)
 							self.getLocation()
@@ -245,13 +245,15 @@ import { Toast } from 'mint-ui'
 	    		next(vm => {
 	    			vm.firstEnter()
 	    		})
-	    	}else {
+	    	}else if(/positionChose/g.test(from.fullPath)) {
 	    		next(vm=>{
 	    			if(vm.$storage.get('currCity')) {
 	    				vm.currCity = vm.$storage.get('currCity')
 	    			}
 	    			vm.initData()
 	        	})
+	    	}else{
+	    		next()
 	    	}
 	    	
 	    	
@@ -431,17 +433,25 @@ import { Toast } from 'mint-ui'
 	.shareBox{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0.2rem 0;
+		padding: 0.2rem 0.15rem;
 	}
 	.share{
 		width:100%;
 		height: 2rem;
+		display: flex;
 	}
 	.shareCont{
-		width: 3.55rem;
+		width: 50%;
 		height:2rem;
 		position: relative;
 		background: #FFFFFF;
+		
+	}
+	.shareCont.left{
+		border-right: 0.08rem solid #f5f5f9;
+	}
+	.shareCont.right{
+		border-left: 0.08rem solid #f5f5f9;
 	}
 	.shareCont a{
 		width: 100%;

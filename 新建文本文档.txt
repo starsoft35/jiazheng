@@ -1,0 +1,84 @@
+import $api from 'utils/api';
+//app.js
+App({
+  onLaunch: function (options) {
+    const that = this
+    let openid = ''
+    // µÇÂ¼
+    wx.login({
+      success: res => {
+        that.getOpenid(res.code).then(msg => {
+          openid = msg
+          return that.getAccessToken()
+        }).then(data => {
+          wx.request({
+            url: 'https://api.weixin.qq.com/cgi-bin/user/info',
+            method: 'GET',
+            data: {
+              access_token: data,
+              openid: openid,
+              lang: 'zh_CN'
+            },
+            header: {
+              'Accept': 'application/json'
+            },
+            success: function (res) {
+              console.log(res)
+            }
+          })
+        })
+        
+        // wx.getUserInfo({
+        //   success: res => {
+        //     console.log(res)
+        //   }
+        // })
+      }
+    })
+  },
+  getOpenid: function(code) {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: 'https://api.weixin.qq.com/sns/jscode2session',
+        method: 'GET',
+        data: {
+          // appid: 'wx92aab28551cc46cc',
+          // secret: '78eb2a6cd5a68268f0529964b78329e7',
+          appid: 'wx65285b6258fe348f',
+          secret: 'f6e30f2c05cb0ca7a49dc670e3c76b8b',
+          js_code: code,
+          grant_type: 'authorization_code'
+        },
+        header: {
+          'Accept': 'application/json'
+        },
+        success: function (res) {
+          resolve(res.data.openid) 
+        }
+      })
+    }) 
+  },
+  getAccessToken: function () {
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: 'https://api.weixin.qq.com/cgi-bin/token',
+        method: 'GET',
+        data: {
+          appid: 'wx65285b6258fe348f',
+          secret: 'f6e30f2c05cb0ca7a49dc670e3c76b8b',
+          grant_type: 'client_credential'
+        },
+        header: {
+          'Accept': 'application/json'
+        },
+        success: function (res) {
+          resolve(res.data.access_token) 
+        }
+      })
+    })
+  },
+  globalData: {
+    userInfo: null,
+    access_token: '7a64a981fecfac48e08be837164e0206'
+  }
+})

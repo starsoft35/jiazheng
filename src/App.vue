@@ -194,9 +194,9 @@
 			display: none;
 	}
 	.textBox img{
-		display: block;
-		width: 100%;
-		height: auto;
-		margin: 0.3rem 0;
+		display: block !important;
+		width: 100% !important;
+		height: auto !important;
+		margin: 0.3rem 0 !important;
 	}
 </style >

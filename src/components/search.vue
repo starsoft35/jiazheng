@@ -330,20 +330,21 @@ import { Toast } from 'mint-ui'
 		.histroyBox{
 			width: 7rem;
 			margin: 0 auto;
+			display: flex;
+			flex-wrap: wrap;
 		}
 		.histroyBox a{
 			display:block;
 			font-size: 0.26rem;
-			line-height: 0.5rem;
-			margin:0 30px;
+			padding: 0.1rem 0.3rem;
 			color: #222222;
+			text-align: left;
 		}
 		.histroyCont{
 			float: left;
 			margin: 0 0.15rem 0.3rem 0;
 			border-radius: 0.25rem;
 			background:#eff0f1;
-			height: 0.5rem;
 		}
 		.destroy{
 			width: 1rem;

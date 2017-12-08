@@ -175,23 +175,26 @@
 	}
 	/*头像以及名称*/
 	.clientImg{
-		width: 3.5rem;
+		overflow: hidden;
+		width: 5.3rem;
 		height: 0.48rem;
 		margin: 0.2rem 0 0.1rem 0;
+		display: flex;
 	}
 	.clientImg img{
 		width: 0.48rem;
 		height: 0.48rem;
 		border-radius: 50%;
-		float: left;
 	}
 	.clientImg span{
 		height:0.48rem ;
-		float: left;
+		flex: 1;
+		overflow: hidden;
 		font-size: 0.28rem;
 		color: #222222;
 		line-height: 0.48rem;
 		margin-left: 0.2rem;
+		white-space: nowrap;
 	}
 	/*五颗星星*/
 	.clientXing{

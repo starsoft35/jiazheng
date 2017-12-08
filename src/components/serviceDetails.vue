@@ -63,15 +63,14 @@
 			<div class="textBox" v-html="serviceData.content" ></div>
 		</div>
 		<!--订购须知-->
-		<div class="serveCont">
+		<!--<div class="serveCont">
 			<div class="serveTitle">
 				<span class="fl"></span>
 				<div>订购须知</div>
 				<span class="fr"></span>
 			</div>
-			<!--订购须知内容-->
 			<div class="textBox" v-html="serviceData.attention"></div>
-		</div>
+		</div>-->
 		<!--立即预约按钮-->
 		<div class="bottomBtn">
 			<a @click="goAppointment">立即预约</a>
@@ -300,25 +299,27 @@
 	/*头像以及名称*/
 	
 	.clientImg {
-		width: 3.5rem;
+		width: 5.3rem;
 		height: 0.48rem;
 		margin: 0.2rem 0 0.1rem 0;
+		display: flex;
+		align-items: center;
 	}
 	
 	.clientImg img {
 		width: 0.48rem;
 		height: 0.48rem;
 		border-radius: 50%;
-		float: left;
 	}
 	
 	.clientImg span {
 		height: 0.48rem;
-		float: left;
+		flex: 1;
 		font-size: 0.28rem;
 		color: #222222;
 		line-height: 0.48rem;
 		margin-left: 0.2rem;
+		overflow: hidden;
 	}
 	/*五颗星星*/
 	

@@ -1,26 +1,29 @@
 <template>
 	<div id="box">
 		<div class="unUse" v-show = "pagination.content.length>0 && couponStatus == 'use'" @click="unUse">
-			不使用优惠卷
+			不使用优惠券
 		</div>
 		<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
 			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
 					<div class="LeftPart">
-						<img src="../../static/ren.png"/>
-						<span>{{item.price}}</span>
+						<img class="status" v-show="item.validType" src="../../static/2112@3x.png"  />
+						<img class="status" v-show="!item.validType" src="../../static/12334@3x.png"  />
+						<img class="money-icon" src="../../static/ren.png"/>
+						<span>{{parseInt(item.price)}}</span>
 					</div>
 					<div class="partRight">
 						<span>{{item.content}}</span>
 						<p>{{item.timeLimit}}</p>
 					</div>
+					<img v-if="item.selected" src="../../static/select.png" class="selected"  />
 				</div>
 			</div>
 			
         </Pagination>
 		<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
 			<img class="none-data-img" src="../../static/42@2x.png" />
-			<p>暂无可使用优惠卷</p>
+			<p>暂无可使用优惠券</p>
 		</div>
 	</div>
 </template>
@@ -47,6 +50,26 @@
 		},
 		created() {
 			this.couponStatus = this.$route.params.status
+			if(this.couponStatus == 'use') {
+				let currServeCoupon = this.$storage.get('currServeCoupon')
+				this.$storage.remove('currServeCoupon')
+				this.pagination = {
+                    content: [],
+                    page: 1, 
+                    pageSize: 10,
+                    param: {
+                    	params:{
+						    flag: 1,
+						    serviceId: currServeCoupon.serviceId,
+						    serviceNum: currServeCoupon.serviceNum
+						}
+                    },
+                    loadEnd: false
+                }
+				if(this.$storage.get('currCoupon')) {
+					this.currCoupon = this.$storage.get('currCoupon')
+				}
+			}
 		},
 		mounted() {
 			setTimeout(() => {
@@ -56,16 +79,27 @@
 		methods: {
             render(res) {
                 res.result.list.forEach((item) => {
+                	item.selected = item.id == this.currCoupon.id
+                	if (!item.validType && item.selected) {
+			          item.selected = false
+			          this.$storage.remove('currCoupon')
+			        }
                 	this.pagination.content.push({
                         price: Number(item.price),
                         id: item.id,
                         content: item.content,
-                        timeLimit: item.timeLimit
+                        timeLimit: item.timeLimit,
+                        selected: item.selected,
+                        validType: item.validType
                     })
                 })
+                console.log(this.pagination.content)
             },
             useCoupon(item) {
             	if(this.$route.params.status !== 'use') {
+            		return
+            	}
+            	if(!item.validType) {
             		return
             	}
             	this.currCoupon.id = item.id
@@ -109,19 +143,26 @@
 	.LeftPart{
 		width: 2.3rem;
 		height: 2rem;
-		background: url("../../static/2112@3x.png") no-repeat;
-        background-size: 100% 100%;
 		position: absolute;
 		left: 0;
 		top: 0;
 		
 	}
-	.LeftPart img{
+	.LeftPart img.status{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		z-index: 1;
+	}
+	.LeftPart img.money-icon{
 		width:0.20rem ;
 		height:0.25rem ;
 		position: absolute;
 		left: 0.27rem;
 		bottom:0.6rem ;
+		z-index: 10;
 	}
 	.LeftPart span{
 		font-size: 0.8rem;
@@ -130,6 +171,7 @@
 		position: absolute;
 		left: 0.53rem;
 		bottom:0.45rem ;
+		z-index: 10;
 	}
 	/*未过期右边 */
 	/*右边部分*/
@@ -154,5 +196,10 @@
 		font-size: 0.2rem;
 		color: #999999;
 	}
-	
+	.selected{
+		position: absolute;
+		right: -0.1rem;
+		top: -0.1rem;
+		width: 0.6rem;
+	}
 </style>

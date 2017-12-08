@@ -21,7 +21,13 @@
 					<div class="serveTitle">{{currMenu.name}}</div>
 					<ul class="servePart">
 						<li class="serve_list fl" v-for="(item,index) in currMenu.childList" :key="index">
-							<router-link :to="'/serveCont/'+ item.id">{{item.name}}</router-link>
+							<router-link :to="'/serveCont/'+ item.id">
+								<div class="img-box">
+									<img :src="item.picture" />
+								</div>
+								
+								<p>{{item.name}}</p>
+							</router-link>
 						</li>
 					</ul>
 				</div>
@@ -147,6 +153,7 @@
 	/*右边部分*/
 	.boxRight{
 		flex: 1;
+		overflow-y: auto;
 	}
 	#serve_box{
 		width:5.45rem;
@@ -170,27 +177,43 @@
 		color: #222222;
 		text-align: left;
 		line-height: 0.97rem;
+		text-align: center;
 		
 	}
 	/*服务列表*/
 	.servePart{
 		width: 5.45rem;
-		display: inline-block
+		display: flex;
+		flex-wrap: wrap;
 	}
 	.serve_list{
-		width:1.7rem ;
-		height:0.6rem ;
-		margin-right: 0.1rem;
-		background: #fafafa;
-		margin-bottom: 0.2rem;
+		width: 33.33%;
+		margin-bottom: 0.4rem;
 	}
 	.serve_list a{
 		display: block;
-		width: 100%;
+		color: #777;
+	}
+	.serve_list a .img-box{
+		width: 0.68rem;
+		height: 0.68rem;
+		position: relative;
+		margin: 0 auto;
+	}
+	.serve_list a .img-box img{
+		position: absolute;
 		height: 100%;
-		font-size: 0.26rem;
-		line-height: 0.6rem;
-		text-align: center;
-		color: #7a7a7a;
+		max-width: 100%;
+		width: auto;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.serve_list a p{
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		padding-top: 0.14rem;
+		font-size: 0.24rem;
 	}
 </style>

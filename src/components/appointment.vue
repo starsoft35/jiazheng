@@ -57,11 +57,11 @@
 			<!--优惠券-->
 			<div class="serveBottom" v-if="appointmentData.type.value == 1">
 				<span class="fl">优惠券</span>
-				<router-link to="/coupons/couponsLeft/use">
+				<a @click="selectCoupon">
 					<img class="fr" src="../../static/34@3x.png"/>
 					<div class="fr" v-show="useCouponStatus">{{parseInt(currCoupon.price)}}元优惠券</div>
 					<div class="fr" v-show="!useCouponStatus">使用优惠券</div>
-				</router-link>
+				</a>
 			</div>
 		</div>
 		<!--结账-->
@@ -248,6 +248,14 @@
 					return false;
 				}
 				this.score--;
+			},
+			//选择优惠券
+			selectCoupon() {
+				this.$storage.set('currServeCoupon', {
+					serviceId: this.serviceId,
+					serviceNum: this.score
+				})
+				this.$router.push('/coupons/couponsLeft/use')
 			},
 			serviceAddOrder() {
 				if(!this.hasDefaultAddr) {
@@ -537,7 +545,7 @@
 		color: #333333;
 		line-height:0.6rem ;
 	}
-	/*优惠卷*/
+	/*优惠券*/
 	.serveBottom{
 		width: 7rem;
 		border-top: 2px solid #f2f2f2;

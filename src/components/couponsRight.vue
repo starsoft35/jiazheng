@@ -5,7 +5,7 @@
 				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
 					<div class="LeftPart">
 						<img src="../../static/ren.png"/>
-						<span>{{item.price}}</span>
+						<span>{{parseInt(item.price)}}</span>
 					</div>
 					<div class="partRight">
 						<span>{{item.content}}</span>
@@ -18,7 +18,7 @@
         </Pagination>
         <div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
 			<img class="none-data-img" src="../../static/42@2x.png" />
-			<p>暂无不可使用优惠卷</p>
+			<p>暂无不可使用优惠券</p>
 		</div>	
 	</div>
 </template>

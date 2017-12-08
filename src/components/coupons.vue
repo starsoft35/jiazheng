@@ -1,7 +1,7 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<Header title="使用优惠卷"></Header>
+		<Header title="使用优惠券"></Header>
 		<div>
 			<ul class="navBox">
 				<li>
