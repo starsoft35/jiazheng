@@ -1,17 +1,21 @@
 <template>
 	<div id="box">
 		<Header title="工人位置"></Header>
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/location/getList">
-			<div class="worker-list" style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
-				<div class="worker-item" v-for="(item,index) in pagination.content" :key="index">
-					<span class="name" v-if="item.workerName">{{item.workerName}}</span>
-					<span class="name" v-if="!item.workerName">新工人</span>
-					<span class="phone">{{item.workerPhone}}</span>
-					<span class="address" @click="goAmap(item)"></span>
+		<div class="page-content">
+			<Pagination :render="render" :param="pagination" :need-token="true" uri="/location/getList">
+				<div class="worker-list" v-if="pagination.content.length>0">
+					<div class="worker-item" v-for="(item,index) in pagination.content" :key="index">
+						<span class="name" v-if="item.workerName">{{item.workerName}}</span>
+						<span class="name" v-if="!item.workerName">新工人</span>
+						<span class="phone">{{item.workerPhone}}</span>
+						<span class="address" @click="goAmap(item)"></span>
+					</div>
 				</div>
-			</div>
-        </Pagination>
-        <div v-if="pagination.content.length == 0" class="none-data-tip">暂无员工</div>
+				<div v-if="pagination.content.length == 0" class="none-data-tip">暂无员工</div>
+	        </Pagination>
+		</div>
+		
+        	
 		
 	</div>
 </template>
@@ -42,6 +46,14 @@
 </script>
 
 <style scoped>
+    .page-content{
+		position: absolute;
+		width: 100%;
+		top: 0.92rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+	}
 	.worker-item{
 		height: 1rem;
 		display: flex;

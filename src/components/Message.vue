@@ -1,23 +1,25 @@
 <template>
     <div class="message-container">
         <Header title="消息"></Header>
-
-        <div class="none-message" v-show="pagination.content.length == 0 && pagination.loadEnd">
-            <div class="bg"></div>
-            暂无消息
-        </div>
-        <Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/notice/list" ref="pagination">
-			<div style="margin-bottom: 1rem;" v-show="pagination.content.length > 0">
-				<div v-for="item in pagination.content">
-	                <div class="date">{{item.date}}</div>
-	                <div class="message">
-	                    <div class="title">{{item.label}}</div>
-	                    <div class="content">{{item.content}}</div>
-	                </div>
-	            </div>
-			</div>
-				
-        </Pagination>
+		<div class="page-content">
+			
+	        <Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/notice/list" ref="pagination">
+				<div style="margin-bottom: 1rem;" v-show="pagination.content.length > 0">
+					<div v-for="item in pagination.content">
+		                <div class="date">{{item.date}}</div>
+		                <div class="message">
+		                    <div class="title">{{item.label}}</div>
+		                    <div class="content">{{item.content}}</div>
+		                </div>
+		            </div>
+				</div>
+				<div class="none-message" v-show="pagination.content.length == 0 && pagination.loadEnd">
+		            <div class="bg"></div>
+		            暂无消息
+		        </div>	
+	        </Pagination>
+		</div>
+	        
     </div>
 </template>
 
@@ -51,6 +53,14 @@
 </script>
 
 <style scoped>
+   .page-content{
+		position: absolute;
+		width: 100%;
+		top: 0.92rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+	}
     .message-container {
         font-size: .26rem;
         color: #666;

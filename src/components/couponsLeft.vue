@@ -1,30 +1,34 @@
 <template>
 	<div id="box">
-		<div class="unUse" v-show = "pagination.content.length>0 && couponStatus == 'use'" @click="unUse">
-			不使用优惠券
-		</div>
-		<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
-			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
-				<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
-					<div class="LeftPart">
-						<img class="status" v-show="item.validType" src="../../static/2112@3x.png"  />
-						<img class="status" v-show="!item.validType" src="../../static/12334@3x.png"  />
-						<img class="money-icon" src="../../static/ren.png"/>
-						<span>{{parseInt(item.price)}}</span>
-					</div>
-					<div class="partRight">
-						<span>{{item.content}}</span>
-						<p>{{item.timeLimit}}</p>
-					</div>
-					<img v-if="item.selected" src="../../static/select.png" class="selected"  />
-				</div>
-			</div>
+		<div class="page-content">
 			
-        </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
-			<img class="none-data-img" src="../../static/42@2x.png" />
-			<p>暂无可使用优惠券</p>
+			<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
+				<div class="unUse" v-show = "pagination.content.length>0 && couponStatus == 'use'" @click="unUse">
+					不使用优惠券
+				</div>
+				<div v-if="pagination.content.length>0">
+					<div class="contBox" v-for="(item,index) in pagination.content" :key="index" @click="useCoupon(item)">
+						<div class="LeftPart">
+							<img class="status" v-show="item.validType" src="../../static/2112@3x.png"  />
+							<img class="status" v-show="!item.validType" src="../../static/12334@3x.png"  />
+							<img class="money-icon" src="../../static/ren.png"/>
+							<span>{{parseInt(item.price)}}</span>
+						</div>
+						<div class="partRight">
+							<span>{{item.content}}</span>
+							<p>{{item.timeLimit}}</p>
+						</div>
+						<img v-if="item.selected" src="../../static/select.png" class="selected"  />
+					</div>
+				</div>
+				<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
+					<img class="none-data-img" src="../../static/42@2x.png" />
+					<p>暂无可使用优惠券</p>
+				</div>
+	        </Pagination>
+			
 		</div>
+			
 	</div>
 </template>
 
@@ -116,11 +120,14 @@
 </script>
 
 <style scoped>
-	#box {
+	.page-content{
+		position: absolute;
 		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
+		top: 1.76rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+		padding-bottom: 0.4rem;
 	}
 	.unUse{
 		width: 6.7rem;

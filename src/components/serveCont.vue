@@ -2,9 +2,9 @@
 	<div id="box">
 		<Header :title="serveTitle"></Header>
 		
-		<div class="thingList">
+		<div class="page-content thingList">
 			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/list">
-	            <ul class="thingCont" style="margin-bottom: 1rem;" v-show="pagination.content.length>0">
+	            <ul class="thingCont" v-show="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
 							<img :src="item.listImage"/>
@@ -16,10 +16,11 @@
 						</router-link>
 					</li>
 				</ul>
+				<div v-show="pagination.content.length == 0 && pagination.loadEnd" class="none-data-tip">暂无该服务</div>
 	        </Pagination>
 				
 		</div>
-		<div v-show="pagination.content.length == 0 && pagination.loadEnd" class="none-data-tip">暂无该服务</div>
+		
 	</div>
 </template>
 
@@ -68,6 +69,14 @@
 </script>
 
 <style scoped>
+	.page-content{
+		position: absolute;
+		width: 100%;
+		top: 0.92rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+	}
 	#box {
 		width: 100%;
 		height: 100%;
@@ -106,7 +115,6 @@
 	/*物品列表*/
 	.thingList{
 		width:100%;
-		display: inline-block;
 		
 	}
 	.thingList li{

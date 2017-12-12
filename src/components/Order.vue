@@ -2,60 +2,63 @@
 	<div id="box">
 		<Header title="订单" back="hidden"></Header>
 
-		<div class="none-message" v-show="pagination.content.length == 0 && pagination.loadEnd">
-            <div class="bg"></div>
-            	暂无订单消息
-        </div>
-
-		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/list" ref="pagination" >
-			<div style="margin-bottom: 0.4rem;" v-show="pagination.content.length > 0">
-				<div class="orderBox"  v-for="(orderBox,index) in pagination.content"  >
-					<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
-						<div class="topMessage clear">
-							<span class="topLeft fl">{{orderBox.orderTime}}</span>
-							<span class="topRight fr">{{orderBox.orderStatus}}</span>
-						</div>
-						<div class="order-addr">
-							<span style="width: 1rem;">地址：</span>
-							<span style="flex: 1;">{{orderBox.serviceAddr}}</span>
-						</div>
-						<div class="cont">
-							<!--左边图片-->
-							<div class="serveLeft">
-								<div class="serveBack fl">
-									<img :src="orderBox.serviceImage" />
-								</div>
-								<div class="serveTitle fl">
-									<div>{{orderBox.serviceTitle}}</div>
-									<p class="num">&yen;{{orderBox.unitPrice}}
-										<span class="numbers" v-if="orderBox.priceType == 1">x{{orderBox.serviceMount}}</span>
-									</p>
-									<div class="remark" v-if="orderBox.remark">
-										<span style="width: 1rem;">备注：</span>
-										<span class="remark-text">{{orderBox.remark}}</span>
+				
+		<div class="page-content">
+			<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/list" ref="pagination" >
+				<div v-show="pagination.content.length > 0">
+					<div class="orderBox"  v-for="(orderBox,index) in pagination.content"  >
+						<router-link :to="{ path: '/orderDetail/'+orderBox.orderNo}">
+							<div class="topMessage clear">
+								<span class="topLeft fl">{{orderBox.orderTime}}</span>
+								<span class="topRight fr">{{orderBox.orderStatus}}</span>
+							</div>
+							<div class="order-addr">
+								<span style="width: 1rem;">地址：</span>
+								<span style="flex: 1;">{{orderBox.serviceAddr}}</span>
+							</div>
+							<div class="cont">
+								<!--左边图片-->
+								<div class="serveLeft">
+									<div class="serveBack fl">
+										<img :src="orderBox.serviceImage" />
+									</div>
+									<div class="serveTitle fl">
+										<div>{{orderBox.serviceTitle}}</div>
+										<p class="num">&yen;{{orderBox.unitPrice}}
+											<span class="numbers" v-if="orderBox.priceType == 1">x{{orderBox.serviceMount}}</span>
+										</p>
+										<div class="remark" v-if="orderBox.remark">
+											<span style="width: 1rem;">备注：</span>
+											<span class="remark-text">{{orderBox.remark}}</span>
+										</div>
 									</div>
 								</div>
+								
 							</div>
 							
-						</div>
-						
-						<div class="middlePart ">
-							<span>&yen;{{orderBox.totalPrice}}</span>
-							<span>合计:</span>
-						</div>
-						
-	
-					</router-link>
-					<div class="send" v-show="orderBox.operation.length>0">
-						<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">
-							<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
-							<span v-if="obj.operationType == 2 && isWeixin != 'yes' "><a style="color: #258ef3;" @click="callPhone(obj.workerPhone)" >{{obj.linkWorker}}</a></span>
-							<span v-if="obj.operationType == 2 && isWeixin == 'yes' "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
+							<div class="middlePart ">
+								<span>&yen;{{orderBox.totalPrice}}</span>
+								<span>合计:</span>
+							</div>
+							
+		
+						</router-link>
+						<div class="send" v-show="orderBox.operation.length>0">
+							<div :class="obj.event=='取消订单'?'send-color':''" v-for="(obj,key) in orderBox.operation" @click="operateOrder(obj,orderBox.orderNo)">
+								<span v-if="obj.operationType != 2 ">{{obj.event}}</span>
+								<span v-if="obj.operationType == 2 && isWeixin != 'yes' "><a style="color: #258ef3;" @click="callPhone(obj.workerPhone)" >{{obj.linkWorker}}</a></span>
+								<span v-if="obj.operationType == 2 && isWeixin == 'yes' "><a style="color: #258ef3;" :href="'tel:' + obj.workerPhone" >{{obj.linkWorker}}</a></span>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</Pagination>
+				<div class="none-message" v-show="pagination.content.length == 0 && pagination.loadEnd">
+		            <div class="bg"></div>
+		            	暂无订单消息
+		        </div>
+			</Pagination>
+		</div>
+			
 		<pj-modal 
 			@closeModal="show = false"
 			@cancel_modal="cancel_modal" 
@@ -179,11 +182,13 @@
 </script>
 
 <style scoped>
-	#box {
+	.page-content{
+		position: absolute;
 		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
+		top: 0.92rem;
+		bottom: 1rem;
+		left: 0;
+		overflow-y: auto;
 	}
 	
 	/*订单*/

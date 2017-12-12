@@ -12,71 +12,75 @@
 				<div style="height: 0.8rem;"></div>
 			</div>
 		</div>
-		<Pagination :render="render" :autoFill="false" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/listForWorker" ref="pagination">
-			<div class="order-content" v-show="pagination.content.length>0">
-				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
-					<!--姓名 电话-->
-					<a v-if="isWeixin != 'yes'" @click="callPhone(item.userPhone)" class="peopleName">
-						<span>{{item.userName}}</span>
-						<span>{{item.userPhone}}</span>
-						<div></div>
-					</a>
-					
-					<a v-if="isWeixin == 'yes'" :href="'tel:' + item.userPhone" class="peopleName">
-						<span>{{item.userName}}</span>
-						<span>{{item.userPhone}}</span>
-						<div></div>
-					</a>
-					<!--订单号-->
-					<div style="padding: 0.15rem 0;">
-						<div class="cont">
-							<span class="contLeft">订单号：</span>
-							<span class="contRight">{{item.orderNo}}</span>
-						</div>
-						<!--服务时间-->
-						<div class="cont">
-							<span class="contLeft">服务时间：</span>
-							<span class="contRight">{{item.serviceTime}}</span>
-						</div>
-						<!--服务地址-->
-						<div class="cont">
-							<span class="contLeft">服务地址：</span>
-							<span class="contRight position">{{item.serviceAddress.address}}</span>
-							<a class="map-lnik" @click="goAmap(item.serviceAddress)">
-								<span>去这里</span>
-							</a>
-						</div>
-					</div>
-					
-					<!--服务详情-->
-					<div class="thingList">
-						<ul class="thingCont">
-							<li class="things">
-								<a>
-									<img :src="item.serviceImage" />
-									<div class="thingName">
-										<div v-text="item.serviceTitle"></div>
-										<span>&yen;{{item.unitPrice}}</span>
-									</div>
-									<span class="counts" v-if="item.priceType == 1">x{{item.serviceMount}}</span>
+		<div class="page-content">
+			<Pagination :render="render" :autoFill="false" :param="pagination" :autoload="false" :need-token="true" uri="/serviceOrder/listForWorker" ref="pagination">
+				<div class="order-content" v-show="pagination.content.length>0">
+					<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
+						<!--姓名 电话-->
+						<a v-if="isWeixin != 'yes'" @click="callPhone(item.userPhone)" class="peopleName">
+							<span>{{item.userName}}</span>
+							<span>{{item.userPhone}}</span>
+							<div></div>
+						</a>
+						
+						<a v-if="isWeixin == 'yes'" :href="'tel:' + item.userPhone" class="peopleName">
+							<span>{{item.userName}}</span>
+							<span>{{item.userPhone}}</span>
+							<div></div>
+						</a>
+						<!--订单号-->
+						<div style="padding: 0.15rem 0;">
+							<div class="cont">
+								<span class="contLeft">订单号：</span>
+								<span class="contRight">{{item.orderNo}}</span>
+							</div>
+							<!--服务时间-->
+							<div class="cont">
+								<span class="contLeft">服务时间：</span>
+								<span class="contRight">{{item.serviceTime}}</span>
+							</div>
+							<!--服务地址-->
+							<div class="cont">
+								<span class="contLeft">服务地址：</span>
+								<span class="contRight position">{{item.serviceAddress.address}}</span>
+								<a class="map-lnik" @click="goAmap(item.serviceAddress)">
+									<span>去这里</span>
 								</a>
-							</li>
-						</ul>
+							</div>
+						</div>
+						
+						<!--服务详情-->
+						<div class="thingList">
+							<ul class="thingCont">
+								<li class="things">
+									<a>
+										<img :src="item.serviceImage" />
+										<div class="thingName">
+											<div v-text="item.serviceTitle"></div>
+											<span>&yen;{{item.unitPrice}}</span>
+										</div>
+										<span class="counts" v-if="item.priceType == 1">x{{item.serviceMount}}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<!--合计-->
+						<div class="totalMoney">
+							<span class="totalRight">&yen; <i>{{item.totalPrice}}</i></span>
+							<span class="tolalLeft">合计:</span>
+						</div>
+						<div class="send" v-show="item.operation.length>0">
+							<div v-for="(obj, key) in item.operation" :class="obj.operationType == 6 ? 'noOperate' : ''" @click="operateOrder(obj,key, item.orderNo, item.operation)">{{obj.event}}</div>
+						</div>
 					</div>
-					<!--合计-->
-					<div class="totalMoney">
-						<span class="totalRight">&yen; <i>{{item.totalPrice}}</i></span>
-						<span class="tolalLeft">合计:</span>
-					</div>
-					<div class="send" v-show="item.operation.length>0">
-						<div v-for="(obj, key) in item.operation" :class="obj.operationType == 6 ? 'noOperate' : ''" @click="operateOrder(obj,key, item.orderNo, item.operation)">{{obj.event}}</div>
-					</div>
+					<!--<div class="kong"></div>-->
 				</div>
-				<!--<div class="kong"></div>-->
-			</div>
-				
-        </Pagination>
-		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无订单</div>
+			    <div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无订单</div>
+					
+	        </Pagination>
+
+		</div>
+			
 		<confirm-modal :show="show" 
 			@cancel_modal="cancel_modal" 
 			@confirm_modal="confirm_modal" 
@@ -243,6 +247,14 @@ import { Toast } from 'mint-ui'
 		top: 0;
 		bottom: 0;
 	}
+	.page-content{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 1.76rem;
+		bottom: 1rem;
+		overflow-y: auto;
+	}
 	.headPart{
 		width: 100%;
 		height: 0.92rem;
@@ -298,9 +310,6 @@ import { Toast } from 'mint-ui'
 		position: relative;
 		margin-top: 0.2rem;
 		overflow: hidden;
-	}
-	.order-content{
-		margin-bottom: 1.3rem;
 	}
 	/*姓名电话*/
 	

@@ -7,7 +7,7 @@ export default {
     // 认证
     authorize() {
         // storage.set('history_url', router.history.current.path)
-        let redirect = 'http://jiazheng.ydd100.cn#oauth'
+        let redirect = 'https://game.ydd100.cn#oauth'
         let authURI = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + process.env.WEIXIN.APP_ID + '&redirect_uri=' + encodeURIComponent(redirect) + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
         window.location.replace(authURI)
     },

@@ -11,20 +11,23 @@
 			</ul>
 		</div>
 		<div class="nav-blank"></div>
-		
-		<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceMenu/getServiceByFirstCategory" ref="pagination">
-			<div class="service-container" v-show="pagination.content.length>0">
-				<div class="service" v-for="(item, index) in pagination.content" @click="toDetail(index)">
-					<img :src="item.icon"/>
-					<div class="content">
-						<div class="name">{{item.title}}</div>
-						<div class="description" >{{item.description}}</div>
-						<div class="price">{{item.price}}</div>
+		<div class="page-content">
+			<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceMenu/getServiceByFirstCategory" ref="pagination">
+				<div class="service-container" v-show="pagination.content.length>0">
+					<div class="service" v-for="(item, index) in pagination.content" @click="toDetail(index)">
+						<img :src="item.icon"/>
+						<div class="content">
+							<div class="name">{{item.title}}</div>
+							<div class="description" >{{item.description}}</div>
+							<div class="price">{{item.price}}</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</Pagination>
-		<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">暂无服务</div>
+				<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">暂无服务</div>
+			</Pagination>
+			
+		</div>
+			
 		<!--底部导航-->
 		<Menu actived="second"></Menu>
 	</div>
@@ -113,14 +116,13 @@
 </script>
 
 <style scoped>
-	#box {
+	.page-content{
+		position: absolute;
 		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
-		overflow: hidden;
-		color: #222222;
-		position: relative;
+		top: 1.72rem;
+		bottom: 1rem;
+		left: 0;
+		overflow-y: auto;
 	}
 	
 	.headPart {

@@ -1,32 +1,33 @@
 <template>
     <div class="address-list">
         <Header title="地址管理"></Header>
-
-        <div class="none-content" v-if="pagination.content.length == 0 && pagination.loadEnd">暂无地址信息</div>
-
-        <Pagination :render="render" :param="pagination" :need-token="true" uri="/serviceAddress/list">        
-            <div class="address-container">
-                <div class="item" v-for="(item, index) in pagination.content">
-                    <div class="info" @click="selectAddr(index)">
-                        <div class="mobile">{{item.mobile}}</div>
-                        <div class="consigee">联系人：{{item.consigee}}</div>
-                        <div class="location">{{item.location}} &nbsp; {{item.detailAddr}}</div>
-                        <div class="street">{{item.address}}</div>
-                    </div>
-                    <div class="operation">
-                        <div class="edit" @click="remove(index)">
-                            删除
-                        </div>
-                        <div class="edit" @click="edit(index)">
-                            编辑
-                        </div>
-                        <div class="default" :class="{active : item.isDefault}" @click="defaultAddr(index)">
-                            默认地址
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Pagination>
+		<div class="page-content">
+			
+	       
+	            <div class="address-container">
+	                <div class="item" v-for="(item, index) in addressList">
+	                    <div class="info" @click="selectAddr(index)">
+	                        <div class="mobile">{{item.mobile}}</div>
+	                        <div class="consigee">联系人：{{item.consigee}}</div>
+	                        <div class="location">{{item.location}} &nbsp; {{item.detailAddr}}</div>
+	                        <div class="street">{{item.address}}</div>
+	                    </div>
+	                    <div class="operation">
+	                        <div class="edit" @click="remove(index)">
+	                            删除
+	                        </div>
+	                        <div class="edit" @click="edit(index)">
+	                            编辑
+	                        </div>
+	                        <div class="default" :class="{active : item.isDefault}" @click="defaultAddr(index)">
+	                            默认地址
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="none-content" v-if="addressList.length == 0">暂无地址信息</div>
+		</div>
+	        
         
         <div class="bottom">
             <router-link to="/address" class="button">添加服务地址</router-link>
@@ -39,45 +40,44 @@
     export default {
         data() {
             return {
-                pagination: {
-                    content: [],
-                    page: 1, 
-                    pageSize: 10,
-                    loadEnd: false
-                },
+                addressList: [],
                 status: '',
                 
             }
         },
         created() {
+        	const self = this
         	this.status = this.$route.params.id
+        	this.$api.getAddressList(function (response) {
+				self.addressList = response.result.list
+            })
         },
         methods: {
             // 编辑菜单
             edit(index) {
-                this.$router.push('/address/' + this.pagination.content[index].id)
+                this.$router.push('/address/' + this.addressList[index].id)
             },
             // 删除菜单
             remove(index) {
                 let self = this
                 MessageBox.confirm('确认要删除此地址吗？').then(action => {
-                    self.$api.deleteAddress(self.pagination.content[index].id, function(response) {
-                        self.pagination.content.splice(index, 1)
+                    self.$api.deleteAddress(self.addressList[index].id, function(response) {
+                        self.addressList.splice(index, 1)
                     })
                 })
             },
             // 设置默认地址
             defaultAddr(index) {
                 let self = this
-                this.$api.updateDefaultAddress(this.pagination.content[index].id, function(response) {
-                    self.pagination.content[index].isDefault = 1
+                this.$api.updateDefaultAddress(this.addressList[index].id, function(response) {
+                    self.addressList[index].isDefault = 1
 
-                    for (var i in self.pagination.content) {
-                        if (self.pagination.content[i].isDefault == 1) {
-                            self.pagination.content[i].isDefault = 0
+                    for (var i in self.addressList) {
+                        if (self.addressList[i].isDefault == 1) {
+                            self.addressList[i].isDefault = 0
                         }
                         if (i == index) {
-                            self.pagination.content[i].isDefault = 1
+                            self.addressList[i].isDefault = 1
                         }
                     }
                     if(self.status == 'select') {
@@ -88,31 +88,18 @@
             selectAddr(index) {
             	let self = this
             	if(self.status == 'select') {
-                	this.$api.updateDefaultAddress(this.pagination.content[index].id, function(response) {
-	                    self.pagination.content[index].isDefault = 1	
-	                    for (var i in self.pagination.content) {
-	                        if (self.pagination.content[i].isDefault == 1) {
-	                            self.pagination.content[i].isDefault = 0
+                	this.$api.updateDefaultAddress(this.addressList[index].id, function(response) {
+	                    self.addressList[index].isDefault = 1	
+	                    for (var i in self.addressList) {
+	                        if (self.addressList[i].isDefault == 1) {
+	                            self.addressList[i].isDefault = 0
 	                        }
 	                        if (i == index) {
-	                            self.pagination.content[i].isDefault = 1
+	                            self.addressList[i].isDefault = 1
 	                        }
 	                    }
 	                    self.$router.go(-1)
 	                })
-                }
-            },
-            render(response) {
-                for (var i in response.result.list) {
-                    this.pagination.content.push({
-                        id: response.result.list[i].id,
-                        mobile: response.result.list[i].mobile,
-                        address: response.result.list[i].address,
-                        consigee: response.result.list[i].consignee,
-                        isDefault: parseInt(response.result.list[i].isDefault) === 1,
-                        location: response.result.list[i].location,
-                        detailAddr: response.result.list[i].detailAddr
-                    })
                 }
             }
         }
@@ -120,6 +107,14 @@
 </script>
 
 <style scoped>
+    .page-content{
+		position: absolute;
+		width: 100%;
+		top: 0.92rem;
+		bottom: 1.7rem;
+		left: 0;
+		overflow-y: auto;
+	}
     .address-container {
         margin-bottom: 1.5rem;
     }

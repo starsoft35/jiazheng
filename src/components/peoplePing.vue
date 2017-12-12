@@ -12,34 +12,37 @@
 			</ul>
 		</div>
 		<!--用户评价-->
-		<Pagination :render="render" :param="pagination" :need-token="true" uri="/evaluate/list">
-			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
-				<div class="ping" v-for="(item,index) in pagination.content" :key="index">
-					<div class="client">
-						<div class="clientMessage clear">
-							<!--头像-->
-							<div class="clientImg fl">
-								<img :src="item.headImage"/>
-								<span>{{item.nickName}}</span>
+		<div class="page-content">
+			<Pagination :render="render" :param="pagination" :need-token="true" uri="/evaluate/list">
+				<div v-if="pagination.content.length>0">
+					<div class="ping" v-for="(item,index) in pagination.content" :key="index">
+						<div class="client">
+							<div class="clientMessage clear">
+								<!--头像-->
+								<div class="clientImg fl">
+									<img :src="item.headImage || '../../static/moren@3x.png'"/>
+									<span>{{item.nickName}}</span>
+								</div>
+								<!--星星-->
+								<ul class="clientXing fr clear">
+									<li class="clientPing active" v-for="n in item.starLevel">
+										<!--<img src="@../../static/39@3x.png />-->
+									</li>
+									<li class="clientPing" v-for="n in  5-item.starLevel">
+										<!--<img src="@../../static/39@3x.png" />-->
+									</li>
+								</ul>
 							</div>
-							<!--星星-->
-							<ul class="clientXing fr clear">
-								<li class="clientPing active" v-for="n in item.starLevel">
-									<!--<img src="@../../static/39@3x.png />-->
-								</li>
-								<li class="clientPing" v-for="n in  5-item.starLevel">
-									<!--<img src="@../../static/39@3x.png" />-->
-								</li>
-							</ul>
+							<span>{{item.eTime}}</span>
+							<p>{{item.content}}</p>
 						</div>
-						<span>{{item.eTime}}</span>
-						<p>{{item.content}}</p>
 					</div>
 				</div>
-			</div>
-				
-        </Pagination>
-		<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">暂无评论</div>
+				<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">暂无评论</div>	
+	        </Pagination>
+			
+		</div>
+			
 		
 	</div>
 </template>
@@ -97,6 +100,14 @@
 </script>
 
 <style scoped>
+	.page-content{
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 3.12rem;
+		bottom: 0;
+		overflow-y: auto;
+	}
 	#box {
 		width: 100%;
 		height: 100%;

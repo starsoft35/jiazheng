@@ -29,7 +29,12 @@
 		   -webkit-touch-callout: none;
 		   -webkit-appearance: none; 
 	} */
-
+	.page-content .mint-loadmore{
+		min-height: 100% !important;
+	}
+	.page-content .mint-loadmore-bottom{
+		display: none !important;
+	}
 	html, body {
         position: relative;
         height: 100%;
@@ -102,7 +107,7 @@
 		padding: 0.5rem 0.3rem;
 	}
 	.none-data-tip{
-		padding: 0.5rem;
+		padding-top: 1rem;
 		color: #bbb;
 	}
 	.none-data-img{

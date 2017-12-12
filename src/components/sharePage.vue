@@ -83,7 +83,7 @@ import wx from 'weixin-js-sdk'
 		            })
 					wx.ready(function (res) {
 		                wx.onMenuShareAppMessage({
-		                    title: '全城家政大放价', // 分享标题
+		                    title: '全城到家大放价', // 分享标题
 		                    desc: '现金优惠券大礼包', // 分享描述
 		                    link: showUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 		                    imgUrl: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png', // 分享图标
@@ -103,7 +103,7 @@ import wx from 'weixin-js-sdk'
 		                    }
 		                })
 		                wx.onMenuShareTimeline({
-		                    title: '全城家政大放价', // 分享标题
+		                    title: '全城到家大放价', // 分享标题
 		                    desc: '现金优惠券大礼包', // 分享描述
 		                    link: showUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 		                    imgUrl: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png', // 分享图标
@@ -135,7 +135,7 @@ import wx from 'weixin-js-sdk'
 				}else {
 					this.$bridge.share({
 	                    link: self.showUrl,
-	                    title: '全城家政大放价',
+	                    title: '全城到家大放价',
 	                    desc: '现金优惠券大礼包',
 	                    icon: 'http://od10yjz2i.bkt.clouddn.com/ic_launcher.png'
 	                }).then(ret => {

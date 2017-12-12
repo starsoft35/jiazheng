@@ -1,25 +1,28 @@
 <template>
 	<div id="box">
-		<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
-			<div style="margin-bottom: 1.5rem;" v-if="pagination.content.length > 0">
-				<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
-					<div class="LeftPart">
-						<img src="../../static/ren.png"/>
-						<span>{{parseInt(item.price)}}</span>
-					</div>
-					<div class="partRight">
-						<span>{{item.content}}</span>
-						<p>{{item.timeLimit}}</p>
-						<img class="rightImg" src="../../static/shixiao@3x.png"/>
+		<div class="page-content">
+			<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/userCoupon/list" ref="pagination">
+				<div v-if="pagination.content.length > 0">
+					<div class="contBox" v-for="(item,index) in pagination.content" :key="index">
+						<div class="LeftPart">
+							<img src="../../static/ren.png"/>
+							<span>{{parseInt(item.price)}}</span>
+						</div>
+						<div class="partRight">
+							<span>{{item.content}}</span>
+							<p>{{item.timeLimit}}</p>
+							<img class="rightImg" src="../../static/shixiao@3x.png"/>
+						</div>
 					</div>
 				</div>
-			</div>
-				
-        </Pagination>
-        <div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
-			<img class="none-data-img" src="../../static/42@2x.png" />
-			<p>暂无不可使用优惠券</p>
-		</div>	
+				<div class="none-data-tip" v-if="pagination.content.length == 0 && pagination.loadEnd">
+					<img class="none-data-img" src="../../static/42@2x.png" />
+					<p>暂无不可使用优惠券</p>
+				</div>		
+	        </Pagination>
+	        
+		</div>
+			
 	</div>
 </template>
 
@@ -66,11 +69,13 @@
 </script>
 
 <style scoped>
-	#box {
+	.page-content{
+		position: absolute;
 		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
+		top: 1.76rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
 	}
 	.contBox{
 		width:6.6rem;

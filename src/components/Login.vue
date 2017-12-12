@@ -17,7 +17,7 @@
         </div>
         <div class="rule" :class="{active: isAgree}" >
         	<span class="agree" :class="{active: isAgree}" @click="toggleAgreementStatus"></span>
-        	<span class="agree-text" @click="goAgreement">我以阅读并同意“全城家政使用条款”</span>
+        	<span class="agree-text" @click="goAgreement">我以阅读并同意“全城到家使用条款”</span>
         </div>
 
         <div class="btn-login" :class="{disable: !isAgree}" @click="mobileLogin">登录</div>
@@ -214,7 +214,7 @@
                 self.$storage.set('role', result.role)
                 self.$storage.set('currRole', result.role)
 
-                let redirectURI = '/ucenter'
+                let redirectURI = '/first'
                 if (this.$storage.get('history_url') && this.$storage.get('history_url') != '/login') {
                     redirectURI = this.$storage.get('history_url')
                 }else if(this.$storage.get('history_url') && this.$storage.get('history_url') == '/login') {

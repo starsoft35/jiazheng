@@ -1,12 +1,12 @@
 <template>
 	<div id="box">
 		<!--顶部-->
-		<Header title="全城家政" back="hidden" ></Header>
+		<Header title="全城到家" back="hidden" ></Header>
 		<div class="sharePage-content">
 			<img src="../../static/sa@3x.png" class="fullAuto"  />
 			<div class="content">
 				<img src="../../static/shareEnter.png" class="fullAuto"  />
-				<p class="tit-1">全城家政大放价</p>
+				<p class="tit-1">全城到家大放价</p>
 				<p class="tit-2">现金优惠券大礼包</p>
 				<input type="tel" maxlength="12" placeholder="请输入您的手机号码" v-model="phone" class="phone" />
 				<div class="enter-app" @click="getEnter">立即领券</div>

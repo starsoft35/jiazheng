@@ -34,7 +34,7 @@
 				<div class="clientMessage clear">
 					<!--头像-->
 					<div class="clientImg fl">
-						<img :src="item.headImage" />
+						<img :src="item.headImage || '../../static/moren@3x.png'" />
 						<span>{{item.nickName}}</span>
 					</div>
 					<!--星星-->

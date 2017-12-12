@@ -7,16 +7,19 @@
             <div class="balance">{{getBalance}}</div>
         </div>
         <div class="blank"></div>
-
-        <Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/memberBill/list" ref="pagination">
-            <div class="record-container" >
-                <div class="record" v-for="(item, index) in pagination.content">
-                    <div class="amount">{{item.amount}}</div>
-                    <div class="label">{{item.label}}</div>
-                    <div class="date">{{item.date}}</div>
-                </div>
-            </div>
-        </Pagination>
+		<div class="page-content">
+			<Pagination :render="render" :autoload="false" :param="pagination" :need-token="true" uri="/memberBill/list" ref="pagination">
+	            <div class="record-container" >
+	                <div class="record" v-for="(item, index) in pagination.content">
+	                    <div class="amount">{{item.amount}}</div>
+	                    <div class="label">{{item.label}}</div>
+	                    <div class="date">{{item.date}}</div>
+	                </div>
+	            </div>
+	            <div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">暂无消费记录</div>
+	        </Pagination>
+		</div>
+	        
     </div>
 </template>
 
@@ -58,6 +61,14 @@
 </script>
 
 <style scoped>
+    .page-content{
+		position: absolute;
+		width: 100%;
+		top: 3.62rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+	}
     .balance-container {
         font-size: .26rem;
     }

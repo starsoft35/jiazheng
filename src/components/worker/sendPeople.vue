@@ -3,20 +3,23 @@
 		<!--顶部-->
 		<Header title="派单" operation="确认派单" :action="pendingWorker"></Header>
 
-		
-		<Pagination :render="render" :param="pagination" :topDistance="30" :need-token="true" uri="/user/pendingMan"  ref="pagination">
-            <div style="margin-bottom: 1.5rem;" v-if="pagination.content.length>0">
-            	<div class="contList" v-for="(list,index) in pagination.content" :key="index" @click="selectIndex = index">
-					<ul class="contBox">
-						<li class="list_one fl">{{ list.workname }} </li>
-						<li class="list_two fl">{{ list.phone }} </li>
-						<li class="list_three fl">{{ list.num }}单 </li>
-						<li class="list_four fr" :class="{'active' : selectIndex == index}"></li>
-					</ul>
-				</div>	
-            </div>
-		</Pagination>  
-		<div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无可派单员工</div>
+		<div class="page-content">
+			<Pagination :render="render" :param="pagination" :need-token="true" uri="/user/pendingMan"  ref="pagination" :autoload="false">
+	            <div v-if="pagination.content.length>0">
+	            	<div class="contList" v-for="(list,index) in pagination.content" :key="index" @click="selectIndex = index">
+						<ul class="contBox">
+							<li class="list_one fl">{{ list.workname }} </li>
+							<li class="list_two fl">{{ list.phone }} </li>
+							<li class="list_three fl">{{ list.num }}单 </li>
+							<li class="list_four fr" :class="{'active' : selectIndex == index}"></li>
+						</ul>
+					</div>	
+	            </div>
+	            <div class="none-data-tip" v-show="pagination.content.length == 0 && pagination.loadEnd">暂无可派单员工</div>
+			</Pagination>  
+			
+		</div>
+			
 		
 	</div>
 </template>
@@ -40,6 +43,9 @@ import { Toast } from 'mint-ui'
 		},
 		created(){
       		this.orderNo = this.$route.params.id
+  		},
+  		mounted() {
+  			this.$refs.pagination.refresh()
   		},
 		methods: {
 
@@ -77,11 +83,13 @@ import { Toast } from 'mint-ui'
 </script>
 
 <style scoped>
-	#box {
+	.page-content{
+		position: absolute;
 		width: 100%;
-		height: 100%;
-		padding: 0px;
-		margin: 0px;
+		top: 0.92rem;
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
 	}
 	.headPart{
 		width: 100%;

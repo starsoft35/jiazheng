@@ -34,21 +34,9 @@
 				</li>
 			</ul>
 		</div>
-		<div class="thingList" v-if="searchStatus">
-            <!--<ul class="thingCont" style="margin-bottom: 1.5rem;" v-show="serviceList.length>0">
-				<li class="things" v-for="(item,index) in serviceList" :key="index">
-					<router-link :to="'/serviceDetails/' +item.id">
-						<img :src="item.listImage"/>
-						<div class="thingName">
-							<div>{{item.title}}</div>
-							<p>{{item.abstractContent}}</p>
-							<span>{{item.price}}</span>
-						</div>
-					</router-link>
-				</li>
-			</ul>-->
-			<Pagination :render="render" :param="pagination" :topDistance="30" :need-token="true" uri="/service/search">
-	            <ul class="thingCont" style="margin-bottom: 0.3rem;" v-if="pagination.content.length>0">
+		<div class="thingList page-content" v-show="searchStatus">
+			<Pagination :render="render" ref="pagination" :param="pagination" :autoload="false" :need-token="true" uri="/service/search">
+	            <ul class="thingCont" v-if="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
 							<img :src="item.listImage"/>
@@ -60,8 +48,9 @@
 						</router-link>
 					</li>
 				</ul>
+				<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">没有数据</div>	
 	        </Pagination>
-			<div class="none-data-tip" v-show="pagination.content.length<1 && pagination.loadEnd">没有数据</div>	
+			
 		</div>
 		<confirm-modal :show="show" 
 			@cancel_modal="cancel_modal" 
@@ -151,28 +140,7 @@ import { Toast } from 'mint-ui'
 			    }
 				document.activeElement.blur();
 				this.searchStatus = true
-//				this.$api.serviceSearch({
-//		        	params:{
-//					    cityName: this.currCity.name,
-//					    keyword: this.serviceWord,
-//					    page: this.page,
-//					    page_size: this.page_size
-//					}
-//			    },(res) => {
-//			    	var flag = true
-//			    	this.searchStatus = true
-//			    	this.histroyList.forEach((value) => {
-//			    		if(value == this.serviceWord.trim()) {
-//			    			flag = false
-//			    			return
-//			    		}
-//			    	})
-//			    	if(flag) {
-//			    		this.histroyList.push(this.serviceWord)
-//			    		this.$storage.set('serveWord',this.histroyList)
-//			    	}
-//			    	this.serviceList = res.result.list
-//			    })
+				this.$refs.pagination.refresh()
 			},
 			render(res) {
 				var flag = true
@@ -214,6 +182,14 @@ import { Toast } from 'mint-ui'
 </script>
 
 <style scoped>
+		.page-content{
+			position: absolute;
+			width: 100%;
+			top: 1rem;
+			bottom: 0;
+			left: 0;
+			overflow-y: auto;
+		}
 		html,body{
 			width: 100%;
 			height: 100%;
@@ -221,11 +197,7 @@ import { Toast } from 'mint-ui'
 			position: relative;
 		}
 		#box {
-		width: 7.5rem;
-		padding: 0px;
-		margin: 0px;
-		position: relative;
-		padding-top: 1rem;
+			padding-top: 1rem;
 		}
 		/*顶部搜索栏*/
 		.head_part{
@@ -403,6 +375,9 @@ import { Toast } from 'mint-ui'
 		font-size:0.2rem ;
 		line-height: 0.45rem;
 		color: #aaa;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	/*价格*/
 	.thingName span{
