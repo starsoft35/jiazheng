@@ -278,14 +278,6 @@ const router = new Router({
             path: '/amap',
             component: amap,
         },
-
-
-
-
-
-
-
-
         {
             //我的
             path: '/ucenter',
@@ -379,11 +371,15 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth && !token.getAccessToken()) {
-        storage.set('history_url', to.fullPath)
-        next('/login')
+    if ('source=baidu'.indexOf(window.location.href) != -1) {
+        storage.set('baidu', 'baidu')
+    }else {
+        if (to.meta.requireAuth && !token.getAccessToken()) {
+            storage.set('history_url', to.fullPath)
+            next('/login')
+        }
     }
-
+    
     next()
 })
 
