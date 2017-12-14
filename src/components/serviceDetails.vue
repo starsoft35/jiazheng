@@ -86,7 +86,7 @@
 				serviceData: {},
 				evaluates: {},
 				evaluateList: [],
-				//服务主题
+				//服务主题  
 				title: '',
 				appointmentData: {},
 				baidu: false,
@@ -99,7 +99,7 @@
 				this.$api.serviceDetail({
 	        	params:{
 					    serviceId: this.serviceId,
-					}
+					} 
 			    },(res) => {
 			    	var data = {
 			    		title: res.result.serviceData.title,
@@ -126,6 +126,9 @@
 	   			this.$storage.set('appointmentData', this.appointmentData)
 	   			this.$router.push('/appointment/'+ this.serviceId)
 	   		}
+	   },
+	   beforeDestroy() {
+			// this.$storage.remove('baidu')
 	   }
 	}
 </script>

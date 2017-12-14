@@ -7,7 +7,7 @@ export default {
     findUserInfo(callback) {
         http.get(true, '/user/myInfo', callback)
     },
-
+  
     // 更新个人信息
     updateUserInfo(nickname, mobile, callback) {
         http.post(true, '/user/updateInfo', {
@@ -164,14 +164,19 @@ export default {
     },
 
     //二级服务列表
+    //baidu  
+    serviceLists(params) {
+        http.get(false, 'service/lists', callback, params)
+    },
+
     serviceList(params, callback) {
         http.get(true, '/service/list', callback, params)
     },
-
+ 
     //二级服务详情
     serviceDetail(params, callback) {
-        http.get(true, '/service/detail', callback, params)
-    },
+        http.get(false, '/service/detail', callback, params)
+    }, 
     
     //活动详情
     activityDetail(params, callback) {
@@ -233,7 +238,7 @@ export default {
     userMyShared(params, callback) {
         http.get(true, '/user/myShared', callback, params)
     },
-    
+      
     //分享有礼签名
     shareSign(params, callback) {
     	  http.get(true, '/wechat/getjsapi/signpackage', callback, params )

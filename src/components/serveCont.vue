@@ -3,7 +3,7 @@
 		<Header :title="serveTitle"></Header>
 		
 		<div class="page-content thingList">
-			<Pagination :render="render" :param="pagination" :need-token="true" uri="/service/list">
+			<Pagination :render="render" :param="pagination" :need-token="token" :uri="uri">
 	            <ul class="thingCont" v-show="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
@@ -31,7 +31,9 @@
 				menuId: undefined,
 				serveTitle:'',
 				serviceList:[],
-				
+
+				token: true, // 是否需要token
+				uri: '', // 地址
 				pagination: {
                     content: [],
                     page: 1, 
@@ -42,20 +44,30 @@
 			}
 		},
 		created() {
+			if(this.$storage.get('baidu')) {
+				this.token = false;
+				this.uri = '/service/lists'
+			}else {
+				this.token = true;
+				this.uri = '/service/list'
+			}
 			this.menuId = this.$route.params.id
 			this.pagination.param = {
 				params:{
 				    menuId: this.menuId,
 				}
 			}
-//			this.$api.serviceList({
-//	        	params:{
-//				    menuId: this.menuId,
-//				}
-//		    },(res) => {
-//		    	this.serviceList = res.result.serviceList.list
-//		    	this.serveTitle = res.result.menuName
-//		    })
+			// this.$api.serviceList({
+	        // 	params:{
+			// 	    menuId: this.menuId,
+			// 	}
+		    // },(res) => {
+		    // 	this.serviceList = res.result.serviceList.list
+		    // 	this.serveTitle = res.result.menuName
+		    // })
+		},
+		mounted() {
+
 		},
 		methods: {
             render(res) {
@@ -64,7 +76,10 @@
                 	this.pagination.content.push(item)
                 })
             }
-        }
+		},
+		beforeDestroy() {
+			// this.$storage.remove('baidu')
+		}
 	}
 </script>
 

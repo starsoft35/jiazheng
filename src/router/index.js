@@ -368,18 +368,28 @@ const router = new Router({
             component: OAuth
         }
     ]
-})
+})  
 
 router.beforeEach((to, from, next) => {
-    if ('source=baidu'.indexOf(window.location.href) != -1) {
-        storage.set('baidu', 'baidu')
+    let path = to.fullPath, flag = false, params = ['serveCont', 'serviceDetails']
+    console.log(to)
+    params.forEach(e => {
+        if(path.indexOf(e) != -1) {
+            flag = true
+            return 
+        }
+    });
+    if(flag&&(to.query.source)) {
+        to.query.source = 'baidu' && storage.set('baidu', 'baidu')
+        console.log(1)
     }else {
+        console.log(0)
         if (to.meta.requireAuth && !token.getAccessToken()) {
             storage.set('history_url', to.fullPath)
             next('/login')
         }
     }
-    
+
     next()
 })
 
