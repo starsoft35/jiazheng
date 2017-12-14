@@ -77,9 +77,6 @@
                 })
             }
 		},
-		beforeDestroy() {
-			// this.$storage.remove('baidu')
-		}
 	}
 </script>
 

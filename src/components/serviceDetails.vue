@@ -127,9 +127,6 @@
 	   			this.$router.push('/appointment/'+ this.serviceId)
 	   		}
 	   },
-	   beforeDestroy() {
-			// this.$storage.remove('baidu')
-	   }
 	}
 </script>
 

@@ -372,7 +372,6 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     let path = to.fullPath, flag = false, params = ['serveCont', 'serviceDetails']
-    console.log(to)
     params.forEach(e => {
         if(path.indexOf(e) != -1) {
             flag = true
@@ -381,9 +380,7 @@ router.beforeEach((to, from, next) => {
     });
     if(flag&&(to.query.source)) {
         to.query.source = 'baidu' && storage.set('baidu', 'baidu')
-        console.log(1)
     }else {
-        console.log(0)
         if (to.meta.requireAuth && !token.getAccessToken()) {
             storage.set('history_url', to.fullPath)
             next('/login')
