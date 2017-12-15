@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import token from '../api/accessToken'
@@ -421,11 +422,23 @@ const router = new Router({
         }
     ]
 })
+ 
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth && !token.getAccessToken()) {
-        storage.set('history_url', to.fullPath)
-        next('/login')
+    let path = to.fullPath, flag = false, params = ['serveCont', 'serviceDetails']
+    params.forEach(e => {
+        if(path.indexOf(e) != -1) {
+            flag = true
+            return 
+        }
+    });
+    if(flag&&(to.query.source)) {
+        to.query.source = 'baidu' && storage.set('baidu', 'baidu')
+    }else {
+        if (to.meta.requireAuth && !token.getAccessToken()) {
+            storage.set('history_url', to.fullPath)
+            next('/login')
+        }
     }
 
     next()

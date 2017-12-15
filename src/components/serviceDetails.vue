@@ -72,7 +72,8 @@
 			<div class="textBox" v-html="serviceData.attention"></div>
 		</div>-->
 		<!--立即预约按钮-->
-		<div class="bottomBtn">
+		<div class="bottomBtn" >
+			<a v-if="baidu" :href="'tel:' +  phoneNum ">{{ phoneNum }}</a>
 			<a @click="goAppointment">立即预约</a>
 		</div>
 	</div>
@@ -85,10 +86,11 @@
 				serviceData: {},
 				evaluates: {},
 				evaluateList: [],
-				//服务主题
+				//服务主题  
 				title: '',
-				appointmentData: {}
-
+				appointmentData: {},
+				baidu: false,
+				phoneNum: 123456
 			}
 
 		},
@@ -97,7 +99,7 @@
 				this.$api.serviceDetail({
 	        	params:{
 					    serviceId: this.serviceId,
-					}
+					} 
 			    },(res) => {
 			    	var data = {
 			    		title: res.result.serviceData.title,
@@ -114,12 +116,17 @@
 			    	this.$storage.set('serviceIntro', res.result.serviceData.introduction)
 			  })
 	   },
+	   mounted() {
+			if(this.$storage.get('baidu')) {
+				this.baidu = true	
+			}
+	   },
 	   methods: {
 	   		goAppointment() {
 	   			this.$storage.set('appointmentData', this.appointmentData)
 	   			this.$router.push('/appointment/'+ this.serviceId)
 	   		}
-	   }
+	   },
 	}
 </script>
 
