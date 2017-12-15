@@ -8,7 +8,7 @@
         </div>
 
         <div class="total">
-            金额：¥ <input type="tel" v-model="amount" @focus="focusOnInput" class="amount">
+            金额：¥ <input type="tel" v-model="amount" @input="inputNumber" @focus="focusOnInput" class="amount">
         </div>
         <div class="button-container">
             <div class="button" :class="{disable: buttonDisable}" @click="doPay(3)">微信支付</div>
@@ -167,6 +167,11 @@
                         this.template[i].actived = false
                     }
                 }
+            },
+            inputNumber() {
+            	if (!/^[1-9]\d*$/.test(this.amount)) {				
+	                this.amount = this.amount.replace(/^0|\D+/g,'')            
+	            }
             },
             // 切换充值金额
             changeAmount(index) {

@@ -119,8 +119,8 @@ import { Toast } from 'mint-ui'
 				menuList: [],
 				firstMenu: {},
 				currCity: {
-					latitude: 0,
-					longitude: 0,
+					latitude: '0',
+					longitude: '0',
 					name: ''
 				},
 				
@@ -167,25 +167,27 @@ import { Toast } from 'mint-ui'
 			firstEnter() {
 				this.loadingStatus = true
 				let self = this
-				this.$api.findUserInfo(function (response) {
-					self.roles = response.result.roles
-	                if (self.roles.length > 1) {
-	                    for (let i in self.roles) {
-	                        if (self.roles[i].isCurrent == 1 && self.roles[i].roleName == '工人版') {
-	                            self.$api.toggleRole(function(response) {
-					                
-					            })
-	                        }
-	                    }
-	                }
-	            })
+//				this.$api.findUserInfo(function (response) {
+//					self.roles = response.result.roles
+//	                if (self.roles.length > 1) {
+//	                    for (let i in self.roles) {
+//	                        if (self.roles[i].isCurrent == 1 && self.roles[i].roleName == '工人版') {
+//	                            self.$api.toggleRole(function(response) {
+//					                
+//					            })
+//	                        }
+//	                    }
+//	                }
+//	            })
 				self.getLocation()	
-				setTimeout(() => {
-					if(self.loadingStatus) {
-						self.loadingStatus = false
-						self.initData()
-					}
-				},5000)
+				if(!this.$common.isWeixin()) {
+					setTimeout(() => {
+						if(self.loadingStatus) {
+							self.loadingStatus = false
+							self.initData()
+						}
+					},5000)
+				}
 			},
 			getLocation() {
 				let self = this
@@ -194,7 +196,7 @@ import { Toast } from 'mint-ui'
 				    map.plugin('AMap.Geolocation', function() {
 				        var geolocation = new AMap.Geolocation({
 				            enableHighAccuracy: true,//是否使用高精度定位，默认:true
-				            timeout: 12000,          //超过10秒后停止定位，默认：无穷大
+				            timeout: 5000,          //超过10秒后停止定位，默认：无穷大
 				        });
 				        map.addControl(geolocation);
 				        geolocation.getCurrentPosition();
@@ -206,7 +208,7 @@ import { Toast } from 'mint-ui'
 				        	Toast({
 							  message: '定位失败，请选择城市',
 							  position: 'bottom',
-							  duration: 3000
+							  duration: 2000
 							})
 				        	self.initData()
 				        	
@@ -215,6 +217,7 @@ import { Toast } from 'mint-ui'
                     return
                 }
 				this.$bridge.getGPS().then((res) => {
+					
 					let timer = null
 					let addr = JSON.parse(res)
 					if(addr.latitude == -1 && addr.longitude == -1) {

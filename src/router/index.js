@@ -114,7 +114,6 @@ const router = new Router({
             path: '/first',
             component: first,
             meta: {
-                requireAuth: true,
                 keepAlive: true
             }
         }, {
@@ -153,7 +152,10 @@ const router = new Router({
         }, {
             //活动详情
             path: '/activityDetails/:id',
-            component: activityDetails
+            component: activityDetails,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //服务的详细介绍
             path: '/serveIntro',
@@ -167,12 +169,16 @@ const router = new Router({
             path: '/appointment/:id',
             component: appointment,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                requireAuth: true
             }
         }, {
             //优惠券
             path: '/coupons',
             component: coupons,
+            meta: {
+                requireAuth: true
+            },
             children: [{
                     path: '/coupons',
                     redirect: '/coupons/couponsLeft/useless'
@@ -188,21 +194,31 @@ const router = new Router({
         }, {
             //服务地址
             path: '/chosePosition',
-            component: chosePosition
+            component: chosePosition,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //添加服务地址
             path: '/addPosition',
-            component: addPosition
+            component: addPosition,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //订单详情
             path: '/orderDetail/:id',
-            component: orderDetail
+            component: orderDetail,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //订单支付
             path: '/paySubmit/:id',
             component: paySubmit,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                requireAuth: true
             }
         }, {
             //订单支付
@@ -213,12 +229,16 @@ const router = new Router({
             path: '/oneClick',
             component: oneClick,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                requireAuth: true
             }
         }, {
             //分享
             path: '/sharePage',
-            component: sharePage
+            component: sharePage,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //分享
             path: '/shareEnter/:id',
@@ -230,7 +250,11 @@ const router = new Router({
         }, {
             //订单
             path: '/orders',
-            component: Order
+            component: Order,
+            meta: {
+                requireAuth: true
+            }
+            
         }, {
             //附近
             path: '/nearby',
@@ -243,7 +267,8 @@ const router = new Router({
             path: '/orderPart',
             component: orderPart,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                requireAuth: true
             }
             
         }, {
@@ -251,32 +276,51 @@ const router = new Router({
             path: '/distribute/:id',
             component: Distribute,
             meta: {
-                keepAlive: true
+                keepAlive: true,
+                requireAuth: true
             }
         }, {
             //派单
             path: '/sendPeople/:id',
             component: sendPeople,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //工人端消息
             path: '/workerMessage',
             component: workerMessage,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //工人个人中心
             path: '/worker/ucenter',
             component: WorkerUCenter,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //地图工人位置
             path: '/amapPage',
             component: amapPage,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //工人位置
             path: '/location',
             component: Location,
+            meta: {
+                requireAuth: true
+            }
         }, {
             //地图导航
             path: '/amap',
             component: amap,
+            meta: {
+                requireAuth: true
+            }
         },
 
 
@@ -289,7 +333,10 @@ const router = new Router({
         {
             //我的
             path: '/ucenter',
-            component: UCenter
+            component: UCenter,
+            meta: {
+                requireAuth: true
+            }
         }, {
             // 余额
             path: '/balance',
@@ -359,10 +406,7 @@ const router = new Router({
         }, {
             // 绑定手机号码
             path: '/bind/mobile',
-            component: BindMobile,
-            meta: {
-                requireAuth: false
-            }
+            component: BindMobile
         }, {
             // 地址搜索
             path: '/addr/search',
