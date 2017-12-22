@@ -64,12 +64,8 @@
                         accessToken.expire_time)
 
                     self.$storage.set('role', response.result.role)
-                    let history_url = self.$storage.get('history_url')
-                    let redirectURI = '/ucenter'
-                    if (history_url &&　history_url != '/login') {
-                    	redirectURI = self.$storage.get('history_url')
-                        self.$storage.remove('history_url')
-                    }
+                    let redirectURI = '/first'
+
                     self.$router.replace(redirectURI)
                 })
             },

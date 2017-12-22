@@ -215,11 +215,6 @@
                 self.$storage.set('currRole', result.role)
 
                 let redirectURI = '/first'
-                if (this.$storage.get('history_url') && this.$storage.get('history_url') != '/login') {
-                    redirectURI = this.$storage.get('history_url')
-                }else if(this.$storage.get('history_url') && this.$storage.get('history_url') == '/login') {
-                	redirectURI = '/first'
-                }
                 this.$router.replace(redirectURI)
             },
             goAgreement() {
