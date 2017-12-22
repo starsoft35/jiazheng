@@ -13,7 +13,7 @@
 		</div>
 		<!--用户评价-->
 		<div class="page-content">
-			<Pagination :render="render" :param="pagination" :need-token="true" uri="/evaluate/list">
+			<Pagination :render="render" :param="pagination" :need-token="false" uri="/evaluate/list">
 				<div v-if="pagination.content.length>0">
 					<div class="ping" v-for="(item,index) in pagination.content" :key="index">
 						<div class="client">

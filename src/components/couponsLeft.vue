@@ -56,17 +56,17 @@
 			this.couponStatus = this.$route.params.status
 			if(this.couponStatus == 'use') {
 				let currServeCoupon = this.$storage.get('currServeCoupon')
-				this.$storage.remove('currServeCoupon')
 				this.pagination = {
                     content: [],
                     page: 1, 
                     pageSize: 10,
                     param: {
                     	params:{
-						    flag: 1,
-						    serviceId: currServeCoupon.serviceId,
-						    serviceNum: currServeCoupon.serviceNum
-						}
+										    flag: 1,
+										    serviceId: currServeCoupon.serviceId,
+										    serviceNum: currServeCoupon.serviceNum,
+										    orderSn: currServeCoupon.orderSn
+											}
                     },
                     loadEnd: false
                 }
@@ -110,10 +110,12 @@
             	this.currCoupon.price = item.price
             	this.$storage.set('currCoupon', this.currCoupon)
             	this.$router.go(-1)
+            	this.$storage.remove('currServeCoupon')
             },
             unUse() {
             	this.$storage.remove('currCoupon')
             	this.$router.go(-1)
+            	this.$storage.remove('currServeCoupon')
             }
         }
 	}

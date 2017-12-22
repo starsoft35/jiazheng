@@ -83,6 +83,7 @@
 				this.$api.serviceMenuList({
 		        	params:{
 					    menuId: this.menuId,
+					    cityName: this.$storage.get('currCity').name
 					}
 			    },(res) => {
 			    	this.menuList = res.result

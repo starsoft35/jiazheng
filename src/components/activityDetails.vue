@@ -15,7 +15,7 @@
 				<div class="contBox" @click="getCoupon(item)" >
 					<div class="LeftPart" :class="item.couponStatus == 1 ? '' : 'not-get'">
 						<img src="../../static/ren.png"/>
-						<span>{{item.price}}</span>
+						<span>{{parseInt(item.price)}}</span>
 					</div>
 					<div class="partRight">
 						<span>{{item.content}}</span>

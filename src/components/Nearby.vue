@@ -12,7 +12,7 @@
 		</div>
 		<div class="nav-blank"></div>
 		<div class="page-content">
-			<Pagination :render="render" :param="pagination" :autoload="false" :need-token="true" uri="/serviceMenu/getServiceByFirstCategory" ref="pagination">
+			<Pagination :render="render" :param="pagination" :autoload="false" :need-token="false" uri="/serviceMenu/getServiceByFirstCategorys" ref="pagination">
 				<div class="service-container" v-show="pagination.content.length>0">
 					<div class="service" v-for="(item, index) in pagination.content" @click="toDetail(index)">
 						<img :src="item.icon"/>
@@ -64,7 +64,7 @@
 		},
 		created() {
 			let self = this
-			this.$api.getNearbyMenu(function(response) {
+			this.$api.getNearbyMenu(this.$storage.get('currCity').name, function(response) {
 				for (var i in response.result.menus) {
 					self.menus.push({
 						name: response.result.menus[i].name,
@@ -84,7 +84,8 @@
 					pageSize: 10,
 					param: {
 						params: {
-							firstCategoryId: this.menus[index].id
+							firstCategoryId: this.menus[index].id,
+							cityName: this.$storage.get('currCity').name
 						}
 					}
 				}

@@ -17,16 +17,16 @@
 			
 			<div class="partBottom">
 				<div class="fl">实付金额</div>
-				<span class="fr">&yen;{{payData.totalPrice}}</span>
+				<span class="fr">&yen;{{(payData.totalPrice - parseInt(currCoupon.price)) > 0 ? (payData.totalPrice - parseInt(currCoupon.price)).toFixed(2) : '0.00'}}</span>
 			</div>
 		</div>
 		<div class="serveBottom" v-if="orderType.value !=1">
 			<span class="fl">优惠券</span>
-			<router-link to="/coupons/couponsLeft/use">
+			<a @click="selectCoupon">
 				<img class="fr" src="../../static/34@3x.png"/>
 				<div class="fr" v-show="useCouponStatus">{{parseInt(currCoupon.price)}}元优惠券</div>
 				<div class="fr" v-show="!useCouponStatus">使用优惠券</div>
-			</router-link>
+			</a>
 				
 		</div>
 		<!--选择支付方式-->
@@ -139,6 +139,13 @@ import { Toast } from 'mint-ui'
 	    	}
 		},
 		methods: {
+			//选择优惠券
+			selectCoupon() {
+				this.$storage.set('currServeCoupon', {
+					orderSn: this.orderSn
+				})
+				this.$router.push('/coupons/couponsLeft/use')
+			},
 			confirmPay() {
 				let self = this
 				
@@ -148,6 +155,7 @@ import { Toast } from 'mint-ui'
 						orderSn: this.orderSn,
 						couponId: this.currCoupon.id
 					}, (res) => {
+						self.$storage.remove('currCoupon')
 						Toast({
 						  message: '支付成功',
 						  position: 'middle',

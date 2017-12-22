@@ -35,7 +35,7 @@
 			</ul>
 		</div>
 		<div class="thingList page-content" v-show="searchStatus">
-			<Pagination :render="render" ref="pagination" :param="pagination" :autoload="false" :need-token="true" uri="/service/search">
+			<Pagination :render="render" ref="pagination" :param="pagination" :autoload="false" :need-token="false" uri="/service/searchs">
 	            <ul class="thingCont" v-if="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">

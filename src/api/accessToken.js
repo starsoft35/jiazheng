@@ -20,8 +20,7 @@ export default {
                 position: 'bottom',
                 duration: 1000
             })
-            storage.set('history_url', router.history.current.path)
-            router.replace('/login')
+            router.push('/login')
             return false
         } else if (token.expired <= moment().unix()) {
             // 已过期，置换accessToken
@@ -30,8 +29,7 @@ export default {
                 position: 'bottom',
                 duration: 1000
             })
-            storage.set('history_url', router.history.current.path)
-            router.replace('/login')
+            router.push('/login')
             return false
         }
         return token.accessToken

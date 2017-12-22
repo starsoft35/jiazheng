@@ -54,7 +54,7 @@
         methods: {
             goBack() {
                 if (!this.back) {
-                    this.$router.back()
+                    this.$router.go(-1)
                 } else {
                     this.$router.push(this.back)
                 }

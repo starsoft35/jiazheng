@@ -91,7 +91,7 @@
                 var self = this
                 MessageBox.confirm('确认要退出登录吗？').then(action => {
                     self.$api.logout(function() {
-                        self.$router.push('/login')
+                        self.$router.replace('/login')
                         self.$storage.remove('history_url')
                         self.$storage.remove('oauthInfo')
                         self.$storage.remove('token')

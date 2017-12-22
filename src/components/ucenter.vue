@@ -7,9 +7,10 @@
                 <div class="avatar">
                     <img :src="avatar" alt="avatar">
                 </div>
-                <div class="info">
-                    <div class="name">{{nickname}}</div>
-                    <div class="mobile">{{mobile}}</div>
+                <div class="info" >
+                    <div class="name" v-if="mobile">{{nickname}}</div>
+                    <div class="mobile" v-if="mobile">{{mobile}}</div>
+                    <div style="line-height: 0.9rem;" v-if="!mobile">未登录</div>
                 </div>
             </div>
             <div class="data">
@@ -51,13 +52,13 @@
                 <img src="../../static/51@3x.png" alt="package">
                 <div class="title">分享有礼</div>
             </router-link>
-            <a v-if="isWeixin != 'yes'" @click="callPhone(hotline)" class="item">
+            <a v-if="isWeixin != 'yes' && hotline" @click="callPhone(hotline)" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
                 <div class="label">{{hotline}}</div>
                 <div class="title">联系客服</div>
             </a>
-            <a v-if="isWeixin == 'yes'" :href="'tel:' + hotline" class="item">
+            <a v-if="isWeixin == 'yes' && hotline" :href="'tel:' + hotline" class="item">
                 <div class="arrow"></div>
                 <img src="../../static/52@3x.png" alt="package">
                 <div class="label">{{hotline}}</div>
@@ -74,7 +75,7 @@
             <div class="item" @click="toggleRole">
                 <div class="arrow"></div>
                 <img src="../../static/54@3x.png" alt="package">
-                <div class="label">用户版</div>
+                <div class="label">工人版</div>
                 <div class="title">角色切换</div>
             </div>
         </div>
@@ -83,6 +84,7 @@
 </template>
 
 <script>
+import moment from 'moment'
     export default {
         data: function() {
             return {
@@ -104,6 +106,9 @@
         },
         created: function() {
             var self = this
+            if(!this.getToken()) {
+            	return
+            }
             this.$api.findUserInfo(function (response) {
                 self.balance = parseFloat(response.result.balance).toFixed(2)
                 if (response.result.headImage) {
@@ -131,6 +136,15 @@
             })
         },
         methods: {
+        	getToken() {
+        		var token = this.$storage.get('token')
+		        if (!token || !token.accessToken || !token.expired) {
+		            return false
+		        } else if (token.expired <= moment().unix()) {
+		            return false
+		        }
+		        return true
+        	},
             // 跳转余额
             toBalance() {
                 this.$router.push('/balance')

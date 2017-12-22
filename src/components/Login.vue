@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <Header title="快捷登录" back="hidden"></Header>
+        <Header title="快捷登录"></Header>
 
         <div class="container">
             <div class="row">

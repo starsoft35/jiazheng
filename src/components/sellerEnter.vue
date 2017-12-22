@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<a @click="callPhone" v-if="isWeixin != 'yes'" class="enter-phone">咨询电话</a>
-		<a v-if="isWeixin == 'yes'" href="tel:18079115648" class="enter-phone">咨询电话</a>
+		<a v-if="isWeixin == 'yes'" href="tel:4008005738" class="enter-phone">咨询电话</a>
 	</div>
 </template>
 
@@ -41,7 +41,7 @@
 		},
 		methods: {
 			callPhone() {
-				this.$bridge.callPhone('18079115648')
+				this.$bridge.callPhone('4008005738')
 			}
 		}
 	}

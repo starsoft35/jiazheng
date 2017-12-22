@@ -3,7 +3,7 @@
 		<Header :title="serveTitle"></Header>
 		
 		<div class="page-content thingList">
-			<Pagination :render="render" :param="pagination" :need-token="token" :uri="uri">
+			<Pagination :render="render" ref="pagination" :autoload="false" :param="pagination" :need-token="token" :uri="uri">
 	            <ul class="thingCont" v-show="pagination.content.length>0">
 					<li class="things" v-for="(item,index) in pagination.content" :key="index">
 						<router-link :to="'/serviceDetails/' +item.id">
@@ -38,7 +38,13 @@
                     content: [],
                     page: 1, 
                     pageSize: 10,
-                    param: {},
+                    param: {
+                    	params: {
+                    		menuId: '',
+					    	cityName: ''
+                    	}
+	                    	
+                    },
                     loadEnd: false
                 },
 			}
@@ -48,15 +54,10 @@
 				this.token = false;
 				this.uri = '/service/lists'
 			}else {
-				this.token = true;
-				this.uri = '/service/list'
+				this.token = false;
+				this.uri = '/service/listss'
 			}
-			this.menuId = this.$route.params.id
-			this.pagination.param = {
-				params:{
-				    menuId: this.menuId,
-				}
-			}
+			
 			// this.$api.serviceList({
 	        // 	params:{
 			// 	    menuId: this.menuId,
@@ -67,7 +68,13 @@
 		    // })
 		},
 		mounted() {
-
+			this.menuId = this.$route.params.id
+			console.log(this.menuId)
+			this.pagination.param.params.menuId = this.menuId
+			if(!this.$storage.get('baidu')) {
+				this.pagination.param.params.cityName = this.$storage.get('currCity').name
+			}
+			this.$refs.pagination.refresh()	
 		},
 		methods: {
             render(res) {

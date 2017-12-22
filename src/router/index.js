@@ -185,10 +185,16 @@ const router = new Router({
                     redirect: '/coupons/couponsLeft/useless'
                 }, {
                     path: '/coupons/couponsLeft/:status',
-                    component: couponsLeft
+                    component: couponsLeft,
+                    meta: {
+		                requireAuth: true
+		            },
                 }, {
                     path: '/coupons/couponsRight',
-                    component: couponsRight
+                    component: couponsRight,
+                    meta: {
+		                requireAuth: true
+		            },
                 }
 
             ]
@@ -334,10 +340,7 @@ const router = new Router({
         {
             //我的
             path: '/ucenter',
-            component: UCenter,
-            meta: {
-                requireAuth: true
-            }
+            component: UCenter
         }, {
             // 余额
             path: '/balance',
@@ -434,14 +437,19 @@ router.beforeEach((to, from, next) => {
     });
     if(flag&&(to.query.source)) {
         to.query.source = 'baidu' && storage.set('baidu', 'baidu')
+        next()
     }else {
         if (to.meta.requireAuth && !token.getAccessToken()) {
             storage.set('history_url', to.fullPath)
-            next('/login')
+            next(false)
+            return
+        }else {
+        	next()
         }
+        
     }
 
-    next()
+    
 })
 
 export default router

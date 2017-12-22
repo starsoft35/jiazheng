@@ -8,7 +8,7 @@
 	                <div class="item" v-for="(item, index) in addressList">
 	                    <div class="info" @click="selectAddr(index)">
 	                        <div class="mobile">{{item.mobile}}</div>
-	                        <div class="consigee">联系人：{{item.consigee}}</div>
+	                        <div class="consigee">联系人：{{item.consignee}}</div>
 	                        <div class="location">{{item.location}} &nbsp; {{item.detailAddr}}</div>
 	                        <div class="street">{{item.address}}</div>
 	                    </div>

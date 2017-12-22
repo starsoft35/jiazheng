@@ -29,7 +29,7 @@
 		
 		<!--banner 轮播-->
 		<div class="banner">
-			<mt-swipe :auto="0">
+			<mt-swipe :auto="4000">
 				<mt-swipe-item v-for="(item, index) in homeData.banners" :key="index">
 					<a @click="bannerLink(item)" class="fullEle">
 						<img class="fullEle" :src="item.pic" />
@@ -65,14 +65,14 @@
 		<div class="shareBox">
 			<div class="share clear">
 				<div class="shareCont left">
-					<a href="#sharePage">
+					<a @click="goSharePage">
 						<span>分享有礼</span>
 						<p>分享获取优惠券</p>
 						<img src="../../static/11@3x.png" alt="分享有礼"/>
 					</a>
 				</div>
 				<div class="shareCont right">
-					<a href="#oneClick">
+					<a @click="goOneClick">
 						<span>一键下单</span>
 						<p>家电不知道怎么了</p>
 						<img src="../../static/12@3x.png" alt="一键下单"/>
@@ -125,7 +125,9 @@ import { Toast } from 'mint-ui'
 				},
 				
 				roles: [],
-				loadingStatus: false
+				loadingStatus: false,
+				
+				firstInitData: true
 			}
 		},
 		created() {
@@ -139,7 +141,7 @@ import { Toast } from 'mint-ui'
 					    longitude: this.currCity.longitude
 					}
 			    },(res) => {
-			    	console.log(res)
+			    	this.firstInitData = false
 			    	this.loadingStatus = false
 			    	this.currCity.name = res.result.currentCity
 			        this.$storage.set('currCity', this.currCity)
@@ -241,14 +243,16 @@ import { Toast } from 'mint-ui'
 				}else {
 					this.$router.push('/activityDetails/' + item.link)
 				}
+			},
+			goSharePage() {
+				this.$router.push('/sharePage')
+			},
+			goOneClick() {
+				this.$router.push('/oneClick')
 			}
 		},
 		beforeRouteEnter (to, from, next) {
-	    	if(from.fullPath == '/' || /login/g.test(from.fullPath) || /bind/g.test(from.fullPath)) {
-	    		next(vm => {
-	    			vm.firstEnter()
-	    		})
-	    	}else if(/positionChose/g.test(from.fullPath)) {
+	    	if(/positionChose/g.test(from.fullPath)) {
 	    		next(vm=>{
 	    			if(vm.$storage.get('currCity')) {
 	    				vm.currCity = vm.$storage.get('currCity')
@@ -256,7 +260,11 @@ import { Toast } from 'mint-ui'
 	    			vm.initData()
 	        	})
 	    	}else{
-	    		next()
+	    		next(vm=>{
+	    			if(vm.firstInitData) {
+	    				vm.firstEnter()
+	    			}
+	        	})
 	    	}
 	    	
 	    	

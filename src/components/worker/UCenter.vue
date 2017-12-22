@@ -42,7 +42,7 @@
 		<div class="menu-container">
             <div class="item" @click="toggleRole">
                 <div class="arrow"></div>
-                <div class="label">工人版</div>
+                <div class="label">用户版</div>
                 <div class="title">角色切换</div>
             </div>
         </div>

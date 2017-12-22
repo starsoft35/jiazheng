@@ -68,7 +68,7 @@
         },
         activated() {
             let self = this
-            if (this.$route.params.id && !self.mobile) {
+            if (this.$route.params.id) {
                 this.$api.getAddress(this.$route.params.id, function(response) {
                     self.id = response.result.id
                     self.consigee = response.result.name

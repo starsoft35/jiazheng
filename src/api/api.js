@@ -119,10 +119,17 @@ export default {
     },
 
     // 获取附近菜单
-    getNearbyMenu(callback) {
-        http.get(true, '/serviceMenu/getNearlyServices', callback)
+    //新
+    getNearbyMenu(cityName, callback) {
+        http.get(false, '/serviceMenu/getNearlyServicess', callback, { params: { cityName: cityName } })
     },
-
+    //旧
+//  getNearbyMenu(callback) {
+//      http.get(true, '/serviceMenu/getNearlyServices', callback)
+//  },
+    
+    //获取附近菜单列表(分页)
+    
     // 切换角色
     toggleRole(callback) {
         http.get(true, '/user/changeRole', callback)
@@ -149,18 +156,21 @@ export default {
 
     // 易
     //首页
+    //新
     homeData(params, callback) {
-        http.get(true, '/main', callback, params)
+        http.get(false, '/mains', callback, params)
     },
+    //旧
+//  homeData(params, callback) {
+//      http.get(true, '/main', callback, params)
+//  },
 
-    //搜索服务
-    serviceSearch(params, callback) {
-        http.get(true, '/service/search', callback, params)
-    },
+    //搜索服务(在分页)
+
 
     //全部服务列表
     serviceMenuList(params, callback) {
-        http.get(true, '/service/menuList', callback, params)
+        http.get(false, '/service/menuList', callback, params)
     },
 
     //二级服务列表
@@ -168,10 +178,15 @@ export default {
     serviceLists(params) {
         http.get(false, 'service/lists', callback, params)
     },
-
-    serviceList(params, callback) {
-        http.get(true, '/service/list', callback, params)
+	
+	//新
+	serviceList(params, callback) {
+        http.get(false, '/service/listss', callback, params)
     },
+    //旧
+//  serviceList(params, callback) {
+//      http.get(true, '/service/list', callback, params)
+//  },
  
     //二级服务详情
     serviceDetail(params, callback) {
@@ -191,7 +206,7 @@ export default {
 
     //二级服务评价列表
     evaluateList(params, callback) {
-        http.get(true, '/evaluate/list', callback, params)
+        http.get(false, '/evaluate/list', callback, params)
     },
 
     //我的优惠卷
