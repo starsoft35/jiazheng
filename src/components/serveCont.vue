@@ -50,13 +50,8 @@
 			}
 		},
 		created() {
-			if(this.$storage.get('baidu')) {
-				this.token = false;
-				this.uri = '/service/lists'
-			}else {
-				this.token = false;
-				this.uri = '/service/listss'
-			}
+			this.token = false;
+			this.uri = '/service/listss'
 			
 			// this.$api.serviceList({
 	        // 	params:{
@@ -71,9 +66,7 @@
 			this.menuId = this.$route.params.id
 			console.log(this.menuId)
 			this.pagination.param.params.menuId = this.menuId
-			if(!this.$storage.get('baidu')) {
-				this.pagination.param.params.cityName = this.$storage.get('currCity').name
-			}
+			this.pagination.param.params.cityName = this.$storage.get('currCity').name
 			this.$refs.pagination.refresh()	
 		},
 		methods: {

@@ -428,25 +428,12 @@ const router = new Router({
  
 
 router.beforeEach((to, from, next) => {
-    let path = to.fullPath, flag = false, params = ['serveCont', 'serviceDetails']
-    params.forEach(e => {
-        if(path.indexOf(e) != -1) {
-            flag = true
-            return 
-        }
-    });
-    if(flag&&(to.query.source)) {
-        to.query.source = 'baidu' && storage.set('baidu', 'baidu')
-        next()
+    if (to.meta.requireAuth && !token.getAccessToken()) {
+        storage.set('history_url', to.fullPath)
+        next(false)
+        return
     }else {
-        if (to.meta.requireAuth && !token.getAccessToken()) {
-            storage.set('history_url', to.fullPath)
-            next(false)
-            return
-        }else {
-        	next()
-        }
-        
+    	next()
     }
 
     

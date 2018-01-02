@@ -73,7 +73,6 @@
 		</div>-->
 		<!--立即预约按钮-->
 		<div class="bottomBtn" >
-			<a v-if="baidu" :href="'tel:' +  phoneNum ">{{ phoneNum }}</a>
 			<a @click="goAppointment">立即预约</a>
 		</div>
 	</div>
@@ -88,9 +87,7 @@
 				evaluateList: [],
 				//服务主题  
 				title: '',
-				appointmentData: {},
-				baidu: false,
-				phoneNum: 123456
+				appointmentData: {}
 			}
 
 		},
@@ -117,9 +114,7 @@
 			  })
 	   },
 	   mounted() {
-			if(this.$storage.get('baidu')) {
-				this.baidu = true	
-			}
+
 	   },
 	   methods: {
 	   		goAppointment() {
